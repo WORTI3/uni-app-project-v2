@@ -1,10 +1,14 @@
 {% extends "../_layouts/template.njk" %}
-{% from '../_layouts/_macros/_form.njk' import basicForm, header %}
+{% from '../_layouts/_macros/_form.njk' import header, content %}
 
 {% block mainContent %}
 <div class="p-12 bg-white mx-auto rounded-3xl w-96 ">
 	{{ header({ heading: 'Sign up', subHeading: 'Already have an account?', link: '/login', linkText: 'Sign in' }) }}
-	{% include "../_includes/_messages.njk" %}
-	{{ basicForm({ url: '/login/password', buttonText: 'Sign up'}) }}
+	{% include "../_layouts/_includes/_messages.njk" %}
+
+	<form action="/signup" method="post">
+    	{% include "../_layouts/_includes/_csrf.njk" %}
+		{{ content({ buttonText: 'Sign up'}) }}
+	</form>
 </div>
 {% endblock %}

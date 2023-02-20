@@ -23,7 +23,7 @@
                     <td>{{ asset.created }}</td>
                     <td>
                         <form action="{{ asset.url }}/edit" method="post">
-                            {% include "../_layouts/_includes/_csrf.njk" %}
+                            {% include "../_csrf.njk" %}
                             <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                                 Edit
                             </button>

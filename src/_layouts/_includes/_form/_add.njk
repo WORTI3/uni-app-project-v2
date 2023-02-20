@@ -1,5 +1,6 @@
 {% if addNew %}
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
         <div class="mb-5">
             <h3 class="font-semibold text-2xl text-gray-800">Add a new ticket</h3>
         </div>
@@ -12,7 +13,7 @@
             {# Employee / user name and id as key? #}
             <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
             <input id="asset-code" name="assetCode" type="text" placeholder="Asset code" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
-            {% include "../_layouts/_includes/_csrf.njk" %}
+            {% include "../_csrf.njk" %}
 
             <button type="submit" class="w-1/2 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                 Submit

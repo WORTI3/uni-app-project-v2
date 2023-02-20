@@ -21,8 +21,8 @@
             </div>
         </div>
         <form action="/logout" method="post">
+            {% include "./_csrf.njk" %}
             <button class="inline-block text-sm px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:text-gray-600 hover:bg-white mt-4 lg:mt-0" type="submit">Sign out</button>
-            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         </form>
         {% else %}
         <div class="text-sm lg:flex-grow">
