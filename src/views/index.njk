@@ -1,0 +1,143 @@
+{% extends "../_layouts/base.njk" %}
+{% set overrideNav = true %}
+{% set title = "Dashboard" %}
+
+{% block content %}
+	{# {% include "../_includes/dashboard.njk" %} #}
+	{% if not addNew and not showAll and not edit %}
+	<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mb-6 mt-6">
+		<div class="mb-5">
+			<h3 class="font-semibold text-2xl text-gray-800">{{ title }}</h3>
+			<p class="text-gray-400">Looking for the admin dashboard? <a href="/signup" class="text-sm font-bold text-sky-600 hover:text-sky-600">Sign Up</a></p>
+		</div>
+		
+		{# Keep messages here for notifications when an action is complete? or have some form of popup #}
+		{% if hasMessages %}
+			<div class="messages mb-4">
+				{% for message in messages %}
+				<p>{{ message }}</p>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<h3 class="text-gray-400 mb-2">What would you like to do?</h3>
+		<div class="flex justify-start">
+			{% if not showAll %}
+			<form action="/" method="post">
+				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				<button type="submit" name="all" value="all" class="w-40 bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500 mr-4">
+					View all
+				</button>
+			</form>
+			{% endif %}
+			<form action="/" method="post">
+				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				<button type="submit" name="add" value="add" class="w-40 bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+					Add new
+				</button>
+			</form>
+		</div>
+	</div>
+	{% endif %}
+
+	{% if edit %}
+		<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+			<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+			<p class="float-right">
+				<span class="inline-flex items-center bg-green-600 rounded-full px-2 text-sm text-white py-1 font-medium">
+					<svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+					<path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+					<path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path>
+					</svg>
+					{{ asset.status }}
+				</span>
+			</p>
+			<div class="mb-5">
+				<h3 class="font-semibold text-2xl text-gray-800">Editing asset: #{{ asset.id }}</h3>
+				<p>Last modified: {{ asset.updated }}</p>
+			</div>
+			
+			<form action="{{ asset.url }}" method="post">
+				<label for="item" class="text-gray-400">Item name</label>
+				<input id="item" name="name" type="text" placeholder="{{ asset.name }}" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+				<label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+				<input id="asset-code" name="code" type="text" placeholder="{{ asset.code }}" value="{{ asset.code }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+				<label for="created" class="text-gray-400 mb-1">Logged</label>
+				<div id="created" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.created }}</div>
+
+				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+				<div class="flex justify-start">
+					<button type="submit" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+						Update
+					</button>
+					<button type="submit" class="w-40 bg-rose-800 hover:bg-rose-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+						Delete
+					</button>
+				</div>
+			</form>
+		</div>
+	{% endif %}
+	
+	{% if showAll %}
+		<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+			<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+			<div class="mb-5">
+				<h3 class="font-semibold text-2xl text-gray-800">Open Tickets ({{ openCount }})</h3>
+			</div>
+			
+			<table class="table-auto text-left w-full">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Code</th>
+						<th>Logged</th>
+					</tr>
+				</thead>
+				<tbody> 
+					{% for asset in assets %}
+					<tr>
+						<td>{{ asset.id }}</td>
+						<td>{{ asset.name }}</td>
+						<td>{{ asset.code }}</td>
+						<td>{{ asset.created }}</td>
+						<td>
+							<form action="{{ asset.url }}/edit" method="post">
+								<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+								<button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+									Edit
+								</button>
+							</form>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			
+		</div>
+	{% endif %}
+
+	{% if addNew %}
+		<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+			<div class="mb-5">
+				<h3 class="font-semibold text-2xl text-gray-800">Add a new ticket</h3>
+			</div>
+			
+			<form action="/" method="post">
+				<label for="item" class="text-gray-400">Item name</label>
+				<input id="item" name="item" type="text" placeholder="Item" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+				{# Date raised should be today now #}
+				{# Status should be marked as TO_REVIEW #}
+				{# Employee / user name and id as key? #}
+				<label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+				<input id="asset-code" name="assetCode" type="text" placeholder="Asset code" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+				<button type="submit" class="w-1/2 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+					Submit
+				</button>
+			</form>
+		</div>
+	{% endif %}
+{% endblock %}

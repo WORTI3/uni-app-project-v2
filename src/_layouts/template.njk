@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{{ title }} • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        {% include "./_includes/_navigation.njk" %}
+        <body class="bg-gradient-to-tr from-teal-100 to-sky-500 overflow-hidden">
+            <main>{% block mainContent %}{% endblock %}</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+
+    </div>
+</html>

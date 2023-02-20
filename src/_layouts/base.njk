@@ -1,0 +1,7 @@
+{% extends "../_layouts/template.njk" %}
+
+{# Signed-in content #}
+{% block mainContent %}
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    {% block content %}{% endblock %}
+{% endblock %}
