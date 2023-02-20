@@ -3,12 +3,12 @@
 {% set title = "Dashboard" %}
 
 {% block content %}
+	{# main asset dashboard w/buttons #}
 	{% include "../_layouts/_includes/_dashboard.njk" %}
-
+	{# asset edit panel #}
 	{% include "../_layouts/_includes/_form/_edit.njk" %}
-	
+	{# all assets panel #}
 	{% include "../_layouts/_includes/_form/_all.njk" %}
-
+	{# add asset panel #}
 	{% include "../_layouts/_includes/_form/_add.njk" %}
-
 {% endblock %}
