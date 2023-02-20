@@ -1,0 +1,7 @@
+{% if hasMessages %}
+    <div class="messages mb-4">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}

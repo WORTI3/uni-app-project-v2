@@ -11,20 +11,13 @@
 			<p class="text-gray-400">Looking for the admin dashboard? <a href="/signup" class="text-sm font-bold text-sky-600 hover:text-sky-600">Sign Up</a></p>
 		</div>
 		
-		{# Keep messages here for notifications when an action is complete? or have some form of popup #}
-		{% if hasMessages %}
-			<div class="messages mb-4">
-				{% for message in messages %}
-				<p>{{ message }}</p>
-				{% endfor %}
-			</div>
-		{% endif %}
+		{% include "../_includes/_messages.njk" %}
 
 		<h3 class="text-gray-400 mb-2">What would you like to do?</h3>
 		<div class="flex justify-start">
 			{% if not showAll %}
 			<form action="/" method="post">
-				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				{% include "../_includes/_csrf.njk" %}
 				<button type="submit" name="all" value="all" class="w-40 bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500 mr-4">
 					View all
 				</button>
@@ -65,7 +58,7 @@
 				<label for="created" class="text-gray-400 mb-1">Logged</label>
 				<div id="created" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.created }}</div>
 
-				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				{% include "../_includes/_csrf.njk" %}
 
 				<div class="flex justify-start">
 					<button type="submit" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
@@ -104,7 +97,7 @@
 						<td>{{ asset.created }}</td>
 						<td>
 							<form action="{{ asset.url }}/edit" method="post">
-								<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+								{% include "../_includes/_csrf.njk" %}
 								<button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
 									Edit
 								</button>
@@ -132,7 +125,7 @@
 				{# Employee / user name and id as key? #}
 				<label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
 				<input id="asset-code" name="assetCode" type="text" placeholder="Asset code" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
-				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				{% include "../_includes/_csrf.njk" %}
 
 				<button type="submit" class="w-1/2 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
 					Submit

@@ -2,6 +2,6 @@
 
 {# Signed-in content #}
 {% block mainContent %}
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    {% include "../_includes/_csrf.njk" %}
     {% block content %}{% endblock %}
 {% endblock %}
