@@ -3,7 +3,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const crypto = require("crypto");
 const db = require("../db");
-const { checkPasswordStrength } = require("../functions/auth");
+const { checkPasswordStrength } = require("../middleware/auth");
 const ERROR_MESSAGES = require('../assets/constants');
 
 const router = express.Router();
@@ -44,7 +44,7 @@ passport.use(
 
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
-    cb(null, { id: user.id, username: user.username });
+    cb(null, { id: user.id, username: user.username, role: user.role });
   });
 });
 

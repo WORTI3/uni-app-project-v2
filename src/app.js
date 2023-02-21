@@ -42,10 +42,13 @@ app.use(csrf());
 app.use(passport.authenticate("session"));
 // error messages
 app.use(function (req, res, next) {
-  var msgs = req.session.messages || [];
+  const msgs = req.session.messages || [];
+  const tone = req.session.msgTone || null;
   res.locals.messages = msgs;
+  res.locals.msgTone = tone;
   res.locals.hasMessages = !!msgs.length;
   req.session.messages = [];
+  req.session.msgTone = null;
   next();
 });
 app.use(function (req, res, next) {

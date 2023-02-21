@@ -1,7 +1,14 @@
 {% if hasMessages %}
     <div class="messages mb-4">
         {% for message in messages %}
-        <p>{{ message }}</p>
+        <div class="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
+            {% if msgTone %}
+            <svg class="w-6 sm:w-5 h-6 sm:h-5 stroke-green-700" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"><line x1="12" y1="16" x2="12" y2="16"/></path></svg>
+            {% else %}
+            <svg class="w-6 sm:w-5 h-6 sm:h-5 fill-red-600" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            {% endif %}
+            <div class="text-sm font-semibold ml-3 {% if msgTone %} text-green-600 {% else %} text-red-600 {% endif %}">{{ message }}</div>
+        </div>
         {% endfor %}
     </div>
 {% endif %}

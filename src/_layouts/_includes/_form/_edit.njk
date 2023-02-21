@@ -1,6 +1,6 @@
 {% if edit %}
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/all" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
         <p class="float-right">
             <span class="inline-flex items-center bg-green-600 rounded-full px-2 text-sm text-white py-1 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
@@ -14,24 +14,52 @@
             <h3 class="font-semibold text-2xl text-gray-800">Editing asset: #{{ asset.id }}</h3>
             <p>Last modified: {{ asset.updated }}</p>
         </div>
+
+        {% include "../_messages.njk" %}
         
-        <form action="{{ asset.url }}" method="post">
+        <form action="{{ asset.url }}/delete" method="post">
             <label for="item" class="text-gray-400">Item name</label>
-            <input id="item" name="name" type="text" placeholder="{{ asset.name }}" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+            {% if not readOnly %}
+                <input id="item" name="name" type="text" placeholder="{{ asset.name }}" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+            {% else %}
+                <div id="item" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.name }}</div>
+            {% endif %}
             <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
-            <input id="asset-code" name="code" type="text" placeholder="{{ asset.code }}" value="{{ asset.code }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+            {% if not readOnly %}
+                <input id="asset-code" name="code" type="text" placeholder="{{ asset.code }}" value="{{ asset.code }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+            {% else %}
+                <div id="asset-code" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.code }}</div>
+            {% endif %}
+            <label for="asset-type" class="text-gray-400 mb-1">Type</label>
+            {% if not readOnly %}
+                <select id="asset-type" name="type" type="text" placeholder="{{ asset.type }}" value="{{ asset.type }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+                <option>Hardware fault</option>
+                <option>Software fault</option>
+                <option>Other</option>
+                {# datalist #}
+                </select>
+            {% else %}
+                <div id="asset-type" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.type }}</div>
+            {% endif %}
             <label for="created" class="text-gray-400 mb-1">Logged</label>
             <div id="created" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.created }}</div>
 
             {% include "../_csrf.njk" %}
 
             <div class="flex justify-start">
+                {% if not readOnly %}
                 <button type="submit" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                     Update
+                </button>
+                {% endif %}
+                {% if user.role === 1 %}
+                <button type="submit" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                    Close
                 </button>
                 <button type="submit" class="w-40 bg-rose-800 hover:bg-rose-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                     Delete
                 </button>
+                {% endif %} 
             </div>
         </form>
     </div>

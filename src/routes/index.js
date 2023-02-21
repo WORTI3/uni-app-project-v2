@@ -1,7 +1,9 @@
 const express = require("express");
 const ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
 const db = require("../db");
-const { fetchAssets, fetchAssetById, isAdmin } = require("../functions/asset")
+const { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin, trimAssetName } = require("../middleware/asset");
+const { isAdmin } = require("../middleware/auth");
+const { routingChecks, checkAll, checkAdd } = require("../middleware/routing");
 
 const ensureLoggedIn = ensureLogIn();
 
@@ -21,7 +23,12 @@ router.get(
   }
 );
 
-router.get('/all', ensureLoggedIn, fetchAssets, function(req, res, next) {
+router.get('/all/closed', ensureLoggedIn, fetchAssetsForAdmin, fetchAssets, function(req, res, next) {
+  res.locals.assets = res.locals.assets.filter(function(asset) { return asset.closed; });
+  res.render('index', { user: req.user, showAllClosed: true });
+});
+
+router.get('/all', ensureLoggedIn, fetchAssetsForAdmin, fetchAssets, function(req, res, next) {
   res.locals.assets = res.locals.assets.filter(function(asset) { return !asset.closed; });
   res.render('index', { user: req.user, showAll: true });
 });
@@ -30,18 +37,14 @@ router.get('/add', ensureLoggedIn, function(req, res, next) {
   res.render('index', { user: req.user, addNew: true });
 });
 
-// TODO: Refactor
-router.post('/', ensureLoggedIn, function(req, res, next) {
-  console.log(JSON.stringify(req.body));
-  if (req.body.all){
-    return res.redirect('/' + req.body.all);
-  }
-  if (req.body.add){
-    return res.redirect('/' + req.body.add);
-  }
-  req.body.item = req.body.item.trim();
-  next();
-}, function(req, res, next) {
+router.post(
+  '/', 
+  ensureLoggedIn, 
+  checkAll,
+  checkAdd, 
+  trimAssetName,
+  function(req, res, next) {
+    // refactor
   if (req.body.item !== '') {
     return next();
   }
@@ -65,8 +68,12 @@ router.post('/', ensureLoggedIn, function(req, res, next) {
   });
 });
 
-router.get(':id(\\d+)/edit', ensureLoggedIn, function(req, res, next) {
-  console.log(JSON.stringify(req.body));
+router.get('/:id(\\d+)/edit', ensureLoggedIn, updateAssetById, fetchAssetById, function(req, res, next) {
+  if (req.session.update.updated){
+    return res.render('index', { user: req.user, edit: true, readOnly: true });
+  }
+  next();
+}, function(req, res, next) {
   return res.render('index', { user: req.user });
 });
 
@@ -82,6 +89,10 @@ router.post('/:id(\\d+)/delete', ensureLoggedIn, isAdmin, function(req, res, nex
     if (err) { return next(err); }
     return res.redirect('/all');
   });
+});
+
+router.get('/settings', ensureLoggedIn, function(req, res, next) {
+  res.render('settings', { user: req.user });
 });
 
 module.exports = router;

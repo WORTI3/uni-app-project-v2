@@ -1,4 +1,4 @@
-{% if not addNew and not showAll and not edit %}
+{% if not addNew and not showAll and not edit and not showAllClosed %}
 	<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mb-6 mt-6">
 		<div class="mb-5">
 			<h3 class="font-semibold text-2xl text-gray-800">{{ title }}</h3>
@@ -9,16 +9,22 @@
 
 		<h3 class="text-gray-400 mb-2">What would you like to do?</h3>
 		<div class="flex justify-start">
-			{% if not showAll %}
 			<form action="/" method="post">
 				{% include "./_csrf.njk" %}
 				<button type="submit" name="all" value="all" class="w-40 bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500 mr-4">
 					View all
 				</button>
 			</form>
+			{% if user.role === 1 %}
+				<form action="/" method="post">
+					{% include "./_csrf.njk" %}
+					<button type="submit" name="all" value="closed" class="w-40 bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500 mr-4">
+						View closed
+					</button>
+				</form>
 			{% endif %}
 			<form action="/" method="post">
-				<input type="hidden" name="_csrf" value="{{ csrfToken }}">
+				{% include "./_csrf.njk" %}
 				<button type="submit" name="add" value="add" class="w-40 bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
 					Add new
 				</button>
