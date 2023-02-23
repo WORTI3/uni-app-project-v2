@@ -13,16 +13,7 @@ function isAdmin(req, res, next) {
   if (req.isAuthenticated() && req.user.role === 1) {
     return next();
   }
-  // todo: error message instead / hide content
-  // todo admin
-  req.session.update = {
-    name: req.body.name,
-    code: req.body.code,
-    updated: true
-  };
-  // todo: styling for positive message
-  req.session.messages = [ SUCCESS_MESSAGES.DEFAULT ];
-  req.session.msgTone = "positive";
+  req.session.messages = [ ERROR_MESSAGES.NO_PERMISSION ];
   res.redirect('/' + req.params.id + '/edit');
 }
 

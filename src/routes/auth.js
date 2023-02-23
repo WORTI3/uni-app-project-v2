@@ -4,7 +4,7 @@ const LocalStrategy = require("passport-local");
 const crypto = require("crypto");
 const db = require("../db");
 const { checkPasswordStrength } = require("../middleware/auth");
-const ERROR_MESSAGES = require('../assets/constants');
+const { ERROR_MESSAGES } = require('../assets/constants');
 
 const router = express.Router();
 

@@ -11,7 +11,8 @@
   "license": "Unlicense",
   "scripts": {
     "start": "nodemon -e js,css,njk, ./src/server",
-    "start:dev": "postcss ./src/assets/styles/main.css -o public/main.css & npm run start"
+    "start:dev": "postcss ./src/assets/styles/main.css -o public/main.css & npm run start",
+    "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "autoprefixer": "^10.4.13",
@@ -21,6 +22,7 @@
     "csurf": "^1.11.0",
     "express-session": "^1.17.2",
     "http-errors": "~1.6.3",
+    "jest": "^29.4.3",
     "luxon": "^3.2.1",
     "mkdirp": "^1.0.4",
     "nodemon": "^2.0.20",

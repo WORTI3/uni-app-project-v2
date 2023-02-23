@@ -18,7 +18,9 @@ function fetchAssets(req, res, next) {
           updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
           name: row.name,
           code: row.code,
+          type: row.type,
           status: row.status,
+          note: row.note,
           closed: row.closed == 1 ? true : false,
           url: "/" + row.id,
         };
@@ -47,7 +49,9 @@ function fetchAssetById(req, res, next) {
           updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
           name: row.name,
           code: row.code,
+          type: row.type,
           status: row.status,
+          note: row.note,
           closed: row.closed == 1 ? true : false,
           url: "/" + row.id,
         };
@@ -60,9 +64,10 @@ function fetchAssetById(req, res, next) {
 }
 
 function updateAssetById(req, res, next) {
-  db.run('UPDATE assets SET name = ?, code = ?, updated = ? WHERE id = ? AND owner_id = ?', [
+  db.run('UPDATE assets SET name = ?, code = ?, type = ?, updated = ? WHERE id = ? AND owner_id = ?', [
     req.session.update.name,
     req.session.update.code,
+    req.session.update.type,
     new Date().toISOString(),
     req.params.id,
     req.user.id
@@ -92,7 +97,9 @@ function fetchAssetsForAdmin(req, res, next) {
           updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
           name: row.name,
           code: row.code,
+          type: row.type,
           status: row.status,
+          note: row.note,
           closed: row.closed == 1 ? true : false,
           url: "/" + row.id,
         };

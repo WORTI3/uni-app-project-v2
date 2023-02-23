@@ -25,7 +25,11 @@ Simple [Express][express] App written for Software Engineering and Agile univers
 
 ## Testing the application
 
-Todo
+You can run all of the current unit tests through the following command:
+
+```terminal
+npm run test
+```
 
 ### Softwares used
 

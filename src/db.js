@@ -24,7 +24,9 @@ db.serialize(function() {
     updated DATE NOT NULL, \
     name TEXT NOT NULL, \
     code TEXT NOT NULL, \
+    type TEXT NOT NULL, \
     status TEXT NOT NULL, \
+    note TEXT, \
     closed INTEGER \
   )");
 });
