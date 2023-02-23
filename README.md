@@ -52,6 +52,10 @@ npm run test
 - [autoprefixer][autoprefixer]
 - [pluralize][pluralize]
 
+## Disclaimer
+
+> ⚠️  If you're looking to use this code please be aware that this is a simple app made to satisfy the requirements provided by the assignment brief of my uni module. Thus, this code shouldn't be used for anything outside this scope.
+
 ## License
 
 Released under the [unlicensed license][license]. As stated by the license, anyone is free to copy, modify, publish, use, compile, sell or distribute this software. If you use any part of the code please include credit to the author ([wortie][wortie-profile]).
