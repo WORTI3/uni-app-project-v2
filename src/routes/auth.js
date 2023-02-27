@@ -3,9 +3,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const crypto = require("crypto");
 const db = require("../db");
-const { checkPasswordStrength } = require("../middleware/auth");
-const { ERROR_MESSAGES } = require('../assets/constants');
-
+const { ERROR_MESSAGES, PASSWORD_REGEX } = require('../assets/constants');
+const { check } = require('express-validator');
+const { checkValidationResult } = require('../middleware/auth');
 const router = express.Router();
 
 /*
@@ -20,7 +20,7 @@ passport.use(
         }
         if (!row) {
           return cb(null, false, {
-            message: ERROR_MESSAGES.DEFAULT,
+            message: ERROR_MESSAGES.USERNAME,
           });
         }
 
@@ -80,7 +80,24 @@ router.get("/signup", function (req, res, next) {
   res.render("signup");
 });
 
-router.post("/signup", checkPasswordStrength, function (req, res, next) {
+router.post(
+  "/signup",
+  check('username', ERROR_MESSAGES.USERNAME.DEFAULT)
+    .isLength({ min: 3 })
+    .withMessage(ERROR_MESSAGES.USERNAME.MIN_LENGTH)
+    .bail()
+    .isLength({ max: 20 })
+    .withMessage(ERROR_MESSAGES.PASSWORD.MAX_LENGTH),
+  check('password', ERROR_MESSAGES.PASSWORD.DEFAULT)
+    .isLength({ min: 5 })
+    .withMessage(ERROR_MESSAGES.PASSWORD.MIN_LENGTH)
+    .bail()
+    .isLength({ max: 20 })
+    .withMessage(ERROR_MESSAGES.PASSWORD.MAX_LENGTH)
+    .bail()
+    .matches(PASSWORD_REGEX)
+    .withMessage(ERROR_MESSAGES.PASSWORD.NO_CHARS),
+  checkValidationResult, function (req, res, next) {
   const salt = crypto.randomBytes(16);
   crypto.pbkdf2(req.body.password, salt, 310000, 32, "sha256",
     function (err, hashedPassword) {

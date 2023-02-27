@@ -2,28 +2,41 @@
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
         <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
         <div class="mb-5">
-            <h3 class="font-semibold text-2xl text-gray-800">Add a new ticket</h3>
+            <h3 class="font-semibold text-2xl text-gray-800">Raise a new ticket</h3>
         </div>
+
+        {% include "../_messages.njk" %}
         
-        <form action="/" method="post">
+        <form action="/add" method="post" novalidate>
             {% include "../_csrf.njk" %}
             <label for="item" class="text-gray-400">Item name</label>
-            <input id="item" name="item" type="text" placeholder="Item" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+            <input id="item" name="item" type="text" placeholder="e.g Macbook Pro" value="{{ name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
             {# Date raised should be today now #}
             {# Status should be marked as TO_REVIEW #}
             {# Employee / user name and id as key? #}
-            <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
-            <input id="asset-code" name="assetCode" type="text" placeholder="Asset code" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
-            
-            <label for="asset-type" class="text-gray-400 mb-1">Type</label>
-            <select id="asset-type" name="type" type="text" placeholder="Asset type" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
-                <option>Hardware fault</option>
-                <option>Software fault</option>
-                <option>Other</option>
-                {# datalist #}
-            </select>
+            <div class="grid grid-cols-2 gap-6 mb-6">
+                <div class="flex flex-col">
+                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+                    <p class="text-gray-400 mb-1">(six digit code found on the device)</p>
+                    <input id="asset-code" name="assetCode" type="text" placeholder="e.g NHS001" value="{{ code }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+                </div>
+                <div class="flex flex-col">
+                    <label for="asset-type" class="text-gray-400 mb-1">Type of fault</label>
+                    <p class="text-gray-400 mb-1">(select the most applicable)</p>
+                    <select id="asset-type" name="type" placeholder="Asset type" value="{{ type }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+                        <option>Hardware fault</option>
+                        <option>Software fault</option>
+                        <option>Other</option>
+                        {# datalist #}
+                    </select>
+                </div>
+            </div>
 
-            <button type="submit" class="w-1/2 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+            <label for="note" class="text-gray-400 block">Note</label>
+            <p class="text-gray-400 mb-1">(describe what is wrong within 200 characters)</p>
+            <input id="note" name="note" type="text" placeholder="e.g The charging port has broken" value="{{ note }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
+
+            <button type="submit" class="w-1/2 flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                 Submit
             </button>
         </form>

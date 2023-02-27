@@ -5,15 +5,7 @@
 	</div>
 {% endmacro %}
 
-{% macro content(params) %}
-    <div class="relative">
-        <label for="username" class="text-gray-400">Username or Email</label>
-        <input id="username" name="username" type="text" placeholder="Username" autocomplete="username" required autofocus class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
-    </div>
-    <div class="relative">
-        <label for="current-password" class="text-gray-400">Password</label>
-        <input id="current-password" type="password" name="password" placeholder="Password" autocomplete="current-password" required class="text-sm px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-picton-blue-500 mb-6">
-    </div>
+{% macro submitButton(params) %}
     <button type="submit" class="w-full flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
         {{ params.buttonText }}
     </button>

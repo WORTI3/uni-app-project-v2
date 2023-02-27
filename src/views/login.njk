@@ -1,14 +1,16 @@
 {% extends "../_layouts/template.njk" %}
-{% from '../_layouts/_macros/_form.njk' import header, content %}
+{% from '../_layouts/_macros/_form.njk' import header, submitButton %}
 {% set title = "Login" %}
 
 {% block mainContent %}
 <div class="p-12 bg-white mx-auto rounded-3xl w-96">
+	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
 	{{ header({ heading: 'Sign In', subHeading: "Don't have an account?", link: '/signup', linkText: 'Sign Up' }) }}
 	{% include "../_layouts/_includes/_messages.njk" %}
 	<form action="/login/password" method="post">
     	{% include "../_layouts/_includes/_csrf.njk" %}
-		{{ content({ buttonText: 'Sign in'}) }}
+			{% include "../_layouts/_includes/_form/_content.njk" %}
+			{{ submitButton({ buttonText: 'Sign in' }) }}
 	</form>
 </div>
 {% endblock %}

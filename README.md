@@ -51,6 +51,7 @@ npm run test
 - [csurf][csurf]
 - [autoprefixer][autoprefixer]
 - [pluralize][pluralize]
+- [express-validator][express-validator]
 
 ## Disclaimer
 
@@ -76,6 +77,7 @@ Released under the [unlicensed license][license]. As stated by the license, anyo
 [csurf]: <https://www.npmjs.com/package/csurf>
 [autoprefixer]: <https://www.npmjs.com/package/autoprefixer>
 [pluralize]: <https://www.npmjs.com/package/pluralize>
+[express-validator]: <https://www.npmjs.com/package/express-validator>
 
 [license]: <https://github.com/WORTI3/uni-app-project/blob/main/LICENSE>
 [wortie-profile]: <https://github.com/WORTI3>

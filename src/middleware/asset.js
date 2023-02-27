@@ -1,4 +1,5 @@
 const { DateTime } = require("luxon");
+const { ASSET_STATUS } = require("../assets/constants");
 const db = require('../db');
 
 function fetchAssets(req, res, next) {
@@ -48,6 +49,7 @@ function fetchAssetById(req, res, next) {
           created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
           updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
           name: row.name,
+          ownerName: row.owner_name,
           code: row.code,
           type: row.type,
           status: row.status,
@@ -64,10 +66,13 @@ function fetchAssetById(req, res, next) {
 }
 
 function updateAssetById(req, res, next) {
-  db.run('UPDATE assets SET name = ?, code = ?, type = ?, updated = ? WHERE id = ? AND owner_id = ?', [
+  db.run('UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?', [
     req.session.update.name,
     req.session.update.code,
     req.session.update.type,
+    req.session.update.note,
+    req.session.update.status ?? ASSET_STATUS.OPEN,
+    req.session.update.closed ? 1 : null,
     new Date().toISOString(),
     req.params.id,
     req.user.id
@@ -96,6 +101,7 @@ function fetchAssetsForAdmin(req, res, next) {
           created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
           updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
           name: row.name,
+          ownerName: row.owner_name,
           code: row.code,
           type: row.type,
           status: row.status,

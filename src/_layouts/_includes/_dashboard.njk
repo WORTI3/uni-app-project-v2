@@ -1,8 +1,8 @@
-{% if not addNew and not showAll and not edit and not showAllClosed %}
+{% if not addNew and not showAll and not edit and not showAllClosed and not readOnly%}
 	<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mb-6 mt-6">
 		<div class="mb-5">
 			<h3 class="font-semibold text-2xl text-gray-800">{{ title }}</h3>
-			<p class="text-gray-400">Looking for the admin dashboard? <a href="/signup" class="text-sm font-bold text-sky-600 hover:text-sky-600">Sign Up</a></p>
+			{% if user.role !== 1 %}<p class="text-gray-400">You are limited to regular user actions.</p>{% endif %}
 		</div>
 		
 		{% include "./_messages.njk" %}

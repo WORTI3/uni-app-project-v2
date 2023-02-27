@@ -1,10 +1,11 @@
 const express = require("express");
-const { ASSET_STATUS } = require("../assets/constants");
+const { ASSET_STATUS, ERROR_MESSAGES, SUCCESS_MESSAGES } = require("../assets/constants");
 const ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
 const db = require("../db");
 const { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin, trimAssetName } = require("../middleware/asset");
-const { isAdmin } = require("../middleware/auth");
+const { isAdmin, checkValidationResult } = require("../middleware/auth");
 const { checkEditUpdate, checkAll, checkAdd, checkEditAdmin, checkEditUpdated, checkEditClosed } = require("../middleware/routing");
+const { check } = require('express-validator');
 
 const ensureLoggedIn = ensureLogIn();
 
@@ -38,11 +39,35 @@ router.get('/add', ensureLoggedIn, function(req, res, next) {
   res.render('index', { user: req.user, addNew: true });
 });
 
+router.post('/add', ensureLoggedIn,
+  check('item', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
+  check('assetCode', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
+  check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
+  checkValidationResult,
+  function(req, res, next) {
+    const today = new Date().toISOString();
+    db.run('INSERT INTO assets (owner_id, owner_name, created, updated, name, code, type, status, note, closed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+      req.user.id,
+      req.user.username,
+      today,
+      today,
+      req.body.item,
+      req.body.assetCode,
+      req.body.type,
+      ASSET_STATUS.OPEN,
+      req.body.note ?? null,
+      req.body.closed == true ? 1 : null
+    ], function(err) {
+      if (err) { return next(err); }
+    });
+  return res.redirect('/all');
+});
+
 router.post(
   '/', 
   ensureLoggedIn, 
   checkAll,
-  checkAdd, 
+  checkAdd,
   trimAssetName,
   function(req, res, next) {
     // refactor
@@ -54,21 +79,7 @@ router.post(
   }
   return res.redirect('/');
 }, function(req, res, next) {
-  const today = new Date().toISOString();
-  db.run('INSERT INTO assets (owner_id, created, updated, name, code, type, status, note, closed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-    req.user.id,
-    today,
-    today,
-    req.body.item,
-    req.body.assetCode,
-    req.body.type,
-    ASSET_STATUS.OPEN,
-    req.body.note ?? null,
-    req.body.closed == true ? 1 : null
-  ], function(err) {
-    if (err) { return next(err); }
-    return res.redirect('/' + 'all');
-  });
+  
 });
 
 router.get(
@@ -76,25 +87,44 @@ router.get(
   ensureLoggedIn,
   updateAssetById,
   fetchAssetById,
-  checkEditUpdated,
-  checkEditClosed,
   function (req, res, next) {
-    return res.render("index", { user: req.user });
+    return res.render("index", { user: req.user, edit: true });
   }
 );
 
-router.post('/:id(\\d+)/edit', ensureLoggedIn, fetchAssetById, function(req, res, next) {
-  res.render('index', { user: req.user, edit: true, asset: res.locals.asset });
+router.get(
+  "/:id(\\d+)/view",
+  ensureLoggedIn,
+  fetchAssetById,
+  function (req, res, next) {
+    return res.render("index", { user: req.user, readOnly: true });
+  }
+);
+
+router.post('/:id(\\d+)/view', ensureLoggedIn, function(req, res, next) {
+  res.render('index', { user: req.user, readOnly: true });
 });
 
-router.post('/:id(\\d+)/delete', ensureLoggedIn, checkEditUpdate, isAdmin, checkEditAdmin, function(req, res, next) {
+// we could validate type but not needed for v1.0.0
+router.post('/:id(\\d+)/delete', ensureLoggedIn,
+  check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
+  check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
+  check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
+  checkValidationResult,
+  checkEditUpdate, isAdmin, checkEditAdmin, function(req, res, next) {
   db.run('DELETE FROM assets WHERE id = ? AND owner_id = ?', [
     req.params.id,
     req.user.id
   ], function(err) {
     if (err) { return next(err); }
+    req.session.messages = [ SUCCESS_MESSAGES.DELETED ];
+    req.session.msgTone = "positive";
     return res.redirect('/all');
   });
+});
+
+router.post('/:id(\\d+)/edit', ensureLoggedIn, fetchAssetById, function(req, res, next) {
+  res.render('index', { user: req.user, edit: true });
 });
 
 router.get('/settings', ensureLoggedIn, function(req, res, next) {

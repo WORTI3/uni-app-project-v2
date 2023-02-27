@@ -20,7 +20,7 @@ function checkAdd(req, res, next) {
 
 function checkEditUpdated(req, res, next) {
   if (req.session.update.updated){
-    return res.render('index', { user: req.user, edit: true, readOnly: true });
+    return res.render('index', { user: req.user, readOnly: true });
   }
   next();
 };
@@ -31,28 +31,40 @@ function checkEditUpdate(req, res, next) {
       name: req.body.name,
       code: req.body.code,
       type: req.body.type,
+      note: req.body.note,
       updated: true
     };
 
     req.session.messages = [ SUCCESS_MESSAGES.DEFAULT ];
     req.session.msgTone = "positive";
-    return res.redirect('/' + req.params.id + '/edit');
+    return res.redirect('/' + req.params.id + '/view');
   }
   next();
 };
 
-function checkEditAdmin(req, res, next) {
+function checkEditAdmin(req, res, next) { 
   if (req.body.update && req.body.update === EDIT_UPDATES.CLOSE) {
+    // update here as well incase fields were updated before close
+    req.session.update = {
+      name: req.body.name,
+      code: req.body.code,
+      type: req.body.type,
+      note: req.body.note,
+      status: ASSET_STATUS.CLOSED,
+      closed: true
+    };
     // close actions
-    req.session.closed = true;
-    return res.redirect('/' + req.params.id + '/edit');
+    req.session.messages = [ SUCCESS_MESSAGES.CLOSED ];
+    req.session.msgTone = "positive";
+    return res.redirect('/' + req.params.id + '/view');
   }
+
   // delete check not needed
   next();
 };
 
 function checkEditClosed(req, res, next) {
-  if (req.session.closed){
+  if (req.session.update.closed){
     return res.render('index', { user: req.user, edit: true, readOnly: true });
   }
   next();
