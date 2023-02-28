@@ -105,3 +105,6 @@ dist
 
 # Mac OS X
 .DS_Store
+
+# database
+src/database/sessions.db
