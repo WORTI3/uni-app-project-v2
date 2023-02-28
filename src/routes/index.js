@@ -85,7 +85,6 @@ router.post(
 router.get(
   "/:id(\\d+)/edit",
   ensureLoggedIn,
-  updateAssetById,
   fetchAssetById,
   function (req, res, next) {
     return res.render("index", { user: req.user, edit: true });
@@ -95,6 +94,7 @@ router.get(
 router.get(
   "/:id(\\d+)/view",
   ensureLoggedIn,
+  updateAssetById,
   fetchAssetById,
   function (req, res, next) {
     return res.render("index", { user: req.user, readOnly: true });
@@ -105,13 +105,7 @@ router.post('/:id(\\d+)/view', ensureLoggedIn, function(req, res, next) {
   res.render('index', { user: req.user, readOnly: true });
 });
 
-// we could validate type but not needed for v1.0.0
-router.post('/:id(\\d+)/delete', ensureLoggedIn,
-  check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
-  check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
-  check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
-  checkValidationResult,
-  checkEditUpdate, isAdmin, checkEditAdmin, function(req, res, next) {
+router.post('/:id(\\d+)/delete', ensureLoggedIn, isAdmin, function(req, res, next) {
   db.run('DELETE FROM assets WHERE id = ? AND owner_id = ?', [
     req.params.id,
     req.user.id
@@ -119,12 +113,29 @@ router.post('/:id(\\d+)/delete', ensureLoggedIn,
     if (err) { return next(err); }
     req.session.messages = [ SUCCESS_MESSAGES.DELETED ];
     req.session.msgTone = "positive";
-    return res.redirect('/all');
+    return res.redirect('/all/closed');
   });
 });
 
-router.post('/:id(\\d+)/edit', ensureLoggedIn, fetchAssetById, function(req, res, next) {
-  res.render('index', { user: req.user, edit: true });
+// we could validate type but not needed for v1.0.0
+router.post('/:id(\\d+)/edit', ensureLoggedIn,
+  check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
+  check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
+  check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
+  checkValidationResult,
+  checkEditUpdate, 
+  isAdmin, 
+  checkEditAdmin,
+  function(req, res, next) {
+    db.run('DELETE FROM assets WHERE id = ? AND owner_id = ?', [
+      req.params.id,
+      req.user.id
+    ], function(err) {
+      if (err) { return next(err); }
+      req.session.messages = [ SUCCESS_MESSAGES.DELETED ];
+      req.session.msgTone = "positive";
+      return res.redirect('/all');
+    });
 });
 
 router.get('/settings', ensureLoggedIn, function(req, res, next) {

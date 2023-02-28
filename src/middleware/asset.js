@@ -58,6 +58,15 @@ function fetchAssetById(req, res, next) {
           url: "/" + row.id,
         };
       });
+      console.log("SESSION asset: " + JSON.stringify(req.session.asset));
+      if (req.session.asset) {
+        asset[0].name = req.session.asset.name;
+        asset[0].code = req.session.asset.code;
+        asset[0].type = req.session.asset.type;
+        asset[0].note = req.session.asset.note;
+        req.session.asset = undefined;
+      }
+
       console.log(JSON.stringify(asset[0]));
       res.locals.asset = asset[0];
       next();
@@ -66,6 +75,7 @@ function fetchAssetById(req, res, next) {
 }
 
 function updateAssetById(req, res, next) {
+  if (!req.session.update) return next();
   db.run('UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?', [
     req.session.update.name,
     req.session.update.code,

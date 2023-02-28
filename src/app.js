@@ -53,29 +53,6 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (req, res, next) {
-  if(req.session.username !== null){
-    res.locals.username = req.session.username;
-    req.session.username = null;
-  }
-  // faulty item
-  if(req.session.name !== null){
-    res.locals.name = req.session.name;
-    req.session.name = null;
-  }
-
-  if(req.session.code !== null){
-    res.locals.code = req.session.code;
-    req.session.code = null;
-  }
-
-  if(req.session.note !== null){
-    res.locals.note = req.session.note;
-    req.session.note = null;
-  }
-  next();
-});
-
-app.use(function (req, res, next) {
   res.locals.csrfToken = req.csrfToken();
   next();
 });

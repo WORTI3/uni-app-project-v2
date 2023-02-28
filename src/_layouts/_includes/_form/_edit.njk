@@ -17,7 +17,7 @@
 
         {% include "../_messages.njk" %}
         
-        <form action="{{ asset.url }}/delete" method="post" novalidate>
+        <form action="{{ asset.url }}/edit" method="post" novalidate>
             <label for="item" class="text-gray-400">Item name</label>
             <input id="item" name="name" type="text" placeholder="{{ asset.name }}" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
             <div class="grid grid-cols-2 gap-6 mb-6">

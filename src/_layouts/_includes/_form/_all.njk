@@ -24,7 +24,7 @@
                     <td>{{ asset.code }}</td>
                     <td>{{ asset.created }}</td>
                     <td>
-                        <form action="{{ asset.url }}/edit" method="post">
+                        <form action="{{ asset.url }}/edit" method="get">
                             {% include "../_csrf.njk" %}
                             <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                                 Edit
@@ -44,6 +44,8 @@
         <div class="mb-5">
             <h3 class="font-semibold text-2xl text-gray-800">Closed Tickets ({{ closedCount }})</h3>
         </div>
+
+        {% include "../_messages.njk" %}
         
         <table class="table-auto text-left w-full">
             <thead>
@@ -62,7 +64,7 @@
                     <td>{{ asset.code }}</td>
                     <td>{{ asset.created }}</td>
                     <td>
-                        <form action="{{ asset.url }}/view" method="post">
+                        <form action="{{ asset.url }}/view" method="get">
                             {% include "../_csrf.njk" %}
                             <button type="submit" name="view" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                                 View
