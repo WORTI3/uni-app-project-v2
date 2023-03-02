@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GET /login should return 200 status code match snapshot 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Login • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <div class="text-sm">
+            </div>
+            
+            <div>
+                <a href="/login" class="px-4 py-2 border bg-picton-blue-500 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
+            </div>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+<div class="p-12 bg-white mx-auto rounded-3xl w-96">
+	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+	
+    <div class="mb-5">
+		<h3 class="font-semibold text-2xl text-gray-800">Sign In</h3>
+		<p class="text-gray-400">Don&#39;t have an account? <a href="/signup" class="text-sm font-bold text-sky-600 hover:text-sky-600">Sign Up</a></p>
+	</div>
+
+	
+	<form action="/login/password" method="post" novalidate>
+    	<input type="hidden" name="_csrf" value="123456">
+			
+<div class="relative">
+  <label for="username" class="text-gray-400">Username or Email</label>
+  <input id="username" name="username" type="text" value="" placeholder="" autocomplete="username" required autofocus class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
+</div>
+<div class="relative">
+  <label for="current-password" class="text-gray-400">Password</label>
+  <input id="current-password" type="password" name="password" placeholder="Password" autocomplete="current-password" required class="text-sm px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-picton-blue-500 mb-6">
+</div>
+
+			
+    <button type="submit" class="w-full flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+        Sign in
+    </button>
+
+	</form>
+</div>
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;
+
+exports[`GET /signup should return 200 status code match snapshot 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Sign up • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <div class="text-sm">
+            </div>
+            
+            <div>
+                <a href="/login" class="px-4 py-2 border bg-picton-blue-500 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
+            </div>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+<div class="p-12 bg-white mx-auto rounded-3xl w-96 ">
+	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+	
+    <div class="mb-5">
+		<h3 class="font-semibold text-2xl text-gray-800">Sign up</h3>
+		<p class="text-gray-400">Already have an account? <a href="/login" class="text-sm font-bold text-sky-600 hover:text-sky-600">Sign in</a></p>
+	</div>
+
+	
+	<form action="/signup" method="post" novalidate>
+    	<input type="hidden" name="_csrf" value="123456">
+			
+<div class="relative">
+  <label for="username" class="text-gray-400">Username or Email</label>
+  <input id="username" name="username" type="text" value="" placeholder="" autocomplete="username" required autofocus class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
+</div>
+<div class="relative">
+  <label for="current-password" class="text-gray-400">Password</label>
+  <input id="current-password" type="password" name="password" placeholder="Password" autocomplete="current-password" required class="text-sm px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-picton-blue-500 mb-6">
+</div>
+
+			
+    <button type="submit" class="w-full flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+        Sign up
+    </button>
+
+	</form>
+</div>
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;

@@ -9,7 +9,6 @@ function checkValidationResult(req, res, next) {
 
     var url = req.originalUrl;
     if (url.endsWith('/edit')) {
-      console.log("edit true");
       req.session.asset = {
         name: req.body.name,
         code: req.body.code,

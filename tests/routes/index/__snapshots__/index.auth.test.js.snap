@@ -1,0 +1,678 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GET /1/edit should return 200 status code match snapshot 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Dashboard • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <a href="/settings">
+            <div class="flex w-full items-center font-sans px-4">
+                <img class="w-8 h-8 rounded-full" src="https://source.puri.sm/uploads/-/system/user/avatar/10/avatar.png" alt="user avatar">
+                <div class="flex-1 px-2">
+                    <p class="text-gray-600 text-sm md:text-base font-semibold"></p>
+                </div>
+            </div>
+        </a>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="123456">
+            <button class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white" type="submit">Sign out</button>
+        </form>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+    <input type="hidden" name="_csrf" value="123456">
+    
+	
+	
+	
+	
+    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+        <a href="/all" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <p class="float-right">
+            <span class="inline-flex items-center bg-rose-800 rounded-full px-2 text-sm text-white py-1 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+                <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path>
+                </svg>
+                
+            </span>
+        </p>
+        <div class="mb-5 text-gray-400">
+            <h3 class="font-semibold text-2xl text-gray-800">Editing asset: #1</h3>
+            <p>Last modified: </p>
+        </div>
+
+        
+        
+        <form action="/edit" method="post" novalidate>
+            <label for="item" class="text-gray-400">Item name</label>
+            <input id="item" name="name" type="text" placeholder="test asset" value="test asset" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
+            <div class="grid grid-cols-2 gap-6 mb-6">
+                <div class="flex flex-col">
+                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+                    <input id="asset-code" name="code" type="text" placeholder="" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
+                </div>
+                <div class="flex flex-col">
+                    <label for="asset-type" class="text-gray-400 mb-1">Type</label>
+                    <select id="asset-type" name="type" type="text" placeholder="" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
+                        <option>Hardware fault</option>
+                        <option>Software fault</option>
+                        <option>Other</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <label for="note" class="text-gray-400 block">Note</label>
+            <input id="note" name="note" type="text" placeholder="" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
+
+            <label for="created" class="text-gray-400 mb-1">Logged</label>
+            <div id="created" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6"></div>
+
+            <input type="hidden" name="_csrf" value="123456">
+
+            <div class="flex justify-start">
+                <button type="submit" name="update" value="update" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                    Update
+                </button>
+                 
+            </div>
+        </form>
+    </div>
+
+
+
+	
+	
+
+	
+	
+
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;
+
+exports[`GET /1/view should return 200 status code match snapshot 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Dashboard • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <a href="/settings">
+            <div class="flex w-full items-center font-sans px-4">
+                <img class="w-8 h-8 rounded-full" src="https://source.puri.sm/uploads/-/system/user/avatar/10/avatar.png" alt="user avatar">
+                <div class="flex-1 px-2">
+                    <p class="text-gray-600 text-sm md:text-base font-semibold"></p>
+                </div>
+            </div>
+        </a>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="123456">
+            <button class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white" type="submit">Sign out</button>
+        </form>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+    <input type="hidden" name="_csrf" value="123456">
+    
+	
+	
+	
+	
+
+
+    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+        <a href="/all" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <p class="float-right">
+            <span class="inline-flex items-center bg-rose-800 rounded-full px-2 text-sm text-white py-1 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+                <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+                <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path>
+                </svg>
+                
+            </span>
+        </p>
+        <div class="mb-5 text-gray-400">
+            <h3 class="font-semibold text-2xl text-gray-800">Viewing asset: #1</h3>
+            <p>Last modified: </p>
+            <p>Raised by:  on </p>
+        </div>
+
+        
+        
+        <form action="/delete" method="post">
+            <label for="item" class="text-gray-400">Item name</label>
+            <div id="item" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">test asset</div>
+            <div class="grid grid-cols-2 gap-6 mb-6">
+                <div class="flex flex-col">
+                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+                    <div id="asset-code" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600"></div>
+                </div>
+                <div class="flex flex-col">
+                    <label for="asset-type" class="text-gray-400 mb-1">Type</label>
+                    <div id="asset-type" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600"></div>
+                </div>
+            </div>
+
+            <label for="note" class="text-gray-400 block">Note</label>
+            <div id="note" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6"></div>
+
+            <input type="hidden" name="_csrf" value="123456">
+
+            <div class="flex justify-start">
+                
+                
+                <button type="submit" name="update" value="delete" class="w-40 bg-rose-800 hover:bg-rose-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                    Delete
+                </button>
+            </div>
+        </form>
+    </div>
+
+	
+	
+
+	
+	
+
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;
+
+exports[`GET /add should return 200 status code match snapshot 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Dashboard • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <a href="/settings">
+            <div class="flex w-full items-center font-sans px-4">
+                <img class="w-8 h-8 rounded-full" src="https://source.puri.sm/uploads/-/system/user/avatar/10/avatar.png" alt="user avatar">
+                <div class="flex-1 px-2">
+                    <p class="text-gray-600 text-sm md:text-base font-semibold"></p>
+                </div>
+            </div>
+        </a>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="123456">
+            <button class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white" type="submit">Sign out</button>
+        </form>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+    <input type="hidden" name="_csrf" value="123456">
+    
+	
+	
+	
+	
+
+
+	
+	
+
+	
+	
+    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <div class="mb-5">
+            <h3 class="font-semibold text-2xl text-gray-800">Raise a new ticket</h3>
+        </div>
+
+        
+        
+        <form action="/add" method="post" novalidate>
+            <input type="hidden" name="_csrf" value="123456">
+            <label for="item" class="text-gray-400">Item name</label>
+            <input id="item" name="item" type="text" placeholder="e.g Macbook Pro" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
+            
+            
+            
+            <div class="grid grid-cols-2 gap-6 mb-6">
+                <div class="flex flex-col">
+                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+                    <p class="text-gray-400 mb-1">(six digit code found on the device)</p>
+                    <input id="asset-code" name="assetCode" type="text" placeholder="e.g NHS001" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+                </div>
+                <div class="flex flex-col">
+                    <label for="asset-type" class="text-gray-400 mb-1">Type of fault</label>
+                    <p class="text-gray-400 mb-1">(select the most applicable)</p>
+                    <select id="asset-type" name="type" placeholder="Asset type" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+                        <option>Hardware fault</option>
+                        <option>Software fault</option>
+                        <option>Other</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <label for="note" class="text-gray-400 block">Note</label>
+            <p class="text-gray-400 mb-1">(describe what is wrong within 200 characters)</p>
+            <input id="note" name="note" type="text" placeholder="e.g The charging port has broken" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
+
+            <button type="submit" class="w-1/2 flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                Submit
+            </button>
+        </form>
+    </div>
+
+
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;
+
+exports[`GET /all should return 200 status, match snapshot and load content correctly 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Dashboard • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <a href="/settings">
+            <div class="flex w-full items-center font-sans px-4">
+                <img class="w-8 h-8 rounded-full" src="https://source.puri.sm/uploads/-/system/user/avatar/10/avatar.png" alt="user avatar">
+                <div class="flex-1 px-2">
+                    <p class="text-gray-600 text-sm md:text-base font-semibold"></p>
+                </div>
+            </div>
+        </a>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="123456">
+            <button class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white" type="submit">Sign out</button>
+        </form>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+    <input type="hidden" name="_csrf" value="123456">
+    
+	
+	
+	
+	
+
+
+	
+	
+    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <div class="mb-5">
+            <h3 class="font-semibold text-2xl text-gray-800">Your open tickets (2)</h3>
+        </div>
+
+        
+        
+        <table class="table-auto text-left w-full">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Logged</th>
+                </tr>
+            </thead>
+            <tbody> 
+                
+                <tr>
+                    <td>1</td>
+                    <td>Asset 1</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form action="/edit" method="get">
+                            <input type="hidden" name="_csrf" value="123456">
+                            <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                                Edit
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>2</td>
+                    <td>Asset 2</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form action="/edit" method="get">
+                            <input type="hidden" name="_csrf" value="123456">
+                            <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                                Edit
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        
+    </div>
+
+
+	
+	
+
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;
+
+exports[`GET /all/closed should return 200 status, match snapshot and load content correctly 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Dashboard • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <a href="/settings">
+            <div class="flex w-full items-center font-sans px-4">
+                <img class="w-8 h-8 rounded-full" src="https://source.puri.sm/uploads/-/system/user/avatar/10/avatar.png" alt="user avatar">
+                <div class="flex-1 px-2">
+                    <p class="text-gray-600 text-sm md:text-base font-semibold"></p>
+                </div>
+            </div>
+        </a>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="123456">
+            <button class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white" type="submit">Sign out</button>
+        </form>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+    <input type="hidden" name="_csrf" value="123456">
+    
+	
+	
+	
+	
+
+
+	
+	
+
+    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <div class="mb-5">
+            <h3 class="font-semibold text-2xl text-gray-800">Closed Tickets (1)</h3>
+        </div>
+
+        
+        
+        <table class="table-auto text-left w-full">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Logged</th>
+                </tr>
+            </thead>
+            <tbody> 
+                
+                <tr>
+                    <td>3</td>
+                    <td>Asset 3</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form action="/view" method="get">
+                            <input type="hidden" name="_csrf" value="123456">
+                            <button type="submit" name="view" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                                View
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        
+    </div>
+
+	
+	
+
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;
+
+exports[`GET /settings should return 200 status code match snapshot 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title> • wortie</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+    </div>
+    <div class="block lg:hidden">
+        
+    </div>
+    <div class="flex items-center w-auto">
+        
+        <a href="/settings">
+            <div class="flex w-full items-center font-sans px-4">
+                <img class="w-8 h-8 rounded-full" src="https://source.puri.sm/uploads/-/system/user/avatar/10/avatar.png" alt="user avatar">
+                <div class="flex-1 px-2">
+                    <p class="text-gray-600 text-sm md:text-base font-semibold"></p>
+                </div>
+            </div>
+        </a>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="123456">
+            <button class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white" type="submit">Sign out</button>
+        </form>
+        
+    </div>
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+            <main>
+<div class="flex items-center justify-center">
+  <div class="grid grid-cols-1 sm:grid-cols-3">
+    <div class="smm:hidden m-4 sol-span-1 flex h-[400px] flex-col justify-between rounded-xl bg-white p-6 text-gray-600">
+      <ul class="space-y-2">
+        <li>
+          <a href="/" class="flex font-medium hover:text-sky-400 p-2 rounded-lg hover:bg-sky-100">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 h-6 w-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="/all" class="flex font-medium hover:text-sky-400 p-2 rounded-lg hover:bg-sky-100">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 h-6 w-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>
+            Tickets
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex font-medium p-2 rounded-lg bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 h-6 w-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Settings
+          </a>
+        </li>
+      </ul>
+
+      <a href="/logout" class="flex font-medium hover:text-sky-400 p-2 rounded-lg hover:bg-sky-100">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="{1.5}" stroke="currentColor" class="mr-3 h-6 w-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+        </svg>
+        Sign out
+      </a>
+    </div>
+
+    <div class="m-4 col-span-1 sm:col-span-2 p-8 bg-white rounded-xl flex justify-center items-center">
+      <div class="bg-white mx-auto rounded-3xl w-56">
+        <div class="flex items-center justify-center">
+          <img class="object-center w-28 h-28 rounded-full" src="https://source.puri.sm/uploads/-/system/user/avatar/10/avatar.png" alt="profile photo">
+        </div>
+        <div class="text-center text-gray-600">
+          
+        </div>
+        
+        <div class="text-gray-500 my-6">
+          <p>Name: <span class="font-semibold"></span></p>
+          <p>Password: <span class="font-semibold">••••••••</span></p>
+          <p>Admin account: <span class="font-semibold">false</span></p>
+        </div>
+        <form action="javascript:history.back()" method="post">
+            <input type="hidden" name="_csrf" value="123456">
+            <button type="submit" class="w-full flex justify-center bg-sky-800 hover:bg-sky-600 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+              Close
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+        </body>
+
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;

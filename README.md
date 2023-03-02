@@ -31,6 +31,12 @@ You can run all of the current unit tests through the following command:
 npm run test
 ```
 
+To update the test snapshots run the following:
+
+```terminal
+npm run test -- -u
+```
+
 ### Softwares used
 
 - [Express][express]

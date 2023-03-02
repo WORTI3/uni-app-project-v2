@@ -2,7 +2,7 @@ const express = require("express");
 const { ASSET_STATUS, ERROR_MESSAGES, SUCCESS_MESSAGES } = require("../assets/constants");
 const ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
 const db = require("../db");
-const { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin, trimAssetName } = require("../middleware/asset");
+const { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin } = require("../middleware/asset");
 const { isAdmin, checkValidationResult } = require("../middleware/auth");
 const { checkEditUpdate, checkAll, checkAdd, checkEditAdmin, checkEditUpdated, checkEditClosed } = require("../middleware/routing");
 const { check } = require('express-validator');
@@ -10,20 +10,6 @@ const { check } = require('express-validator');
 const ensureLoggedIn = ensureLogIn();
 
 const router = express.Router();
-
-// Landing page get and logic
-router.get(
-  "/",
-  function (req, res, next) {
-    if (!req.user) {
-      return res.render("home");
-    }
-    next();
-  },
-  fetchAssets, function(req, res, next) {
-    res.render('index', { user: req.user });
-  }
-);
 
 router.get('/all/closed', ensureLoggedIn, fetchAssetsForAdmin, fetchAssets, function(req, res, next) {
   res.locals.assets = res.locals.assets.filter(function(asset) { return asset.closed; });
@@ -68,7 +54,6 @@ router.post(
   ensureLoggedIn, 
   checkAll,
   checkAdd,
-  trimAssetName,
   function(req, res, next) {
     // refactor
   if (req.body.item !== '') {
@@ -101,7 +86,7 @@ router.get(
   }
 );
 
-router.post('/:id(\\d+)/view', ensureLoggedIn, function(req, res, next) {
+router.post('/:id(\\d+)/view', ensureLoggedIn, fetchAssetById, function(req, res, next) {
   res.render('index', { user: req.user, readOnly: true });
 });
 

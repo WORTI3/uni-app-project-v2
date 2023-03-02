@@ -11,6 +11,7 @@ const app = express();
 // db
 const SQLiteStore = require("connect-sqlite3")(session);
 // app routers
+const homeRouter = require("./routes/home");
 const indexRouter = require("./routes/index");
 const authRouter = require("./routes/auth");
 
@@ -53,10 +54,15 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (req, res, next) {
+  if (process.env.NODE_ENV === "test") {
+    res.locals.csrfToken = "123456";
+    return next();
+  }
   res.locals.csrfToken = req.csrfToken();
   next();
 });
 // app routes
+app.use("/", homeRouter);
 app.use("/", indexRouter);
 app.use("/", authRouter);
 

@@ -1,7 +1,7 @@
 const app = require("./app");
 const http = require("http");
 
-const port = normalizePort(process.env.PORT || "4000");
+const port = normalisePort(process.env.PORT || "4000");
 app.set("port", port);
 
 const server = http.createServer(app);
@@ -13,7 +13,7 @@ server.on("listening", onListening);
 /**
  * Normalize a port into a number, string, or false.
  */
-function normalizePort(val) {
+function normalisePort(val) {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -58,3 +58,5 @@ function onListening() {
   const bind = typeof address === "string" ? "pipe " + address : "port " + address.port;
   console.log("App Listening on " + bind);
 }
+
+module.exports = server;
