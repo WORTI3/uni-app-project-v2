@@ -18,3 +18,18 @@ describe('handle 404 errors', () => {
     expect(response.text).toContain('<h1>Not Found</h1>');
   });
 });
+
+describe("unit tests for app.js routers", () => {
+  // '/' for home is the same as this test
+  test("GET / should return 200", async () => {
+    await request(app).get("/").expect(200);
+  });
+
+  test("GET /login should return 200", async () => {
+    await request(app).get("/login").expect(200);
+  });
+
+  test("GET /non-existent-route should return 404", async () => {
+    await request(app).get("/non-existent-route").expect(404);
+  });
+});

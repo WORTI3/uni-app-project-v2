@@ -2,9 +2,9 @@ const express = require("express");
 const { ASSET_STATUS, ERROR_MESSAGES, SUCCESS_MESSAGES } = require("../assets/constants");
 const ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
 const db = require("../db");
-const { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin } = require("../middleware/asset");
+const { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin, updateLocalAsset } = require("../middleware/asset");
 const { isAdmin, checkValidationResult } = require("../middleware/auth");
-const { checkEditUpdate, checkAll, checkAdd, checkEditAdmin, checkEditUpdated, checkEditClosed } = require("../middleware/routing");
+const { checkEditUpdate, checkAll, checkAdd, checkEditAdmin } = require("../middleware/routing");
 const { check } = require('express-validator');
 
 const ensureLoggedIn = ensureLogIn();
@@ -21,13 +21,13 @@ router.get('/all', ensureLoggedIn, fetchAssetsForAdmin, fetchAssets, function(re
   res.render('index', { user: req.user, showAll: true });
 });
 
-router.get('/add', ensureLoggedIn, function(req, res, next) {
+router.get('/add', ensureLoggedIn, updateLocalAsset, function(req, res, next) {
   res.render('index', { user: req.user, addNew: true });
 });
 
 router.post('/add', ensureLoggedIn,
-  check('item', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
-  check('assetCode', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
+  check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
+  check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
   check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
   checkValidationResult,
   function(req, res, next) {
@@ -37,8 +37,8 @@ router.post('/add', ensureLoggedIn,
       req.user.username,
       today,
       today,
-      req.body.item,
-      req.body.assetCode,
+      req.body.name,
+      req.body.code,
       req.body.type,
       ASSET_STATUS.OPEN,
       req.body.note ?? null,
@@ -71,6 +71,7 @@ router.get(
   "/:id(\\d+)/edit",
   ensureLoggedIn,
   fetchAssetById,
+  updateLocalAsset,
   function (req, res, next) {
     return res.render("index", { user: req.user, edit: true });
   }

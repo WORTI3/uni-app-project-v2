@@ -2,6 +2,7 @@ const {
   fetchAssets,
   fetchAssetById,
   fetchAssetsForAdmin,
+  updateLocalAsset,
 } = require("../../src/middleware/asset");
 const { ASSET_STATUS } = require("../../src/assets/constants");
 const db = require('../../src/db');
@@ -250,6 +251,50 @@ describe("fetchAssetsForAdmin() unit tests", () => {
     fetchAssetsForAdmin(req, res, next);
 
     expect(req.isAuthenticated).toBeCalledTimes(1);
+    expect(next).toBeCalledTimes(1);
+  });
+});
+
+describe("updateLocalAsset() unit tests", () => {
+  test("should call next() if req.session.asset is undefined", () => {
+    const req = { session: {} };
+    const res = { locals: {} };
+    const next = jest.fn();
+
+    updateLocalAsset(req, res, next);
+
+    expect(res.locals.asset).toBeUndefined();
+    expect(next).toBeCalledTimes(1);
+  });
+
+  test("should set locals.asset correctly when session.asset present", () => {
+    const asset = { name: "asset 1", code: "NHS001" };
+    const req = { 
+      session: { asset: asset }
+    };
+    const res = { locals: {} };
+    const next = jest.fn();
+
+    updateLocalAsset(req, res, next);
+
+    expect(req.session.asset).toBeUndefined();
+    expect(res.locals.asset).toEqual(asset);
+    expect(next).toBeCalledTimes(1);
+  });
+
+  test("should override values if present in locals.asset", () => {
+    const localAsset = { name: "asset 1", code: "NHS001", note: "Test note" };
+    const asset = { name: "asset 2", code: "NHS002" };
+    const req = { 
+      session: { asset: asset }
+    };
+    const res = { locals: { asset: localAsset } };
+    const next = jest.fn();
+
+    updateLocalAsset(req, res, next);
+
+    expect(req.session.asset).toBeUndefined();
+    expect(res.locals.asset).toEqual(asset);
     expect(next).toBeCalledTimes(1);
   });
 });

@@ -24,7 +24,7 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
             </div>
             
             <div>
-                <a href="/login" class="px-4 py-2 border bg-picton-blue-500 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
+                <a href="/login" class="px-4 py-2 border bg-picton-blue-600 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
             </div>
         
     </div>
@@ -97,7 +97,7 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
             </div>
             
             <div>
-                <a href="/login" class="px-4 py-2 border bg-picton-blue-500 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
+                <a href="/login" class="px-4 py-2 border bg-picton-blue-600 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
             </div>
         
     </div>

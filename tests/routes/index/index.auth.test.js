@@ -2,7 +2,7 @@ const request = require("supertest");
 const cheerio = require('cheerio');
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 const app = require("../../../src/app");
-const { fetchAssetsForAdmin, fetchAssets, fetchAssetById, updateAssetById} = require("../../../src/middleware/asset");
+const { fetchAssetsForAdmin, fetchAssets, fetchAssetById, updateAssetById, updateLocalAsset } = require("../../../src/middleware/asset");
 
 jest.mock('connect-ensure-login', () => ({
   ensureLoggedIn: jest.fn(() => (req, res, next) => next()),
@@ -13,6 +13,7 @@ jest.mock('../../../src/middleware/asset', () => ({
   fetchAssets: jest.fn(),
   fetchAssetById: jest.fn(),
   updateAssetById: jest.fn(),
+  updateLocalAsset: jest.fn(),
 }));
 
 beforeEach(() => {
@@ -40,7 +41,7 @@ describe('GET /all/closed', () => {
     expect(result.get('Content-Type')).toContain('text/html');
     expect(result.text).toMatchSnapshot();
     const $ = cheerio.load(result.text);
-    const heading = $('h3').text();
+    const heading = $('h1').text();
     expect(heading).toBe('Closed Tickets (1)');
     expect($('a').length).toBe(3);
   });
@@ -67,7 +68,7 @@ describe('GET /all', () => {
     expect(result.get('Content-Type')).toContain('text/html');
     expect(result.text).toMatchSnapshot();
     const $ = cheerio.load(result.text);
-    const heading = $('h3').text();
+    const heading = $('h1').text();
     expect(heading).toBe('Your open tickets (2)');
     expect($('a').length).toBe(3);
   });
@@ -84,7 +85,7 @@ describe("GET /add", () => {
     const result = await request(app).get("/add").expect(200);
 
     const $ = cheerio.load(result.text);
-    const heading = $('h3').text();
+    const heading = $('h1').text();
     expect(heading).toBe('Raise a new ticket');
     expect($('a').length).toBe(3);
   });
@@ -113,6 +114,7 @@ describe("GET /1/edit", () => {
     res.locals.asset = { id: 1, name: "test asset" };
     next();
   });
+  updateLocalAsset.mockImplementation((req, res, next) => next());
   it("should return 200 status code match snapshot", async () => {
     const result = await request(app).get(url).expect(200);
     expect(result.get('Content-Type')).toContain('text/html');
@@ -123,7 +125,7 @@ describe("GET /1/edit", () => {
     const result = await request(app).get(url).expect(200);
 
     const $ = cheerio.load(result.text);
-    const heading = $('h3').text();
+    const heading = $('h1').text();
     expect(heading).toBe('Editing asset: #' + id);
     expect($('a').length).toBe(3);
   });
@@ -147,7 +149,7 @@ describe("GET /1/view", () => {
     const result = await request(app).get(url).expect(200);
 
     const $ = cheerio.load(result.text);
-    const heading = $('h3').text();
+    const heading = $('h1').text();
     expect(heading).toBe('Viewing asset: #' + id);
     expect($('a').length).toBe(3);
   });

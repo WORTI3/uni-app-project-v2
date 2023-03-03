@@ -1,6 +1,6 @@
 {% if edit and not readOnly %}
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/all" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/all" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
         <p class="float-right">
             <span class="inline-flex items-center {% if asset.status === 'open' %}bg-green-600{% else %}bg-rose-800{% endif %} rounded-full px-2 text-sm text-white py-1 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
@@ -10,23 +10,23 @@
                 {{ asset.status }}
             </span>
         </p>
-        <div class="mb-5 text-gray-400">
-            <h3 class="font-semibold text-2xl text-gray-800">Editing asset: #{{ asset.id }}</h3>
+        <div class="mb-5 text-gray-500">
+            <h1 class="font-semibold text-2xl text-gray-800">Editing asset: #{{ asset.id }}</h1>
             <p>Last modified: {{ asset.updated }}</p>
         </div>
 
         {% include "../_messages.njk" %}
         
         <form action="{{ asset.url }}/edit" method="post" novalidate>
-            <label for="item" class="text-gray-400">Item name</label>
+            <label for="item" class="text-gray-500">Item name</label>
             <input id="item" name="name" type="text" placeholder="{{ asset.name }}" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div class="flex flex-col">
-                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+                    <label for="asset-code" class="text-gray-500 mb-1">Item asset code</label>
                     <input id="asset-code" name="code" type="text" placeholder="{{ asset.code }}" value="{{ asset.code }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
                 </div>
                 <div class="flex flex-col">
-                    <label for="asset-type" class="text-gray-400 mb-1">Type</label>
+                    <label for="asset-type" class="text-gray-500 mb-1">Type</label>
                     <select id="asset-type" name="type" type="text" placeholder="{{ asset.type }}" value="{{ asset.type }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
                         <option>Hardware fault</option>
                         <option>Software fault</option>
@@ -36,20 +36,20 @@
                 </div>
             </div>
 
-            <label for="note" class="text-gray-400 block">Note</label>
+            <label for="note" class="text-gray-500 block">Note</label>
             <input id="note" name="note" type="text" placeholder="{{ asset.note }}" value="{{ asset.note }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
 
-            <label for="created" class="text-gray-400 mb-1">Logged</label>
+            <label for="created" class="text-gray-500 mb-1">Logged</label>
             <div id="created" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.created }}</div>
 
             {% include "../_csrf.njk" %}
 
             <div class="flex justify-start">
-                <button type="submit" name="update" value="update" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                <button type="submit" name="update" value="update" class="w-40 mr-6 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                     Update
                 </button>
                 {% if user.role === 1 %}
-                <button type="submit" name="update" value="close" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                <button type="submit" name="update" value="close" class="w-40 mr-6 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                     Close
                 </button>
                 <button type="submit" name="update" value="delete" class="w-40 bg-rose-800 hover:bg-rose-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
@@ -63,7 +63,7 @@
 
 {% if readOnly %}
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/all" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/all" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
         <p class="float-right">
             <span class="inline-flex items-center {% if asset.status === 'open' %}bg-green-600{% else %}bg-rose-800{% endif %} rounded-full px-2 text-sm text-white py-1 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
@@ -73,8 +73,8 @@
                 {{ asset.status }}
             </span>
         </p>
-        <div class="mb-5 text-gray-400">
-            <h3 class="font-semibold text-2xl text-gray-800">Viewing asset: #{{ asset.id }}</h3>
+        <div class="mb-5 text-gray-500">
+            <h1 class="font-semibold text-2xl text-gray-800">Viewing asset: #{{ asset.id }}</h1>
             <p>Last modified: {{ asset.updated }}</p>
             <p>Raised by: {{ asset.ownerName }} on {{ asset.created }}</p>
         </div>
@@ -82,21 +82,21 @@
         {% include "../_messages.njk" %}
         
         <form action="{{ asset.url }}/delete" method="post">
-            <label for="item" class="text-gray-400">Item name</label>
-            <div id="item" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.name }}</div>
+            <p class="text-gray-500">Item name</p>
+            <div class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.name }}</div>
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div class="flex flex-col">
-                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
-                    <div id="asset-code" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">{{ asset.code }}</div>
+                    <p class="text-gray-500 mb-1">Item asset code</p>
+                    <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">{{ asset.code }}</div>
                 </div>
                 <div class="flex flex-col">
-                    <label for="asset-type" class="text-gray-400 mb-1">Type</label>
-                    <div id="asset-type" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">{{ asset.type }}</div>
+                    <p class="text-gray-500 mb-1">Type</p>
+                    <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">{{ asset.type }}</div>
                 </div>
             </div>
 
-            <label for="note" class="text-gray-400 block">Note</label>
-            <div id="note" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.note }}</div>
+            <p class="text-gray-500 block">Note</p>
+            <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.note }}</div>
 
             {% include "../_csrf.njk" %}
 

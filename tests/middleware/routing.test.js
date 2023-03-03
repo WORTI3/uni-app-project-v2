@@ -3,8 +3,6 @@ const {
   checkAdd,
   checkEditUpdate,
   checkEditAdmin,
-  checkEditClosed,
-  checkEditUpdated,
 } = require("../../src/middleware/routing");
 const {
   ASSET_STATUS,
@@ -178,68 +176,5 @@ describe("checkEditAdmin() unit tests", () => {
     expect(res.redirect).toBeCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith("/1/view");
     expect(next).toBeCalledTimes(0);
-  });
-});
-
-describe("checkEditClosed() unit tests", () => {
-  var req;
-  var res;
-  const next = jest.fn();
-
-  beforeEach(() => {
-    req = {
-      session: {
-        update: {},
-      },
-      user: {},
-    };
-    res = { render: jest.fn() };
-  });
-
-  test("should render index page with edit and readOnly properties when req.session.update.closed is true", () => {
-    req.session.update.closed = true;
-    checkEditClosed(req, res, next);
-    expect(res.render).toBeCalledTimes(1);
-    expect(res.render).toHaveBeenCalledWith("index", {
-      user: req.user,
-      edit: true,
-      readOnly: true,
-    });
-    expect(next).toBeCalledTimes(0);
-  });
-
-  test("should call next middleware when req.session.update.closed is false", () => {
-    req.session.update.closed = false;
-    checkEditClosed(req, res, next);
-    expect(res.render).toBeCalledTimes(0);
-    expect(next).toHaveBeenCalled();
-  });
-});
-
-describe("checkEditUpdated() unit tests", () => {
-  test("should render index when req.session.update.updated is true", () => {
-    const req = { session: { update: { updated: true } }, user: {} };
-    const res = { render: jest.fn() };
-    const next = jest.fn();
-
-    checkEditUpdated(req, res, next);
-
-    expect(res.render).toBeCalledTimes(1);
-    expect(res.render).toHaveBeenCalledWith("index", {
-      user: {},
-      readOnly: true,
-    });
-    expect(next).toBeCalledTimes(0);
-  });
-
-  test("should call next when req.session.update.updated is false", () => {
-    const req = { session: { update: { updated: false } } };
-    const res = { render: jest.fn() };
-    const next = jest.fn();
-
-    checkEditUpdated(req, res, next);
-
-    expect(res.render).toBeCalledTimes(0);
-    expect(next).toHaveBeenCalled();
   });
 });

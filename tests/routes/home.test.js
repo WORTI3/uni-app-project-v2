@@ -23,9 +23,9 @@ describe('GET ' + url, () => {
 
     const $ = cheerio.load(result.text);
     const heading = $('h1').text();
-    expect(heading).toBe('Welcome to the portal');
-    const subHeading = $('h3').text();
-    expect(subHeading).toBe('to access the portal you must have an account');
+    expect(heading).toBe('Welcome to the ticket portal');
+    const subHeading = $('h2').text();
+    expect(subHeading).toBe('to view, create, delete tickets, you must have an account');
     expect($('a').length).toBe(4);
   });
 });

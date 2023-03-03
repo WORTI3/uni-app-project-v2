@@ -45,7 +45,7 @@ exports[`GET /1/edit should return 200 status code match snapshot 1`] = `
 	
 	
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/all" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/all" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
         <p class="float-right">
             <span class="inline-flex items-center bg-rose-800 rounded-full px-2 text-sm text-white py-1 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
@@ -55,23 +55,23 @@ exports[`GET /1/edit should return 200 status code match snapshot 1`] = `
                 
             </span>
         </p>
-        <div class="mb-5 text-gray-400">
-            <h3 class="font-semibold text-2xl text-gray-800">Editing asset: #1</h3>
+        <div class="mb-5 text-gray-500">
+            <h1 class="font-semibold text-2xl text-gray-800">Editing asset: #1</h1>
             <p>Last modified: </p>
         </div>
 
         
         
         <form action="/edit" method="post" novalidate>
-            <label for="item" class="text-gray-400">Item name</label>
+            <label for="item" class="text-gray-500">Item name</label>
             <input id="item" name="name" type="text" placeholder="test asset" value="test asset" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div class="flex flex-col">
-                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
+                    <label for="asset-code" class="text-gray-500 mb-1">Item asset code</label>
                     <input id="asset-code" name="code" type="text" placeholder="" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
                 </div>
                 <div class="flex flex-col">
-                    <label for="asset-type" class="text-gray-400 mb-1">Type</label>
+                    <label for="asset-type" class="text-gray-500 mb-1">Type</label>
                     <select id="asset-type" name="type" type="text" placeholder="" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
                         <option>Hardware fault</option>
                         <option>Software fault</option>
@@ -81,16 +81,16 @@ exports[`GET /1/edit should return 200 status code match snapshot 1`] = `
                 </div>
             </div>
 
-            <label for="note" class="text-gray-400 block">Note</label>
+            <label for="note" class="text-gray-500 block">Note</label>
             <input id="note" name="note" type="text" placeholder="" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
 
-            <label for="created" class="text-gray-400 mb-1">Logged</label>
+            <label for="created" class="text-gray-500 mb-1">Logged</label>
             <div id="created" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6"></div>
 
             <input type="hidden" name="_csrf" value="123456">
 
             <div class="flex justify-start">
-                <button type="submit" name="update" value="update" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                <button type="submit" name="update" value="update" class="w-40 mr-6 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                     Update
                 </button>
                  
@@ -166,7 +166,7 @@ exports[`GET /1/view should return 200 status code match snapshot 1`] = `
 
 
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/all" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/all" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
         <p class="float-right">
             <span class="inline-flex items-center bg-rose-800 rounded-full px-2 text-sm text-white py-1 font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
@@ -176,8 +176,8 @@ exports[`GET /1/view should return 200 status code match snapshot 1`] = `
                 
             </span>
         </p>
-        <div class="mb-5 text-gray-400">
-            <h3 class="font-semibold text-2xl text-gray-800">Viewing asset: #1</h3>
+        <div class="mb-5 text-gray-500">
+            <h1 class="font-semibold text-2xl text-gray-800">Viewing asset: #1</h1>
             <p>Last modified: </p>
             <p>Raised by:  on </p>
         </div>
@@ -185,21 +185,21 @@ exports[`GET /1/view should return 200 status code match snapshot 1`] = `
         
         
         <form action="/delete" method="post">
-            <label for="item" class="text-gray-400">Item name</label>
-            <div id="item" class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">test asset</div>
+            <p class="text-gray-500">Item name</p>
+            <div class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">test asset</div>
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div class="flex flex-col">
-                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
-                    <div id="asset-code" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600"></div>
+                    <p class="text-gray-500 mb-1">Item asset code</p>
+                    <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600"></div>
                 </div>
                 <div class="flex flex-col">
-                    <label for="asset-type" class="text-gray-400 mb-1">Type</label>
-                    <div id="asset-type" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600"></div>
+                    <p class="text-gray-500 mb-1">Type</p>
+                    <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600"></div>
                 </div>
             </div>
 
-            <label for="note" class="text-gray-400 block">Note</label>
-            <div id="note" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6"></div>
+            <p class="text-gray-500 block">Note</p>
+            <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6"></div>
 
             <input type="hidden" name="_csrf" value="123456">
 
@@ -284,30 +284,27 @@ exports[`GET /add should return 200 status code match snapshot 1`] = `
 	
 	
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
         <div class="mb-5">
-            <h3 class="font-semibold text-2xl text-gray-800">Raise a new ticket</h3>
+            <h1 class="font-semibold text-2xl text-gray-800">Raise a new ticket</h1>
         </div>
 
         
         
         <form action="/add" method="post" novalidate>
             <input type="hidden" name="_csrf" value="123456">
-            <label for="item" class="text-gray-400">Item name</label>
-            <input id="item" name="item" type="text" placeholder="e.g Macbook Pro" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
-            
-            
-            
+            <label for="name" class="text-gray-500">Item name</label>
+            <input id="name" name="name" type="text" placeholder="e.g Macbook Pro" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
             <div class="grid grid-cols-2 gap-6 mb-6">
                 <div class="flex flex-col">
-                    <label for="asset-code" class="text-gray-400 mb-1">Item asset code</label>
-                    <p class="text-gray-400 mb-1">(six digit code found on the device)</p>
-                    <input id="asset-code" name="assetCode" type="text" placeholder="e.g NHS001" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+                    <label for="code" class="text-gray-500 mb-1">Item asset code</label>
+                    <p class="text-gray-500 mb-1">(six digit code found on the device)</p>
+                    <input id="code" name="code" type="text" placeholder="e.g NHS001" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
                 </div>
                 <div class="flex flex-col">
-                    <label for="asset-type" class="text-gray-400 mb-1">Type of fault</label>
-                    <p class="text-gray-400 mb-1">(select the most applicable)</p>
-                    <select id="asset-type" name="type" placeholder="Asset type" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+                    <label for="type" class="text-gray-500 mb-1">Type of fault</label>
+                    <p class="text-gray-500 mb-1">(select the most applicable)</p>
+                    <select id="type" name="type" value="" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
                         <option>Hardware fault</option>
                         <option>Software fault</option>
                         <option>Other</option>
@@ -316,8 +313,8 @@ exports[`GET /add should return 200 status code match snapshot 1`] = `
                 </div>
             </div>
 
-            <label for="note" class="text-gray-400 block">Note</label>
-            <p class="text-gray-400 mb-1">(describe what is wrong within 200 characters)</p>
+            <label for="note" class="text-gray-500 block">Note</label>
+            <p class="text-gray-500 mb-1">(describe what is wrong within 200 characters)</p>
             <input id="note" name="note" type="text" placeholder="e.g The charging port has broken" value="" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
 
             <button type="submit" class="w-1/2 flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
@@ -389,9 +386,9 @@ exports[`GET /all should return 200 status, match snapshot and load content corr
 	
 	
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
         <div class="mb-5">
-            <h3 class="font-semibold text-2xl text-gray-800">Your open tickets (2)</h3>
+            <h1 class="font-semibold text-2xl text-gray-800">Your open tickets (2)</h1>
         </div>
 
         
@@ -415,7 +412,7 @@ exports[`GET /all should return 200 status, match snapshot and load content corr
                     <td>
                         <form action="/edit" method="get">
                             <input type="hidden" name="_csrf" value="123456">
-                            <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                            <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                                 Edit
                             </button>
                         </form>
@@ -430,7 +427,7 @@ exports[`GET /all should return 200 status, match snapshot and load content corr
                     <td>
                         <form action="/edit" method="get">
                             <input type="hidden" name="_csrf" value="123456">
-                            <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                            <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                                 Edit
                             </button>
                         </form>
@@ -509,9 +506,9 @@ exports[`GET /all/closed should return 200 status, match snapshot and load conte
 	
 
     <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+        <a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
         <div class="mb-5">
-            <h3 class="font-semibold text-2xl text-gray-800">Closed Tickets (1)</h3>
+            <h1 class="font-semibold text-2xl text-gray-800">Closed Tickets (1)</h1>
         </div>
 
         
@@ -535,7 +532,7 @@ exports[`GET /all/closed should return 200 status, match snapshot and load conte
                     <td>
                         <form action="/view" method="get">
                             <input type="hidden" name="_csrf" value="123456">
-                            <button type="submit" name="view" value="true" class="w-full h-1/2 p-1 flex justify-center bg-sky-800  hover:bg-sky-600 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                            <button type="submit" name="view" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                                 View
                             </button>
                         </form>
@@ -656,7 +653,7 @@ exports[`GET /settings should return 200 status code match snapshot 1`] = `
         </div>
         <form action="javascript:history.back()" method="post">
             <input type="hidden" name="_csrf" value="123456">
-            <button type="submit" class="w-full flex justify-center bg-sky-800 hover:bg-sky-600 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+            <button type="submit" class="w-full flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
               Close
             </button>
         </form>

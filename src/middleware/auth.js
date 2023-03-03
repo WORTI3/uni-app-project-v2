@@ -1,4 +1,4 @@
-const { ERROR_MESSAGES, SUCCESS_MESSAGES, ASSET_TYPE } = require('../assets/constants');
+const { ERROR_MESSAGES } = require('../assets/constants');
 const { validationResult } = require('express-validator');
 
 function checkValidationResult(req, res, next) {
@@ -8,7 +8,7 @@ function checkValidationResult(req, res, next) {
     req.session.messages = messages;
 
     var url = req.originalUrl;
-    if (url.endsWith('/edit')) {
+    if (url.endsWith('/edit') || url.endsWith('/add')) {
       req.session.asset = {
         name: req.body.name,
         code: req.body.code,

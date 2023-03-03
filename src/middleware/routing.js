@@ -18,13 +18,6 @@ function checkAdd(req, res, next) {
   next();
 };
 
-function checkEditUpdated(req, res, next) {
-  if (req.session.update.updated){
-    return res.render('index', { user: req.user, readOnly: true });
-  }
-  next();
-};
-
 function checkEditUpdate(req, res, next) {
   if (req.body.update && req.body.update === EDIT_UPDATES.UPDATE) {
     req.session.update = {
@@ -63,18 +56,9 @@ function checkEditAdmin(req, res, next) {
   next();
 };
 
-function checkEditClosed(req, res, next) {
-  if (req.session.update.closed){
-    return res.render('index', { user: req.user, edit: true, readOnly: true });
-  }
-  next();
-};
-
 module.exports = {
   checkAll,
   checkAdd,
   checkEditUpdate,
   checkEditAdmin,
-  checkEditUpdated,
-  checkEditClosed,
 };

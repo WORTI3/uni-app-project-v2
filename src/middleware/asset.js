@@ -59,14 +59,6 @@ function fetchAssetById(req, res, next) {
         };
       });
 
-      if (req.session.asset) {
-        asset[0].name = req.session.asset.name;
-        asset[0].code = req.session.asset.code;
-        asset[0].type = req.session.asset.type;
-        asset[0].note = req.session.asset.note;
-        req.session.asset = undefined;
-      }
-
       res.locals.asset = asset[0];
       next();
     }
@@ -128,4 +120,17 @@ function fetchAssetsForAdmin(req, res, next) {
   );
 }
 
-module.exports = { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin };
+function updateLocalAsset(req, res, next) {
+  if (req.session.asset) {
+    var asset = res.locals.asset ?? {};
+    asset.name = req.session.asset.name;
+    asset.code = req.session.asset.code;
+    asset.type = req.session.asset.type;
+    asset.note = req.session.asset.note;
+    req.session.asset = undefined;
+    res.locals.asset = asset;
+  }
+  next();
+}
+
+module.exports = { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin, updateLocalAsset };
