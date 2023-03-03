@@ -72,7 +72,8 @@ exports[`GET /1/edit should return 200 status code match snapshot 1`] = `
                 </div>
                 <div class="flex flex-col">
                     <label for="asset-type" class="text-gray-500 mb-1">Type</label>
-                    <select id="asset-type" name="type" type="text" placeholder="" value="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
+                    <select id="asset-type" name="type" type="text" placeholder="" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
+                        <option selected></option>
                         <option>Hardware fault</option>
                         <option>Software fault</option>
                         <option>Other</option>
@@ -304,11 +305,10 @@ exports[`GET /add should return 200 status code match snapshot 1`] = `
                 <div class="flex flex-col">
                     <label for="type" class="text-gray-500 mb-1">Type of fault</label>
                     <p class="text-gray-500 mb-1">(select the most applicable)</p>
-                    <select id="type" name="type" value="" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
-                        <option>Hardware fault</option>
-                        <option>Software fault</option>
-                        <option>Other</option>
-                        
+                    <select id="type" name="type" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+                        <option value="Hardware fault">Hardware fault</option>
+                        <option value="Software fault">Software fault</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
             </div>

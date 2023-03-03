@@ -27,10 +27,11 @@
                 </div>
                 <div class="flex flex-col">
                     <label for="asset-type" class="text-gray-500 mb-1">Type</label>
-                    <select id="asset-type" name="type" type="text" placeholder="{{ asset.type }}" value="{{ asset.type }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
-                        <option>Hardware fault</option>
-                        <option>Software fault</option>
-                        <option>Other</option>
+                    <select id="asset-type" name="type" type="text" placeholder="{{ asset.type }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">
+                        <option selected>{{ asset.type }}</option>
+                        {% if asset.type !== "Hardware fault" %}<option>Hardware fault</option>{% endif %}
+                        {% if asset.type !== "Software fault" %}<option>Software fault</option>{% endif %}
+                        {% if asset.type !== "other" %}<option>Other</option>{% endif %}
                         {# datalist #}
                     </select>
                 </div>
