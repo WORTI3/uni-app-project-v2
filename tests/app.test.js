@@ -1,4 +1,5 @@
 const request = require("supertest");
+const cheerio = require("cheerio");
 const app = require("../src/app");
 
 describe("Nunjucks configuration", () => {
@@ -7,15 +8,13 @@ describe("Nunjucks configuration", () => {
   });
 });
 
-describe('handle 404 errors', () => {
-  it('should render error template with status 404 for not found error', async () => {
-    const err = new Error('Not Found');
-    err.status = 404;
+describe("handle 404 errors", () => {
+  it("should render error template with status 404 for not found error", async () => {
+    const result = await request(app).get("/invalid_route").expect(404);
+    const $ = cheerio.load(result.text);
+    const heading = $("h1").text();
 
-    const response = await request(app).get('/invalid_route');
-
-    expect(response.status).toBe(404);
-    expect(response.text).toContain('<h1>Not Found</h1>');
+    expect(heading).toBe("Not Found");
   });
 });
 

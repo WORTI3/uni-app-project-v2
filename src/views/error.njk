@@ -1,3 +1,8 @@
-<h1>{{ message }}</h1>
+{% extends "../_layouts/template.njk" %}
+{% set title = error.status %}
+
+{% block mainContent %}
+<h1 class="text-center">{{ message }}</h1>
 <h2>{{ error.status }}</h2>
-<pre>{{ error.stack }}</pre>
+<pre>Trace: {{ error.stack }}</pre>
+{% endblock %}

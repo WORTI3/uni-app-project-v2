@@ -58,6 +58,8 @@ npm run test -- -u
 - [autoprefixer][autoprefixer]
 - [pluralize][pluralize]
 - [express-validator][express-validator]
+- [cheerio][cheerio]
+- [supertest][supertest]
 
 ## Disclaimer
 
@@ -84,6 +86,8 @@ Released under the [unlicensed license][license]. As stated by the license, anyo
 [autoprefixer]: <https://www.npmjs.com/package/autoprefixer>
 [pluralize]: <https://www.npmjs.com/package/pluralize>
 [express-validator]: <https://www.npmjs.com/package/express-validator>
+[cheerio]: <https://www.npmjs.com/package/cheerio>
+[supertest]: <https://www.npmjs.com/package/supertest>
 
 [license]: <https://github.com/WORTI3/uni-app-project/blob/main/LICENSE>
 [wortie-profile]: <https://github.com/WORTI3>
