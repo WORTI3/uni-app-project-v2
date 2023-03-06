@@ -2,14 +2,13 @@ const request = require("supertest");
 const cheerio = require('cheerio');
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 const app = require("../../../src/app");
-const { fetchAssetsForAdmin, fetchAssets, fetchAssetById, updateAssetById, updateLocalAsset } = require("../../../src/middleware/asset");
+const { fetchAssets, fetchAssetById, updateAssetById, updateLocalAsset } = require("../../../src/middleware/asset");
 
 jest.mock('connect-ensure-login', () => ({
   ensureLoggedIn: jest.fn(() => (req, res, next) => next()),
 }));
 
 jest.mock('../../../src/middleware/asset', () => ({
-  fetchAssetsForAdmin: jest.fn(),
   fetchAssets: jest.fn(),
   fetchAssetById: jest.fn(),
   updateAssetById: jest.fn(),
@@ -30,7 +29,6 @@ describe('GET /all/closed', () => {
     const user = { id: 1, name: 'John Doe' };
 
     ensureLoggedIn.mockImplementation((req, res, next) => next());
-    fetchAssetsForAdmin.mockImplementation((req, res, next) => next());
     fetchAssets.mockImplementation((req, res, next) => {
       res.locals.assets = assets;
       res.locals.closedCount = 1;
@@ -57,7 +55,6 @@ describe('GET /all', () => {
     const user = { id: 1, name: 'John Doe' };
 
     ensureLoggedIn.mockImplementation((req, res, next) => next());
-    fetchAssetsForAdmin.mockImplementation((req, res, next) => next());
     fetchAssets.mockImplementation((req, res, next) => {
       res.locals.assets = assets;
       res.locals.openCount = 2;

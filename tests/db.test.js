@@ -142,7 +142,7 @@ describe("Database tests", () => {
     });
   });
 
-  test('User "user" should have null role', (done) => {
+  test('User "user" should have role 1', (done) => {
     db.get('SELECT * FROM users WHERE username="user"', (err, row) => {
       expect(row.role).toBe(null);
       done();

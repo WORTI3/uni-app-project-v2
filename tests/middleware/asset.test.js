@@ -1,11 +1,10 @@
 const {
   fetchAssets,
   fetchAssetById,
-  fetchAssetsForAdmin,
   updateLocalAsset,
 } = require("../../src/middleware/asset");
 const { ASSET_STATUS } = require("../../src/assets/constants");
-const db = require('../../src/db');
+const db = require("../../src/db");
 
 const isAuthenticated = jest.fn().mockReturnValue(true);
 
@@ -14,20 +13,6 @@ afterEach(() => {
 });
 
 describe("fetchAssets() unit tests", () => {
-  test("should call next() when role === 1 and user is authenticated", () => {
-    const req = {
-      isAuthenticated,
-      user: { role: 1 },
-    };
-    const res = {};
-    const next = jest.fn();
-
-    fetchAssets(req, res, next);
-
-    expect(req.isAuthenticated).toBeCalledTimes(1);
-    expect(next).toBeCalledTimes(1);
-  });
-
   test("should call next(err) if there is an error while fetching assets from the database", () => {
     const req = {
       isAuthenticated,
@@ -44,18 +29,18 @@ describe("fetchAssets() unit tests", () => {
     expect(next).toHaveBeenCalledWith(new Error("database error"));
   });
 
-  test("should set res.locals.assets to an array of asset objects with formatted dates and url", () => {
+  test("should set correct res.locals.assets for admin user", () => {
+    // admin request
     const req = {
       isAuthenticated,
-      user: { id: 1 },
+      user: { id: 1, role: 1 },
     };
-    const res = {
-      locals: {},
-    };
+    const res = { locals: {} };
     const next = jest.fn();
-    const rows = [
+    const rowsFixture = [
       {
         id: 1,
+        owner_id: 1,
         created: "2022-01-01T00:00:00.000Z",
         updated: "2022-01-02T00:00:00.000Z",
         name: "Asset 1",
@@ -63,23 +48,24 @@ describe("fetchAssets() unit tests", () => {
         type: "Type 1",
         status: ASSET_STATUS.OPEN,
         note: "Note 1",
-        closed: 0,
+        closed: null,
       },
       {
         id: 2,
+        owner_id: 2, // different owner to first row
         created: "2022-01-03T00:00:00.000Z",
         updated: "2022-01-04T00:00:00.000Z",
         name: "Asset 2",
         code: "A2",
         type: "Type 2",
-        status: ASSET_STATUS.CLOSED,
+        status: ASSET_STATUS.OPEN,
         note: "Note 2",
-        closed: 1,
+        closed: null,
       },
     ];
 
     db.all = jest.fn((query, params, callback) => {
-      callback(null, rows);
+      callback(null, rowsFixture);
     });
     fetchAssets(req, res, next);
 
@@ -103,11 +89,55 @@ describe("fetchAssets() unit tests", () => {
         name: "Asset 2",
         code: "A2",
         type: "Type 2",
-        status: ASSET_STATUS.CLOSED,
+        status: ASSET_STATUS.OPEN,
         note: "Note 2",
-        closed: true,
+        closed: false,
         url: "/2",
       },
+    ]);
+  });
+
+  test("should set correct res.locals.assets when user is not an admin", () => {
+    const req = {
+      isAuthenticated,
+      user: { id: 2, role: null },
+    };
+    const res = { locals: {} };
+    const next = jest.fn();
+
+    const rowsFixture = [
+      {
+        id: 2,
+        owner_id: 2, // different owner to first row
+        created: "2022-01-03T00:00:00.000Z",
+        updated: "2022-01-04T00:00:00.000Z",
+        name: "Asset 2",
+        code: "A2",
+        type: "Type 2",
+        status: ASSET_STATUS.OPEN,
+        note: "Note 2",
+        closed: null,
+      }
+    ];
+
+    db.all = jest.fn((query, params, callback) => {
+      callback(null, rowsFixture);
+    });
+    fetchAssets(req, res, next);
+
+    expect(res.locals.assets).toEqual([
+      {
+        id: 2,
+        created: "January 03, 2022",
+        updated: "January 04, 2022",
+        name: "Asset 2",
+        code: "A2",
+        type: "Type 2",
+        status: ASSET_STATUS.OPEN,
+        note: "Note 2",
+        closed: false,
+        url: "/2",
+      }
     ]);
   });
 
@@ -239,22 +269,6 @@ describe("fetchAssetById() unit tests", () => {
   });
 });
 
-describe("fetchAssetsForAdmin() unit tests", () => {
-  test("should call next() when role !== 1 and user is not authenticated", () => {
-    const req = {
-      isAuthenticated: jest.fn().mockReturnValue(false),
-      user: { role: null },
-    };
-    const res = {};
-    const next = jest.fn();
-
-    fetchAssetsForAdmin(req, res, next);
-
-    expect(req.isAuthenticated).toBeCalledTimes(1);
-    expect(next).toBeCalledTimes(1);
-  });
-});
-
 describe("updateLocalAsset() unit tests", () => {
   test("should call next() if req.session.asset is undefined", () => {
     const req = { session: {} };
@@ -269,9 +283,7 @@ describe("updateLocalAsset() unit tests", () => {
 
   test("should set locals.asset correctly when session.asset present", () => {
     const asset = { name: "asset 1", code: "NHS001" };
-    const req = { 
-      session: { asset: asset }
-    };
+    const req = { session: { asset: asset } };
     const res = { locals: {} };
     const next = jest.fn();
 
@@ -285,9 +297,7 @@ describe("updateLocalAsset() unit tests", () => {
   test("should override values if present in locals.asset", () => {
     const localAsset = { name: "asset 1", code: "NHS001", note: "Test note" };
     const asset = { name: "asset 2", code: "NHS002" };
-    const req = { 
-      session: { asset: asset }
-    };
+    const req = { session: { asset: asset } };
     const res = { locals: { asset: localAsset } };
     const next = jest.fn();
 

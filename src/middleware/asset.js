@@ -3,37 +3,40 @@ const { ASSET_STATUS } = require("../assets/constants");
 const db = require('../db');
 
 function fetchAssets(req, res, next) {
+  var query = "SELECT * FROM assets WHERE owner_id = ?";
+  var param = [req.user.id];
+  // Admin check to change SQL query & param
   if (req.isAuthenticated() && req.user.role === 1) {
-    return next();
+    query = "SELECT * FROM assets";
+    param = [];
   }
-  db.all("SELECT * FROM assets WHERE owner_id = ?", [req.user.id],
-    function (err, rows) {
-      if (err) {
-        return next(err);
-      }
 
-      var assets = rows.map(function (row) {
-        return {
-          id: row.id,
-          created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
-          updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
-          name: row.name,
-          code: row.code,
-          type: row.type,
-          status: row.status,
-          note: row.note,
-          closed: row.closed == 1 ? true : false,
-          url: "/" + row.id,
-        };
-      });
-      res.locals.assets = assets;
-      res.locals.openCount = assets.filter(function (asset) {
-        return !asset.closed;
-      }).length;
-      res.locals.closedCount = assets.length - res.locals.openCount;
-      next();
+  db.all(query, param, function (err, rows) {
+    if (err) {
+      return next(err);
     }
-  );
+
+    var assets = rows.map(function (row) {
+      return {
+        id: row.id,
+        created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
+        updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
+        name: row.name,
+        code: row.code,
+        type: row.type,
+        status: row.status,
+        note: row.note,
+        closed: row.closed == 1 ? true : false,
+        url: "/" + row.id,
+      };
+    });
+    res.locals.assets = assets;
+    res.locals.openCount = assets.filter(function (asset) {
+      return !asset.closed;
+    }).length;
+    res.locals.closedCount = assets.length - res.locals.openCount;
+    next();
+  });
 }
 
 function fetchAssetById(req, res, next) {
@@ -85,41 +88,6 @@ function updateAssetById(req, res, next) {
   );
 }
 
-function fetchAssetsForAdmin(req, res, next) {
-  if (!req.isAuthenticated() && req.user.role !== 1) {
-    return next();
-  }
-  db.all("SELECT * FROM assets",
-    function (err, rows) {
-      if (err) {
-        return next(err);
-      }
-
-      var assets = rows.map(function (row) {
-        return {
-          id: row.id,
-          created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
-          updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
-          name: row.name,
-          ownerName: row.owner_name,
-          code: row.code,
-          type: row.type,
-          status: row.status,
-          note: row.note,
-          closed: row.closed == 1 ? true : false,
-          url: "/" + row.id,
-        };
-      });
-      res.locals.assets = assets;
-      res.locals.openCount = assets.filter(function (asset) {
-        return !asset.closed;
-      }).length;
-      res.locals.closedCount = assets.length - res.locals.openCount;
-      next();
-    }
-  );
-}
-
 function updateLocalAsset(req, res, next) {
   if (req.session.asset) {
     var asset = res.locals.asset ?? {};
@@ -133,4 +101,9 @@ function updateLocalAsset(req, res, next) {
   next();
 }
 
-module.exports = { fetchAssets, fetchAssetById, updateAssetById, fetchAssetsForAdmin, updateLocalAsset };
+module.exports = {
+  fetchAssets,
+  fetchAssetById,
+  updateAssetById,
+  updateLocalAsset,
+};

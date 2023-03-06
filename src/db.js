@@ -33,6 +33,7 @@ db.serialize(function() {
   )");
 });
 
+// dummy users for uni requirements
 var salt = crypto.randomBytes(16);
 db.run('INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)', [
   'admin',
@@ -41,9 +42,8 @@ db.run('INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALU
   salt
 ]);
 
-db.run('INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)', [
+db.run('INSERT OR IGNORE INTO users (username, hashed_password, salt) VALUES (?, ?, ?)', [
   'user',
-  null,
   crypto.pbkdf2Sync('user', salt, 310000, 32, 'sha256'),
   salt
 ]);
