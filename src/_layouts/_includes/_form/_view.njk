@@ -1,0 +1,56 @@
+{% if readOnly %}
+<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
+    <a href="/all/closed" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
+    <p class="float-right">
+        <span class="inline-flex items-center {% if asset.status === 'open' %}bg-green-600{% else %}bg-rose-800{% endif %} rounded-full px-2 text-sm text-white py-1 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
+            {% if asset.status === 'open' %}
+            <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+            <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path>
+            {% else %}
+            <path d="M11.28 6.78a.75.75 0 00-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l3.5-3.5z"></path>
+            <path fill-rule="evenodd" d="M16 8A8 8 0 110 8a8 8 0 0116 0zm-1.5 0a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"></path>
+            {% endif %}
+            </svg>
+            {{ asset.status }}
+        </span>
+    </p>
+    <div class="mb-5 text-gray-500">
+        <h1 class="font-semibold text-2xl text-gray-800">Viewing asset: #{{ asset.id }}</h1>
+        <p>Last modified: {{ asset.updated }}</p>
+        <p>Raised by: {{ asset.ownerName }} on {{ asset.created }}</p>
+    </div>
+
+    {% include "../_messages.njk" %}
+    
+    <form action="{{ asset.url }}/delete" method="post">
+        <p class="text-gray-500">Item name</p>
+        <div class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.name }}</div>
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <div class="flex flex-col">
+                <p class="text-gray-500 mb-1">Item asset code</p>
+                <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">{{ asset.code }}</div>
+            </div>
+            <div class="flex flex-col">
+                <p class="text-gray-500 mb-1">Type</p>
+                <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600">{{ asset.type }}</div>
+            </div>
+        </div>
+
+        <p class="text-gray-500 block">Note</p>
+        <div class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.note }}</div>
+
+        {% include "../_csrf.njk" %}
+
+        <div class="flex justify-start">
+            {# Are we allowing the admin user to re-open a closed ticket? #}
+            {# <button type="submit" name="update" value="close" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                Re-open
+            </button> #}
+            <button type="submit" name="update" value="delete" class="w-40 bg-rose-800 hover:bg-rose-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                Delete
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
