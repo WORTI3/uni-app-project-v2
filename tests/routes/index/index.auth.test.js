@@ -103,7 +103,7 @@ describe("GET /settings", () => {
 
     const $ = cheerio.load(result.text);
     expect($('p').length).toBe(4);
-    expect($('a').length).toBe(6);
+    expect($('a').length).toBe(5);
   });
 });
 

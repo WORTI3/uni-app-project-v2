@@ -1,4 +1,4 @@
-# uni-app-project
+# uni-app-project <img style="float: right; padding: 10px;" src="https://page-views.glitch.me/badge?page_id=WORTI3.uni-app-project"></a>
 
 Simple [Express][express] App written for Software Engineering and Agile university module.
 
