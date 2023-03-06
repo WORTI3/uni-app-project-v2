@@ -20,7 +20,7 @@ passport.use(
         }
         if (!row) {
           return cb(null, false, {
-            message: ERROR_MESSAGES.USERNAME,
+            message: ERROR_MESSAGES.USERNAME.DEFAULT,
           });
         }
 
