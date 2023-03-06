@@ -134,4 +134,18 @@ describe("Database tests", () => {
       done();
     });
   });
+
+  test('User "user" should exist', (done) => {
+    db.get('SELECT * FROM users WHERE username="user"', (err, row) => {
+      expect(row.username).toBe("user");
+      done();
+    });
+  });
+
+  test('User "user" should have null role', (done) => {
+    db.get('SELECT * FROM users WHERE username="user"', (err, row) => {
+      expect(row.role).toBe(null);
+      done();
+    });
+  });
 });
