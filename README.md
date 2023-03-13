@@ -23,6 +23,23 @@ Simple [Express][express] App written for Software Engineering and Agile univers
     npm run start:dev
     ```
 
+## Using the application
+
+To make sure the app meets requirements outlined in the assignment / report. Two example users as well as some example data has been populated into the database.
+To view the app as an admin login with the below credentials:
+
+```yaml
+username: admin
+password: admin
+```
+
+Alternatively, you can create an account as a normal user or login as a normal user, using the following credentials:
+
+```yaml
+username: user
+password: user
+```
+
 ## Testing the application
 
 You can run all of the current unit tests through the following command:
