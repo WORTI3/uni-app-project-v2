@@ -6,14 +6,14 @@ exports[`GET /1/edit should return 200 status code match snapshot 1`] = `
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Dashboard • wortie</title>
+		<title>Dashboard • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         
@@ -126,14 +126,14 @@ exports[`GET /1/view should return 200 status code match snapshot 1`] = `
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Dashboard • wortie</title>
+		<title>Dashboard • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         
@@ -241,14 +241,14 @@ exports[`GET /add should return 200 status code match snapshot 1`] = `
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Dashboard • wortie</title>
+		<title>Dashboard • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         
@@ -345,14 +345,14 @@ exports[`GET /all should return 200 status, match snapshot and load content corr
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Dashboard • wortie</title>
+		<title>Dashboard • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         
@@ -464,14 +464,14 @@ exports[`GET /all/closed should return 200 status, match snapshot and load conte
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Dashboard • wortie</title>
+		<title>Dashboard • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         
@@ -568,14 +568,14 @@ exports[`GET /settings should return 200 status code match snapshot 1`] = `
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title> • wortie</title>
+		<title> • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         

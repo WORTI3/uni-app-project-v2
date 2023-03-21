@@ -23,10 +23,10 @@ describe('GET ' + url, () => {
 
     const $ = cheerio.load(result.text);
     const heading = $('h1').text();
-    expect(heading).toBe('Welcome to the ticket portal');
+    expect(heading).toBe('Welcome to the Faultifier ticket portal');
     const subHeading = $('h2').text();
     expect(subHeading).toBe('to view, create, delete tickets, you must have an account');
-    expect($('a').length).toBe(4);
+    expect($('a').length).toBe(3);
   });
 });
 

@@ -15,7 +15,7 @@ describe("GET /signup", () => {
     const $ = cheerio.load(result.text);
     const para = $('p').text();
     expect(para).toBe("Already have an account? Sign in");
-    expect($('a').length).toBe(4);
+    expect($('a').length).toBe(3);
   });
 });
 
@@ -32,6 +32,6 @@ describe("GET /login", () => {
     const $ = cheerio.load(result.text);
     const para = $('p').text();
     expect(para).toBe("Don't have an account? Sign Up");
-    expect($('a').length).toBe(4);
+    expect($('a').length).toBe(3);
   });
 });

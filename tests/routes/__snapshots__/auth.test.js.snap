@@ -6,26 +6,24 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Login • wortie</title>
+		<title>Login • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         
     </div>
     <div class="flex items-center w-auto">
         
-        <div class="text-sm">
-            </div>
+        
             
-            <div>
-                <a href="/login" class="px-4 py-2 border bg-picton-blue-600 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
-            </div>
+                
+            
         
     </div>
 </nav>
@@ -79,26 +77,24 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Sign up • wortie</title>
+		<title>Sign up • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">WORTIE</span>
+        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
     </div>
     <div class="block lg:hidden">
         
     </div>
     <div class="flex items-center w-auto">
         
-        <div class="text-sm">
-            </div>
+        
             
-            <div>
-                <a href="/login" class="px-4 py-2 border bg-picton-blue-600 text-white font-bold text-xs leading-tight uppercase rounded shadow-md hover:bg-spicton-blue-700 hover:shadow-lg focus:bg-picton-blue-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-picton-blue-900 active:shadow-lg transition duration-150 ease-in-out">Sign in</a>
-            </div>
+                
+            
         
     </div>
 </nav>
