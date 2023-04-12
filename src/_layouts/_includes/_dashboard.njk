@@ -1,34 +1,36 @@
 {% if not addNew and not showAll and not edit and not showAllClosed and not readOnly %}
-	<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mb-6 mt-6">
-		<div class="mb-5">
-			<h1 class="font-semibold text-2xl text-gray-800">{{ title }}</h1>
-			{% if user.role !== 1 %}<p class="text-gray-400">You are limited to regular user actions.</p>{% endif %}
-		</div>
-		
-		{% include "./_messages.njk" %}
+	<div class="flex justify-start">
+		<div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl my-6">
+			<div class="mb-5">
+				<h1 class="font-semibold text-2xl text-gray-800">{{ title }}</h1>
+				{% if user.role !== 1 %}<p class="text-gray-400">You are limited to regular user actions.</p>{% endif %}
+			</div>
+			
+			{% include "./_messages.njk" %}
 
-		<h2 class="text-gray-500 mb-2">What would you like to do?</h2>
-		<div class="flex justify-start">
-			<form action="/" method="post">
-				{% include "./_csrf.njk" %}
-				<button type="submit" name="all" value="all" class="w-40 mr-4 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
-					View all
-				</button>
-			</form>
-			{% if user.role === 1 %}
-				<form action="/" method="post">
-					{% include "./_csrf.njk" %}
-					<button type="submit" name="all" value="closed" class="w-40 mr-4 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
-						View closed
-					</button>
-				</form>
-			{% endif %}
-			<form action="/" method="post">
-				{% include "./_csrf.njk" %}
-				<button type="submit" name="add" value="add" class="w-40 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
-					Add new
-				</button>
-			</form>
+			<h2 class="text-gray-500 mb-2">What would you like to do?</h2>
+				<div class="grid grid-cols-1 sm:grid-cols-3">
+					<form action="/" method="post">
+						{% include "./_csrf.njk" %}
+						<button type="submit" name="all" value="all" class="w-40 mr-4 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+							View all
+						</button>
+					</form>
+					{% if user.role === 1 %}
+						<form action="/" method="post">
+							{% include "./_csrf.njk" %}
+							<button type="submit" name="all" value="closed" class="w-40 mr-4 smm:mt-4 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+								View closed
+							</button>
+						</form>
+					{% endif %}
+					<form action="/" method="post">
+						{% include "./_csrf.njk" %}
+						<button type="submit" name="add" value="add" class="w-40 smm:mt-4 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+							Add new
+						</button>
+					</form>
+				</div>
 		</div>
 	</div>
 {% endif %}

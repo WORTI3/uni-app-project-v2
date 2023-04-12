@@ -1,5 +1,12 @@
 const { ASSET_STATUS, EDIT_UPDATES, SUCCESS_MESSAGES } = require("../assets/constants");
 
+/**
+ * Checks the asset status and redirects if all is present in the request body.
+ * @param {any} req
+ * @param {any} res
+ * @param {any} next
+ * @returns {any}
+ */
 function checkAll(req, res, next) {
   var all = req.body.all;
   if (all){
