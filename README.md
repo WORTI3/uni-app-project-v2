@@ -2,6 +2,9 @@
 
 "Faultifier" - a simple [Express][express] App written for Software Engineering and Agile university module.
 
+Site is hosted [here](https://faultifier.onrender.com)
+*(Demo site with 500MB of RAM)*
+
 <details>
 <summary>In-Depth Description:</summary>
 "Faultifier" is an express application that provides a simple system for authenticating users (using passport) based on their roles as an admin or staff member. The system allows staff members to log hardware or software faults with company equipment by creating a ticket, updating the ticket, and viewing all their raised tickets. Admin users have additional functionality, such as closing and deleting tickets, as well as viewing all open tickets for every member of staff. This allows admin users to assess the raised tickets more efficiently. The system ensures that only authorised users can access the appropriate functionality based on their role, making "Faultifier" a secure and easy-to-use application for fault reporting and management.
