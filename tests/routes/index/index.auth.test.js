@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const ensureLoggedIn = require("connect-ensure-login").ensureLoggedIn;
 const app = require("../../../src/app");
 const { fetchAssets, fetchAssetById, updateAssetById, updateLocalAsset } = require("../../../src/middleware/asset");
+const { isAdmin, checkValidationResult } = require("../../../src/middleware/auth");
 
 jest.mock('connect-ensure-login', () => ({
   ensureLoggedIn: jest.fn(() => (req, res, next) => next()),
@@ -13,6 +14,11 @@ jest.mock('../../../src/middleware/asset', () => ({
   fetchAssetById: jest.fn(),
   updateAssetById: jest.fn(),
   updateLocalAsset: jest.fn(),
+}));
+
+jest.mock('../../../src/middleware/auth', () => ({
+  isAdmin: jest.fn(),
+  checkValidationResult: jest.fn(),
 }));
 
 beforeEach(() => {
@@ -26,9 +32,9 @@ describe('GET /all/closed', () => {
       { id: 2, name: 'Asset 2' },
       { id: 3, name: 'Asset 3', closed: 1 }
     ];
-    const user = { id: 1, name: 'John Doe' };
 
     ensureLoggedIn.mockImplementation((req, res, next) => next());
+    isAdmin.mockImplementation((req, res, next) => next());
     fetchAssets.mockImplementation((req, res, next) => {
       res.locals.assets = assets;
       res.locals.closedCount = 1;
@@ -41,7 +47,7 @@ describe('GET /all/closed', () => {
     const $ = cheerio.load(result.text);
     const heading = $('h1').text();
     expect(heading).toBe('Closed Tickets (1)');
-    expect($('a').length).toBe(3);
+    expect($('a').length).toBe(4);
   });
 });
 
@@ -52,7 +58,6 @@ describe('GET /all', () => {
       { id: 2, name: 'Asset 2' },
       { id: 3, name: 'Asset 3', closed: 1 }
     ];
-    const user = { id: 1, name: 'John Doe' };
 
     ensureLoggedIn.mockImplementation((req, res, next) => next());
     fetchAssets.mockImplementation((req, res, next) => {
@@ -67,7 +72,7 @@ describe('GET /all', () => {
     const $ = cheerio.load(result.text);
     const heading = $('h1').text();
     expect(heading).toBe('Your open tickets (2)');
-    expect($('a').length).toBe(3);
+    expect($('a').length).toBe(4);
   });
 });
 
@@ -84,7 +89,7 @@ describe("GET /add", () => {
     const $ = cheerio.load(result.text);
     const heading = $('h1').text();
     expect(heading).toBe('Raise a new ticket');
-    expect($('a').length).toBe(3);
+    expect($('a').length).toBe(4);
   });
 });
 
@@ -100,7 +105,7 @@ describe("GET /settings", () => {
 
     const $ = cheerio.load(result.text);
     expect($('p').length).toBe(4);
-    expect($('a').length).toBe(5);
+    expect($('a').length).toBe(6);
   });
 });
 
@@ -124,7 +129,7 @@ describe("GET /1/edit", () => {
     const $ = cheerio.load(result.text);
     const heading = $('h1').text();
     expect(heading).toBe('Editing asset: #' + id);
-    expect($('a').length).toBe(3);
+    expect($('a').length).toBe(4);
   });
 });
 
@@ -148,6 +153,6 @@ describe("GET /1/view", () => {
     const $ = cheerio.load(result.text);
     const heading = $('h1').text();
     expect(heading).toBe('Viewing asset: #' + id);
-    expect($('a').length).toBe(3);
+    expect($('a').length).toBe(4);
   });
 });

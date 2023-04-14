@@ -5,10 +5,12 @@
             <h1 class="font-semibold text-2xl text-gray-800">Raise a new ticket</h1>
         </div>
 
+        {# Inlcude messages include to display field error messages on the UI #}
         {% include "../_messages.njk" %}
         
         <form action="/add" method="post" novalidate>
             {% include "../_csrf.njk" %}
+            {# Accessible names and input label names for ease of use #}
             <label for="name" class="text-gray-500">Item name</label>
             <input id="name" name="name" type="text" placeholder="e.g Macbook Pro" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
             <div class="grid grid-cols-2 gap-6 mb-6">

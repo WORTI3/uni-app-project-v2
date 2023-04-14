@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GET /login should return 200 status code match snapshot 1`] = `
-"<!DOCTYPE html>
+"
+<!DOCTYPE html>
 <html lang="en">
+    
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Faultifier - a ticket handling admin service.">
+        <meta name="theme-color" content="blue">
 		<title>Login • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
@@ -13,19 +17,10 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
+        <a href="/"><span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span></a>
     </div>
-    <div class="block lg:hidden">
-        
-    </div>
-    <div class="flex items-center w-auto">
-        
-        
-            
-                
-            
-        
-    </div>
+    
+    
 </nav>
 
         <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
@@ -33,14 +28,19 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
 <div class="p-12 bg-white mx-auto rounded-3xl w-96">
 	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
 	
+	
     <div class="mb-5">
 		<h3 class="font-semibold text-2xl text-gray-800">Sign In</h3>
 		<p class="text-gray-400">Don&#39;t have an account? <a href="/signup" class="text-sm font-bold text-sky-600 hover:text-sky-600">Sign Up</a></p>
 	</div>
 
 	
+	
+	
 	<form action="/login/password" method="post" novalidate>
+			
     	<input type="hidden" name="_csrf" value="123456">
+			
 			
 <div class="relative">
   <label for="username" class="text-gray-500">Username or Email</label>
@@ -61,6 +61,7 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
 </main>
         </body>
 
+        
         <footer class="lg:text-left bg-gray-100 text-gray-600">
             <div class="text-center p-6">
                 <span>© 2023 </span>
@@ -72,11 +73,15 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
 `;
 
 exports[`GET /signup should return 200 status code match snapshot 1`] = `
-"<!DOCTYPE html>
+"
+<!DOCTYPE html>
 <html lang="en">
+    
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Faultifier - a ticket handling admin service.">
+        <meta name="theme-color" content="blue">
 		<title>Sign up • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
@@ -84,19 +89,10 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
     <div class="flex flex-col h-screen justify-between overflow-hidden">
         <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
     <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
-        <span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span>
+        <a href="/"><span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span></a>
     </div>
-    <div class="block lg:hidden">
-        
-    </div>
-    <div class="flex items-center w-auto">
-        
-        
-            
-                
-            
-        
-    </div>
+    
+    
 </nav>
 
         <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
@@ -110,8 +106,11 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
 	</div>
 
 	
+	
 	<form action="/signup" method="post" novalidate>
+    	
     	<input type="hidden" name="_csrf" value="123456">
+			
 			
 <div class="relative">
   <label for="username" class="text-gray-500">Username or Email</label>
@@ -132,6 +131,7 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
 </main>
         </body>
 
+        
         <footer class="lg:text-left bg-gray-100 text-gray-600">
             <div class="text-center p-6">
                 <span>© 2023 </span>

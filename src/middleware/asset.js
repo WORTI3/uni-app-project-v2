@@ -2,6 +2,13 @@ const { DateTime } = require("luxon");
 const { ASSET_STATUS } = require("../assets/constants");
 const db = require('../db');
 
+/**
+ * Fetches assets from the database based on the user's role and owner_id.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns None
+ */
 function fetchAssets(req, res, next) {
   var query = "SELECT * FROM assets WHERE owner_id = ?";
   var param = [req.user.id];
@@ -39,6 +46,13 @@ function fetchAssets(req, res, next) {
   });
 }
 
+/**
+ * Fetches an asset from the database by its ID and formats the data into an object.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns None
+ */
 function fetchAssetById(req, res, next) {
   db.all("SELECT * FROM assets WHERE id = ?", [req.params.id],
     function (err, rows) {
@@ -68,6 +82,14 @@ function fetchAssetById(req, res, next) {
   );
 }
 
+/**
+ * Updates an asset in the database with the given ID and owner ID.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns None
+ * @throws {Error} If there is an error updating the asset in the database.
+ */
 function updateAssetById(req, res, next) {
   if (!req.session.update) return next();
   db.run('UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?', [
@@ -88,6 +110,13 @@ function updateAssetById(req, res, next) {
   );
 }
 
+/**
+ * Updates the local asset with the values stored in the session asset.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns None
+ */
 function updateLocalAsset(req, res, next) {
   if (req.session.asset) {
     var asset = res.locals.asset ?? {};

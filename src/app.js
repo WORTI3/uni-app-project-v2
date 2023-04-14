@@ -1,3 +1,4 @@
+// dependencies
 const express = require("express");
 const nunjucks = require("nunjucks");
 const createError = require("http-errors");
@@ -22,6 +23,10 @@ nunjucks.configure(["./src/views", "./src/_layouts"], {
 });
 // view engine setup
 app.set("view engine", "njk");
+/**
+ * A middleware function that adds the pluralize library to the app's local variables.
+ * This allows the pluralize library to be used in any view rendered by the app.
+ */
 app.locals.pluralize = require("pluralize");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -39,9 +44,21 @@ app.use(
     store: new SQLiteStore({ db: "sessions.db", dir: "./src/database" }),
   })
 );
+// Adds CSRF protection to the application.
 app.use(csrf());
+
+/**
+ * Middleware function that authenticates a user's session using Passport.
+ * @param {string} "session" - the name of the Passport strategy to use for authentication.
+ */
 app.use(passport.authenticate("session"));
-// error messages
+
+/**
+ * Sets messages and tone to locals from the current session.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 app.use(function (req, res, next) {
   const msgs = req.session.messages || [];
   const tone = req.session.msgTone || null;
@@ -53,6 +70,14 @@ app.use(function (req, res, next) {
   next();
 });
 
+/**
+ * Middleware function that adds a CSRF token to the response locals object.
+ * If the environment is set to "test", a hardcoded token is used instead.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns None
+ */
 app.use(function (req, res, next) {
   if (process.env.NODE_ENV === "test") {
     res.locals.csrfToken = "123456";

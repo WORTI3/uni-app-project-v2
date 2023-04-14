@@ -26,7 +26,7 @@ describe('GET ' + url, () => {
     expect(heading).toBe('Welcome to the Faultifier ticket portal');
     const subHeading = $('h2').text();
     expect(subHeading).toBe('to view, create, delete tickets, you must have an account');
-    expect($('a').length).toBe(3);
+    expect($('a').length).toBe(4);
   });
 });
 

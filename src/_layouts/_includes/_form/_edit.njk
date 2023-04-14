@@ -13,10 +13,15 @@
     <div class="mb-5 text-gray-500">
         <h1 class="font-semibold text-2xl text-gray-800">Editing asset: #{{ asset.id }}</h1>
         <p>Last modified: {{ asset.updated }}</p>
+        {# We check if a user is an admin here as normal users shouldn't see tickets raised by others #}
+        {% if user.role === 1 %}
+        <p>Raised by: {{ asset.ownerName }} on {{ asset.created }}</p>
+        {% endif %}
     </div>
 
     {% include "../_messages.njk" %}
     
+    {# Accessible names and input label names for ease of use #}
     <form action="{{ asset.url }}/edit" method="post" novalidate>
         <label for="item" class="text-gray-500">Item name</label>
         <input id="item" name="name" type="text" placeholder="{{ asset.name }}" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">
@@ -32,7 +37,6 @@
                     {% if asset.type !== "Hardware fault" %}<option>Hardware fault</option>{% endif %}
                     {% if asset.type !== "Software fault" %}<option>Software fault</option>{% endif %}
                     {% if asset.type !== "other" %}<option>Other</option>{% endif %}
-                    {# datalist #}
                 </select>
             </div>
         </div>
@@ -49,6 +53,7 @@
             <button type="submit" name="update" value="update" class="w-40 mr-6 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                 Update
             </button>
+            {# Admin check here if admin buttons should be shown to a normal user or not #}
             {% if user.role === 1 %}
             <button type="submit" name="update" value="close" class="w-40 mr-6 bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                 Close

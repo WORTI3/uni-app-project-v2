@@ -2,6 +2,7 @@
 {% set title = error.status %}
 
 {% block mainContent %}
+{# Display any abnormal error on the front end UI without crashing the app #}
 <h1 class="text-center">{{ message }}</h1>
 <h2>{{ error.status }}</h2>
 <pre>Trace: {{ error.stack }}</pre>

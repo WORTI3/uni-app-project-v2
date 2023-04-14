@@ -1,8 +1,12 @@
+{# Contains base html used on every page. #}
 <!DOCTYPE html>
 <html lang="en">
+    {# Add the same head links to each page. #}
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Faultifier - a ticket handling admin service.">
+        <meta name="theme-color" content="blue">
 		<title>{{ title }} • Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
@@ -13,6 +17,7 @@
             <main>{% block mainContent %}{% endblock %}</main>
         </body>
 
+        {# Add the same Footer to each page. #}
         <footer class="lg:text-left bg-gray-100 text-gray-600">
             <div class="text-center p-6">
                 <span>© 2023 </span>

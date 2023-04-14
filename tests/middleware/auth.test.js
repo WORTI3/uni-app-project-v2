@@ -30,7 +30,7 @@ describe("isAdmin() unit tests", () => {
     isAdmin(req, res, next);
     expect(next).not.toHaveBeenCalled();
     expect(res.redirect).toBeCalledTimes(1);
-    expect(res.redirect).toHaveBeenCalledWith("/1/edit");
+    expect(res.redirect).toHaveBeenCalledWith("/");
     expect(req.session.messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
   });
 
@@ -40,7 +40,7 @@ describe("isAdmin() unit tests", () => {
     isAdmin(req, res, next);
     expect(next).not.toHaveBeenCalled();
     expect(res.redirect).toBeCalledTimes(1);
-    expect(res.redirect).toHaveBeenCalledWith("/1/edit");
+    expect(res.redirect).toHaveBeenCalledWith("/");
     expect(req.session.messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
   });
 });

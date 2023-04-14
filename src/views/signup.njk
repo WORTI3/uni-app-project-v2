@@ -6,9 +6,12 @@
 <div class="p-12 bg-white mx-auto rounded-3xl w-96 ">
 	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
 	{{ header({ heading: 'Sign up', subHeading: 'Already have an account?', link: '/login', linkText: 'Sign in' }) }}
+	{# Includes messages for field errors #}
 	{% include "../_layouts/_includes/_messages.njk" %}
 	<form action="/signup" method="post" novalidate>
+    	{# CSRF token for form auth #}
     	{% include "../_layouts/_includes/_csrf.njk" %}
+			{# Form input content #}
 			{% include "../_layouts/_includes/_form/_content.njk" %}
 			{{ submitButton({ buttonText: 'Sign up' }) }}
 	</form>

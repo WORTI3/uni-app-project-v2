@@ -1,6 +1,7 @@
 {% if readOnly %}
 <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-    <a href="/all/closed" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
+    {# Admin logic here to determine where a user should be taken on back link #}
+    <a href="{% if user.role === 1 %}/all/closed{% else %}/all{% endif %}" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
     <p class="float-right">
         <span class="inline-flex items-center {% if asset.status === 'open' %}bg-green-600{% else %}bg-rose-800{% endif %} rounded-full px-2 text-sm text-white py-1 font-medium">
             <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-1.5 text-white" viewBox="0 0 16 16" width="16" height="16">
@@ -22,7 +23,6 @@
     </div>
 
     {% include "../_messages.njk" %}
-    
     <form action="{{ asset.url }}/delete" method="post">
         <p class="text-gray-500">Item name</p>
         <div class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-600 mb-6">{{ asset.name }}</div>
@@ -43,10 +43,6 @@
         {% include "../_csrf.njk" %}
 
         <div class="flex justify-start">
-            {# Are we allowing the admin user to re-open a closed ticket? #}
-            {# <button type="submit" name="update" value="close" class="w-40 mr-6 bg-sky-800 hover:bg-sky-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
-                Re-open
-            </button> #}
             <button type="submit" name="update" value="delete" class="w-40 bg-rose-800 hover:bg-rose-600 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
                 Delete
             </button>

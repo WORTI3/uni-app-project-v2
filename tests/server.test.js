@@ -1,17 +1,16 @@
-const app = require('../src/app');
-const http = require('http');
-
-const server = require('../src/server');
+const app = require("../src/app");
+const http = require("http");
+const server = require("../src/server");
 
 // Mock app module
-jest.mock("../src/app", () => {
+jest.mock('../src/app', () => {
   return {
     set: jest.fn()
   };
 });
 
 // Mock http module
-jest.mock("http", () => {
+jest.mock('http', () => {
   return {
     createServer: jest.fn(() => {
       return {

@@ -5,10 +5,15 @@
 {% block mainContent %}
 <div class="p-12 bg-white mx-auto rounded-3xl w-96">
 	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
+	{# Header macro used for common form input content #}
 	{{ header({ heading: 'Sign In', subHeading: "Don't have an account?", link: '/signup', linkText: 'Sign Up' }) }}
+	{# Includes messages for field errors #}
 	{% include "../_layouts/_includes/_messages.njk" %}
+	{# We use novalidate as we validate the form fields ourselves #}
 	<form action="/login/password" method="post" novalidate>
+			{# CSRF token for form auth #}
     	{% include "../_layouts/_includes/_csrf.njk" %}
+			{# Form input content #}
 			{% include "../_layouts/_includes/_form/_content.njk" %}
 			{{ submitButton({ buttonText: 'Sign in' }) }}
 	</form>
