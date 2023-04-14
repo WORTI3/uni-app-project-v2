@@ -12,7 +12,6 @@ describe('updateAssetById() unit tests', () => {
   beforeEach(() => {
     // Clear the mock implementation between tests
     jest.clearAllMocks();
-    // db.run.mockReset();
   });
   it('should update the asset with the correct values', () => {
     const req = {

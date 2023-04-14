@@ -20,7 +20,7 @@ const ERROR_MESSAGES = {
     DEFAULT: "Invalid password",
     MIN_LENGTH: "Password must be more than 5 characters in length",
     MAX_LENGTH: "Password must be less than 20 characters in length",
-    NO_CHARS: "Password must contain a special character, number and upper case letter",
+    NO_CHARS: "Password must contain a special character, number and upper & lower case letter",
   },
   ADD_ISSUE: {
     NAME: "Please enter a valid item name",
@@ -69,9 +69,8 @@ const EDIT_UPDATES = {
 /**
  * A regular expression that matches a password that contains at least one uppercase letter,
  * one lowercase letter, one number, and one special character.
- * @type {string}
  */
-const PASSWORD_REGEX = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])';
+const PASSWORD_REGEX = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])');
 
 module.exports = {
   ERROR_MESSAGES,

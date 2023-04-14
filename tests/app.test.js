@@ -1,6 +1,7 @@
 const request = require("supertest");
 const cheerio = require("cheerio");
 const app = require("../src/app");
+const pluralize = require("pluralize");
 
 describe("Nunjucks configuration", () => {
   it("should set the view engine to 'njk'", () => {
@@ -30,5 +31,11 @@ describe("unit tests for app.js routers", () => {
 
   test("GET /non-existent-route should return 404", async () => {
     await request(app).get("/non-existent-route").expect(404);
+  });
+});
+
+describe('app.locals', () => {
+  test('should have property pluralize that equals the required package', () => {
+    expect(app.locals.pluralize).toEqual(pluralize);
   });
 });

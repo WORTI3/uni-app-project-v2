@@ -6,3 +6,6 @@ node_modules/
 
 # Database
 src/database/sessions.db
+
+# Coverage reports
+/coverage

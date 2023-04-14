@@ -12,7 +12,8 @@
   "scripts": {
     "start": "nodemon -e js,css,njk, ./src/server",
     "start:dev": "postcss ./src/assets/styles/main.css -o public/main.css & npm run start",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "test:coverage": "NODE_ENV=test jest --coverage"
   },
   "dependencies": {
     "autoprefixer": "^10.4.14",
