@@ -2,8 +2,7 @@
 
 "Faultifier" - a simple [Express][express] App written for Software Engineering and Agile university module.
 
-Site is hosted [here](https://faultifier.onrender.com)
-*(Demo site with 500MB of RAM)*
+Site is no longer hosted.
 
 <details>
 <summary>In-Depth Description:</summary>
