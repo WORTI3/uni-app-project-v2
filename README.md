@@ -1,4 +1,4 @@
-# uni-app-project <img style="float: right; padding: 10px;" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWORTI31212%2Funi-app-project&count_bg=%23005CB8&title_bg=%23555555&icon=&icon_color=%23EB0000&title=VIEWS&edge_flat=false">
+# uni-app-project <img style="float: right; padding: 10px;" src="https://page-views.glitch.me/badge?page_id=WORTI3.uni-app-project">
 
 "Faultifier" - a simple [Express][express] App written for Software Engineering and Agile university module.
 
