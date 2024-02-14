@@ -1,0 +1,38 @@
+{% if not showAllClosed and not showAll %}
+<div class="my-5">
+    <h2 class="font-semibold text-gray-500">{% if user.role === 1 %}All{% else %}You have {% endif %} {{ openCount }} open tickets</h2>
+</div>
+
+{% include "../_messages.njk" %}
+        
+<table class="table-auto text-left w-full text-gray-500">
+  <thead>
+    <tr class=" font-semibold">
+      <th>ID #</th>
+      <th>Name</th>
+      <th>Asset Code</th>
+      <th>Raised</th>
+      {% if user.role === 1 %}<th>Owner</th>{% endif %}
+    </tr>
+  </thead>
+  <tbody> 
+    {% for asset in assets %}
+    <tr class="hover:text-picton-blue-700">
+      <td>{{ asset.id }}</td>
+      <td>{{ asset.name }}</td>
+      <td>{{ asset.code }}</td>
+      <td>{{ asset.created }}</td>
+      {% if user.role === 1 %}<td>{{ asset.owner }}</td>{% endif %}
+      <td>
+        <form action="{{ asset.url }}/edit" method="get">
+          {% include "../_csrf.njk" %}
+          <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+            Edit
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
