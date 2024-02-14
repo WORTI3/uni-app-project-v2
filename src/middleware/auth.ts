@@ -3,6 +3,15 @@ import {validationResult} from 'express-validator';
 import {type RequestHandler} from 'express';
 import { User } from '../types';
 
+interface baseInputValues {
+	username: string;
+	password: string;
+	name?: string;
+	code?: string;
+	type?: 'Hardware fault' | 'Software fault' | 'Other';
+	note?: string;
+}
+
 /**
  * Middleware function that checks the validation result of a request and redirects to the original URL with error messages if there are any validation errors.
  * @param {Object} req - The request object.
@@ -15,10 +24,25 @@ export const checkValidationResult: RequestHandler = (req, res, next) => {
 	const fieldErrors = [];
 
   // Extract the input values from the request body
-  const inputValues = {
+  const inputValues: baseInputValues = {
     username: req.body.username,
     password: req.body.password,
 	}
+	// Conditionally add additional input values based on the URL
+  const url = req.originalUrl;
+	const session = req.session as any;
+  if (url.endsWith('/edit') || url.endsWith('/add')) {
+		inputValues.name = req.body.name;
+		inputValues.code = req.body.code;
+    inputValues.type = req.body.type;
+    inputValues.note = req.body.note;
+		session.asset = {
+			name: req.body.name,
+			code: req.body.code,
+			type: req.body.type,
+			note: req.body.note,
+		};
+  }
 	console.log(inputValues);
 
 	for (const [key, value] of Object.entries(inputValues)) {
@@ -28,43 +52,15 @@ export const checkValidationResult: RequestHandler = (req, res, next) => {
       error: result.find(e => e.param === key)?.msg || null
     });
   }
-	const session = req.session as any;
-	// session.messages = messages;
-	console.log(fieldErrors);
+	session.messages = result.map(error => (error.msg));
+
+	if(session.messages.length === 0){ 
+		session.errorFields = []
+		return next()
+	};
+
 	session.errorFields = fieldErrors;
-
-	const url = req.originalUrl;
 	return res.redirect(url);
-	
-	if (result.length > 10) {
-		console.log("error result: ", result);
-		
-		const messages = result.map((error: { msg: any; }) => error.msg);
-		const session = req.session as any;
-		session.messages = messages;
-		console.log(messages);
-
-		// const fieldErrors = result.map((error: { param: any, value: string; }) => {error.param, error.value });
-		const fieldErrors = result.map(error => ({
-      field: error.param,
-      value: error.value ?? req.body[error.param]
-    }));
-		session.errorFields = fieldErrors;
-		
-		const url = req.originalUrl;
-		// if (url.endsWith('/edit') || url.endsWith('/add')) {
-		// 	req.session.asset = {
-		// 		name: req.body.name,
-		// 		code: req.body.code,
-		// 		type: req.body.type,
-		// 		note: req.body.note,
-		// 	};
-		// }
-
-		return res.redirect(url);
-	}
-
-	next();
 };
 
 /**
@@ -79,10 +75,10 @@ export const checkValidationResult: RequestHandler = (req, res, next) => {
 export const isAdmin: RequestHandler = (req, res, next) => {
   const user = req.user as User;
 	if (req.isAuthenticated() && user.role === 1) {
-		next();
+		return next();
 	}
 
 	const session = req.session as any;
 	session.messages = [ERROR_MESSAGES.NO_PERMISSION];
-	return res.redirect('/');
+	res.redirect('/');
 };
