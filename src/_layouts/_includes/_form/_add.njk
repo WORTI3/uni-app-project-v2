@@ -1,42 +1,45 @@
 {% if addNew %}
-    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
-        <div class="mb-5">
-            <h1 class="font-semibold text-2xl text-gray-800">Raise a new ticket</h1>
-        </div>
+<a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
+<div class="mb-5">
+  <h1 class="font-semibold text-2xl text-gray-800">Raise a new ticket</h1>
+</div>
 
-        {# Inlcude messages include to display field error messages on the UI #}
-        {% include "../_messages.njk" %}
-        
-        <form action="/add" method="post" novalidate>
-            {% include "../_csrf.njk" %}
-            {# Accessible names and input label names for ease of use #}
-            <label for="name" class="text-gray-500">Item name</label>
-            <input id="name" name="name" type="text" placeholder="e.g Macbook Pro" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
-            <div class="grid grid-cols-2 gap-6 mb-6">
-                <div class="flex flex-col">
-                    <label for="code" class="text-gray-500 mb-1">Item asset code</label>
-                    <p class="text-gray-500 mb-1">(six digit code found on the device)</p>
-                    <input id="code" name="code" type="text" placeholder="e.g NHS001" value="{{ asset.code }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
-                </div>
-                <div class="flex flex-col">
-                    <label for="type" class="text-gray-500 mb-1">Type of fault</label>
-                    <p class="text-gray-500 mb-1">(select the most applicable)</p>
-                    <select id="type" name="type" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
-                        <option value="Hardware fault">Hardware fault</option>
-                        <option value="Software fault">Software fault</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-            </div>
+{# Inlcude messages include to display field error messages on the UI #}
+{# {% include "../_messages.njk" %} #}
 
-            <label for="note" class="text-gray-500 block">Note</label>
-            <p class="text-gray-500 mb-1">(describe what is wrong within 200 characters)</p>
-            <input id="note" name="note" type="text" placeholder="e.g The charging port has broken" value="{{ asset.note }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
+<form action="/add" method="post" novalidate>
+  {% include "../_csrf.njk" %}
+  {# Accessible names and input label names for ease of use #}
+  <label for="name" class="text-gray-500 {% if errorFields[2].error %}text-red-500{% endif %}">Item name </label>
+  <input id="name" {% if errorFields[2].error %}autofocus{% endif%} name="name" type="text" placeholder="e.g Macbook Pro" value="{{ asset.name }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none {% if errorFields[2].error %}focus:border-red-500 border-red-200{% else %}mb-6{% endif %} focus:border-picton-blue-500">
+  {% if errorFields[2].error %}<p class="mb-6 text-sm font-semibold text-red-500">{{ errorFields[2].error }}</p>{% endif %}
 
-            <button type="submit" class="w-1/2 flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
-                Submit
-            </button>
-        </form>
+  <div class="grid grid-cols-2 gap-6 mb-4">
+    <div class="flex flex-col">
+      <label for="code" class="text-gray-500 mb-1 {% if errorFields[3].error %}text-red-500{% endif %}">Item asset code</label>
+      <p class="text-gray-500 mb-1">(six digit code found on the device)</p>
+      <input id="code" name="code" {% if errorFields[3].error %}autofocus{% endif%} type="text" placeholder="e.g NHS001" value="{{ asset.code }}" required class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none {% if errorFields[3].error %}focus:border-red-500 border-red-200{% else %}mb-6{% endif %} focus:border-picton-blue-500">
+      {% if errorFields[3].error %}<p class="mb-6 text-sm font-semibold text-red-500">{{ errorFields[3].error }}</p>{% endif %}
     </div>
+    
+    <div class="flex flex-col">
+      <label for="type" class="text-gray-500 mb-1">Type of fault</label>
+      <p class="text-gray-500 mb-1">(select the most applicable)</p>
+      <select id="type" name="type" selected="{{ asset.type }}" class="text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500">
+        <option value="Hardware fault" {% if asset.type === 'Hardware fault'%}selected{% endif %}>Hardware fault</option>
+        <option value="Software fault" {% if asset.type === 'Software fault'%}selected{% endif %}>Software fault</option>
+        <option value="Other" {% if asset.type === 'Other'%}selected{% endif %}>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <label for="note" class="text-gray-500 {% if errorFields[5].error %}text-red-500{% endif %}">Note</label>
+  <p class="text-gray-500 mb-1">(describe what is wrong within 200 characters)</p>
+  <input id="note" {% if errorFields[5].error %}autofocus{% endif%} name="note" type="text" placeholder="e.g The charging port has broken" value="{{ asset.note }}" required class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border rounded-lg focus:outline-none {% if errorFields[5].error %}focus:border-red-500 border-red-200{% else %}mb-6{% endif %} focus:border-picton-blue-500">
+  {% if errorFields[5].error %}<p class="mb-6 text-sm font-semibold text-red-500">{{ errorFields[5].error }}</p>{% endif %}
+
+  <button type="submit" class="w-1/2 flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+    Submit
+  </button>
+</form>
 {% endif %}
