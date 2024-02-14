@@ -1,8 +1,8 @@
-const sqlite3 = require('sqlite3');
-const mkdirp = require('mkdirp');
-const crypto = require('crypto');
+import sqlite3, {type Database} from 'sqlite3';
+const mkdrip = require('mkdirp');
+import crypto from 'crypto';
 
-const DATABASE_DIR = './src/database'; // databases dir
+const DATABASE_DIR = './src/database'; // Databases dir
 const DATABASE_PATH = DATABASE_DIR + '/assets.db';
 
 /**
@@ -10,14 +10,14 @@ const DATABASE_PATH = DATABASE_DIR + '/assets.db';
  * @param {string} DATABASE_DIR - The path of the directory to create.
  * @returns None
  */
-mkdirp.sync(DATABASE_DIR);
+mkdrip.sync(DATABASE_DIR);
 
 /**
  * Creates a new instance of a SQLite3 database using the specified path.
  * @param {string} DATABASE_PATH - The path to the SQLite3 database file.
  * @returns An instance of a SQLite3 database.
  */
-const db = new sqlite3.Database(DATABASE_PATH);
+const db: Database = new sqlite3.Database(DATABASE_PATH);
 
 /**
  * Creates two tables in the database if they do not already exist: 'users' and 'assets'.
@@ -27,16 +27,16 @@ const db = new sqlite3.Database(DATABASE_PATH);
  * @param None
  * @returns None
  */
-db.serialize(function() {
-  db.run("CREATE TABLE IF NOT EXISTS users ( \
+db.serialize(() => {
+	db.run('CREATE TABLE IF NOT EXISTS users ( \
     id INTEGER PRIMARY KEY, \
     username TEXT UNIQUE, \
     role INTEGER NULL, \
     hashed_password BLOB, \
     salt BLOB \
-  )");
+  )');
 
-  db.run("CREATE TABLE IF NOT EXISTS assets ( \
+	db.run('CREATE TABLE IF NOT EXISTS assets ( \
     id INTEGER PRIMARY KEY, \
     owner_id INTEGER NOT NULL, \
     owner_name VARCHAR(32) NOT NULL, \
@@ -48,7 +48,7 @@ db.serialize(function() {
     status TEXT NOT NULL, \
     note TEXT, \
     closed INTEGER \
-  )");
+  )');
 });
 
 /**
@@ -57,18 +57,18 @@ db.serialize(function() {
  * @param {Object} db - the database object to insert the users into
  * @returns None
  */
-var salt = crypto.randomBytes(16);
+const salt = crypto.randomBytes(16);
 db.run('INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)', [
-  'admin',
-  1,
-  crypto.pbkdf2Sync('admin', salt, 310000, 32, 'sha256'),
-  salt
+	'admin',
+	1,
+	crypto.pbkdf2Sync('admin', salt, 310000, 32, 'sha256'),
+	salt,
 ]);
 
 db.run('INSERT OR IGNORE INTO users (username, hashed_password, salt) VALUES (?, ?, ?)', [
-  'user',
-  crypto.pbkdf2Sync('user', salt, 310000, 32, 'sha256'),
-  salt
+	'user',
+	crypto.pbkdf2Sync('user', salt, 310000, 32, 'sha256'),
+	salt,
 ]);
 
-module.exports = db;
+export default db;

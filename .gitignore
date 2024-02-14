@@ -9,3 +9,6 @@ src/database/sessions.db
 
 # Coverage reports
 /coverage
+
+# Dist
+/dist
