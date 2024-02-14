@@ -3,7 +3,7 @@
 {% set title = "Sign up" %}
 
 {% block mainContent %}
-<div class="p-12 bg-white mx-auto rounded-3xl w-96 ">
+<div class="p-12 bg-white sm:mx-auto rounded-md w-1/2 max-sm:w-full max-sm:p-6">
 	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
 	{{ header({ heading: 'Sign up', subHeading: 'Already have an account?', link: '/login', linkText: 'Sign in' }) }}
 	{# Includes messages for field errors #}
@@ -13,6 +13,7 @@
     	{% include "../_layouts/_includes/_csrf.njk" %}
 			{# Form input content #}
 			{% include "../_layouts/_includes/_form/_content.njk" %}
+			<p class="-mt-6 mb-4 font-semibold text-xs mx-2 text-gray-500">Password must be at least 5 characters containing 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character</p>
 			{{ submitButton({ buttonText: 'Sign up' }) }}
 	</form>
 </div>

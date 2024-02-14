@@ -3,14 +3,18 @@
 {% set title = "Dashboard" %}
 
 {% block content %}
-	{# main asset dashboard w/buttons #}
-	{% include "../_layouts/_includes/_dashboard.njk" %}
-	{# asset edit panel #}
-	{% include "../_layouts/_includes/_form/_edit.njk" %}
-	{# asset view panel #}
-	{% include "../_layouts/_includes/_form/_view.njk" %}
-	{# all assets panel #}
-	{% include "../_layouts/_includes/_form/_all.njk" %}
-	{# add asset panel #}
-	{% include "../_layouts/_includes/_form/_add.njk" %}
+	{# Common wrapper for styling within the app #}
+	<div class="p-12 bg-white sm:mx-auto rounded-md w-1/2 max-sm:w-full max-sm:p-6">
+		{# main asset dashboard w/buttons #}
+		{% include "../_layouts/_includes/_dashboard.njk" %}
+
+		{# asset edit panel #}
+		{% include "../_layouts/_includes/_form/_edit.njk" %}
+		{# asset view panel #}
+		{% include "../_layouts/_includes/_form/_view.njk" %}
+		{# all assets panel #}
+		{% include "../_layouts/_includes/_form/_all.njk" %}
+		{# add asset panel #}
+		{% include "../_layouts/_includes/_form/_add.njk" %}
+	</div>
 {% endblock %}

@@ -96,7 +96,7 @@ export const fetchAssetById: RequestHandler = (req, res, next) => {
  * @returns None
  * @throws {Error} If there is an error updating the asset in the database.
  */
-export const updateAssetById: RequestHandler = (req, res, next) => {
+export const updateAssetById: RequestHandler = (req, _res, next) => {
   const session = req.session as any;
   const user = req.user as User;
   if (!session.update) return next();
@@ -113,9 +113,9 @@ export const updateAssetById: RequestHandler = (req, res, next) => {
   ],
     function (err) {
       if (err) { return next(err); }
-      next();
     }
   );
+  next();
 }
 
 /**
