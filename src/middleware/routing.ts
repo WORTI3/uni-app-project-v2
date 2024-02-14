@@ -1,4 +1,5 @@
-const { ASSET_STATUS, EDIT_UPDATES, SUCCESS_MESSAGES } = require("../assets/constants");
+import { RequestHandler } from 'express';
+import { ASSET_STATUS, EDIT_UPDATES, SUCCESS_MESSAGES } from '../assets/constants';
 
 /**
  * Middleware function that checks if the 'all' property is present in the request body.
@@ -8,8 +9,8 @@ const { ASSET_STATUS, EDIT_UPDATES, SUCCESS_MESSAGES } = require("../assets/cons
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-function checkAll(req, res, next) {
-  var all = req.body.all;
+export const checkAll: RequestHandler = (req, res, next) => {
+  let all = req.body.all;
   if (all){
     if (all === ASSET_STATUS.CLOSED) {
       all = 'all/' + all;
@@ -27,7 +28,7 @@ function checkAll(req, res, next) {
  * @param {Function} next - The next middleware function to be called.
  * @returns None
  */
-function checkAdd(req, res, next) {
+export const checkAdd: RequestHandler = (req, res, next) => {
   if (req.body.add){
     return res.redirect('/' + req.body.add);
   }
@@ -43,9 +44,10 @@ function checkAdd(req, res, next) {
  * @param {Function} next - The next middleware function to call.
  * @returns None
  */
-function checkEditUpdate(req, res, next) {
+export const checkEditUpdate: RequestHandler = (req, res, next) => {
   if (req.body.update && req.body.update === EDIT_UPDATES.UPDATE) {
-    req.session.update = {
+    const session = req.session as any;
+    session.update = {
       name: req.body.name,
       code: req.body.code,
       type: req.body.type,
@@ -53,8 +55,8 @@ function checkEditUpdate(req, res, next) {
       updated: true
     };
 
-    req.session.messages = [ SUCCESS_MESSAGES.DEFAULT ];
-    req.session.msgTone = "positive";
+    session.messages = [ SUCCESS_MESSAGES.DEFAULT ];
+    session.msgTone = "positive";
     return res.redirect('/' + req.params.id + '/view');
   }
   next();
@@ -68,10 +70,11 @@ function checkEditUpdate(req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-function checkEditAdmin(req, res, next) { 
+export const checkEditAdmin: RequestHandler = (req, res, next) => { 
   if (req.body.update && req.body.update === EDIT_UPDATES.CLOSE) {
+    const session = req.session as any;
     // update here as well incase fields were updated before close
-    req.session.update = {
+    session.update = {
       name: req.body.name,
       code: req.body.code,
       type: req.body.type,
@@ -80,18 +83,11 @@ function checkEditAdmin(req, res, next) {
       closed: true
     };
     // close actions
-    req.session.messages = [ SUCCESS_MESSAGES.CLOSED ];
-    req.session.msgTone = "positive";
+    session.messages = [ SUCCESS_MESSAGES.CLOSED ];
+    session.msgTone = "positive";
     return res.redirect('/' + req.params.id + '/view');
   }
 
   // delete check not needed
   next();
-};
-
-module.exports = {
-  checkAll,
-  checkAdd,
-  checkEditUpdate,
-  checkEditAdmin,
 };

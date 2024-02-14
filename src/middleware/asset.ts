@@ -1,6 +1,8 @@
-const { DateTime } = require("luxon");
-const { ASSET_STATUS } = require("../assets/constants");
-const db = require('../db');
+import { RequestHandler } from "express";
+import { DateTime } from 'luxon';
+import db from '../db';
+import { ASSET_STATUS } from "../assets/constants";
+import { User } from "../types";
 
 /**
  * Fetches assets from the database based on the user's role and owner_id.
@@ -9,11 +11,13 @@ const db = require('../db');
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-function fetchAssets(req, res, next) {
-  var query = "SELECT * FROM assets WHERE owner_id = ?";
-  var param = [req.user.id];
+export const fetchAssets: RequestHandler = (req, res, next) => {
+  if(!req.user) return next();
+  const user = req.user as User;
+  let query = "SELECT * FROM assets WHERE owner_id = ?";
+  let param = [user.id];
   // Admin check to change SQL query & param
-  if (req.isAuthenticated() && req.user.role === 1) {
+  if (req.isAuthenticated() && user.role === 1) {
     query = "SELECT * FROM assets";
     param = [];
   }
@@ -23,7 +27,8 @@ function fetchAssets(req, res, next) {
       return next(err);
     }
 
-    var assets = rows.map(function (row) {
+    let assets = rows.map(function (row) {
+      
       return {
         id: row.id,
         created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
@@ -33,8 +38,9 @@ function fetchAssets(req, res, next) {
         type: row.type,
         status: row.status,
         note: row.note,
-        closed: row.closed == 1 ? true : false,
+        closed: row.closed == 1,
         url: "/" + row.id,
+        owner: row.owner_name,
       };
     });
     res.locals.assets = assets;
@@ -47,20 +53,20 @@ function fetchAssets(req, res, next) {
 }
 
 /**
- * Fetches an asset from the database by its ID and formats the data into an object.
+ * Fetches an asset from the database by its ID and formats the data into an object. Password@24
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-function fetchAssetById(req, res, next) {
+export const fetchAssetById: RequestHandler = (req, res, next) => {
   db.all("SELECT * FROM assets WHERE id = ?", [req.params.id],
     function (err, rows) {
       if (err) {
         return next(err);
       }
 
-      var asset = rows.map(function (row) {
+      let asset = rows.map(function (row) {
         return {
           id: row.id,
           created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
@@ -71,7 +77,7 @@ function fetchAssetById(req, res, next) {
           type: row.type,
           status: row.status,
           note: row.note,
-          closed: row.closed == 1 ? true : false,
+          closed: row.closed == 1,
           url: "/" + row.id,
         };
       });
@@ -90,18 +96,20 @@ function fetchAssetById(req, res, next) {
  * @returns None
  * @throws {Error} If there is an error updating the asset in the database.
  */
-function updateAssetById(req, res, next) {
-  if (!req.session.update) return next();
+export const updateAssetById: RequestHandler = (req, res, next) => {
+  const session = req.session as any;
+  const user = req.user as User;
+  if (!session.update) return next();
   db.run('UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?', [
-    req.session.update.name,
-    req.session.update.code,
-    req.session.update.type,
-    req.session.update.note,
-    req.session.update.status ?? ASSET_STATUS.OPEN,
-    req.session.update.closed ? 1 : null,
+    session.update.name,
+    session.update.code,
+    session.update.type,
+    session.update.note,
+    session.update.status ?? ASSET_STATUS.OPEN,
+    session.update.closed ? 1 : null,
     new Date().toISOString(),
     req.params.id,
-    req.user.id
+    user.id,
   ],
     function (err) {
       if (err) { return next(err); }
@@ -117,22 +125,16 @@ function updateAssetById(req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-function updateLocalAsset(req, res, next) {
-  if (req.session.asset) {
-    var asset = res.locals.asset ?? {};
-    asset.name = req.session.asset.name;
-    asset.code = req.session.asset.code;
-    asset.type = req.session.asset.type;
-    asset.note = req.session.asset.note;
-    req.session.asset = undefined;
+export const updateLocalAsset: RequestHandler = (req, res, next) => {
+  const session = req.session as any;
+  if (session?.asset) {
+    let asset = res.locals.asset ?? {};
+    asset.name = session.asset.name;
+    asset.code = session.asset.code;
+    asset.type = session.asset.type;
+    asset.note = session.asset.note;
+    session.asset = undefined;
     res.locals.asset = asset;
   }
   next();
 }
-
-module.exports = {
-  fetchAssets,
-  fetchAssetById,
-  updateAssetById,
-  updateLocalAsset,
-};

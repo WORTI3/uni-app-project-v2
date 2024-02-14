@@ -1,79 +1,12 @@
-const express = require("express");
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
-const crypto = require("crypto");
-const db = require("../db");
-const { ERROR_MESSAGES, PASSWORD_REGEX } = require('../assets/constants');
-const { check } = require('express-validator');
-const { checkValidationResult } = require('../middleware/auth');
-const router = express.Router();
+import { Router } from 'express';
+import passport from 'passport';
+import crypto from "crypto";
+import db from "../db";
+import { ERROR_MESSAGES, PASSWORD_REGEX } from '../assets/constants';
+import { checkValidationResult } from '../middleware/auth';
+import { check } from 'express-validator';
 
-/**
- * Configures a new LocalStrategy for Passport.js authentication using a username and password.
- * Credit to https://www.passportjs.org/tutorials/password/verify/ for local passport setup.
- * 
- * @param {function} verify - The verification function to use for authentication.
- * @returns None
- */
-passport.use(
-  new LocalStrategy(function verify(username, password, cb) {
-    db.get("SELECT * FROM users WHERE username = ?", [username],
-      function (err, row) {
-        if (err) {
-          return cb(err);
-        }
-        if (!row) {
-          /**
-           * Returns an error message indicating that the username is invalid.
-           * @returns {object} An object containing an error message.
-           */
-          return cb(null, false, {
-            message: ERROR_MESSAGES.USERNAME.DEFAULT,
-          });
-        }
-
-        crypto.pbkdf2(password, row.salt, 310000, 32, "sha256",
-          function (err, hashedPassword) {
-            if (err) {
-              return cb(err);
-            }
-            if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-              // Returns a callback with an error message object.
-              return cb(null, false, {
-                message: ERROR_MESSAGES.DEFAULT,
-              });
-            }
-            return cb(null, row);
-          }
-        );
-      }
-    );
-  })
-);
-
-/**
- * Serializes the user object to be stored in the session.
- * @param {Object} user - The user object to be serialized.
- * @param {Function} cb - The callback function to be called after serialization.
- * @returns None
- */
-passport.serializeUser(function (user, cb) {
-  process.nextTick(function () {
-    cb(null, { id: user.id, username: user.username, role: user.role });
-  });
-});
-
-/**
- * Passport deserialization function that deserializes the user object.
- * @param {Object} user - The user object to deserialize.
- * @param {Function} cb - The callback function to call once deserialization is complete.
- * @returns None
- */
-passport.deserializeUser(function (user, cb) {
-  process.nextTick(function () {
-    return cb(null, user);
-  });
-});
+const router = Router();
 
 /**
  * GET request handler for the login page.
@@ -82,7 +15,7 @@ passport.deserializeUser(function (user, cb) {
  * @param {Function} next - The next middleware function (unused).
  * @returns None
  */
-router.get("/login", function (req, res, next) {
+router.get("/login", function (_req, res) {
   res.render("login");
 });
 
@@ -171,7 +104,7 @@ router.post(
           if (err) {
             return next(err);
           }
-          var user = {
+          let user = {
             id: this.lastID,
             username: req.body.username,
           };
@@ -187,4 +120,4 @@ router.post(
   );
 });
 
-module.exports = router;
+export default router;
