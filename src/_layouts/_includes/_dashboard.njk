@@ -7,7 +7,6 @@
 {% include "./_messages.njk" %}
 
 <h2 class="text-gray-500 mb-2">What would you like to do?</h2>
-<p class="text-gray-500 mb-2">You have {{ openCount }} tickets open</p>
 <div class="grid grid-cols-1 sm:grid-cols-3">
 	{% if openCount > 0 %}
 		<form action="/" method="post">
@@ -32,4 +31,6 @@
 		</button>
 	</form>
 </div>
+
+{% include "./_form/_open.njk" %}
 {% endif %}
