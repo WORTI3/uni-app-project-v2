@@ -41,7 +41,8 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   DEFAULT: "You have updated this ticket",
   CLOSED: "You have closed this ticket",
-  DELETED: "You have permanently deleted a ticket"
+  DELETED: "You have permanently deleted a ticket",
+  CREATED: "You have opened and raised a support ticket"
 };
 
 /**
