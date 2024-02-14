@@ -14,12 +14,11 @@ const app = express();
 const SqliteStore = sqliteStoreFactory(session);
 const store = new SqliteStore({
   driver: sqlite3.Database,
-  path: 'sessions.db', // Specify the path to your SQLite database file
-  ttl:  86400, // Session Time To Live in seconds
-  // dir: './src/database',
+  path: './src/database/sessions.db', // Specify the path to the SQLite database file
+  ttl: 86400, // Session Time To Live in seconds
   cleanupInterval:  300000, // Cleanup interval in milliseconds for deleting expired sessions
 });
-// 'sessions.db', dir: './src/database'
+
 // App routers
 import homeRouter from './routes/home';
 import { initPassport } from './middleware/passport';
@@ -37,7 +36,7 @@ app.set('view engine', 'njk');
  * A middleware function that adds the pluralize library to the app's local variables.
  * This allows the pluralize library to be used in any view rendered by the app.
  */
-app.locals.pluralize = require('pluralize');
+// app.locals.pluralize = require('pluralize');
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
