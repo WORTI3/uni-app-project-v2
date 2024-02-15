@@ -1,7 +1,7 @@
 import * as passportStrategy from "passport-local";
 import passport from "passport";
 import crypto from "crypto";
-import { Express, Request, Response, NextFunction } from "express";
+import { Express, Request, Response, NextFunction, Application } from "express";
 import db from "../db";
 import { ERROR_MESSAGES } from "../assets/constants";
 import { IUser } from "../types";
@@ -13,7 +13,7 @@ import { IUser } from "../types";
  * @param {Express} app - The express app instance
  * @returns None
  */
-export function initPassport(app: Express) {
+export function initPassport(app: Express | Application) {
   app.use(passport.initialize());
   /**
    * Middleware function that authenticates a user's session using Passport.
@@ -61,8 +61,6 @@ export function initPassport(app: Express) {
 
   passport.serializeUser((user, callback) => {
     callback(null, user);
-    console.log(user); // remove
-    // callback(null, { id: user.id, username: user.username, role: user.role });
   });
 
   passport.deserializeUser((user: IUser, callback) => {
