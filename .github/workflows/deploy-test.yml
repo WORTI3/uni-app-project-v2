@@ -2,6 +2,7 @@ name: Deploy test environment to provider (Railway)
 
 on:
   pull_request:
+    branches: [develop]
 
 jobs: 
   deploy-test:
