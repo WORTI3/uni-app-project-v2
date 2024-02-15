@@ -1,0 +1,39 @@
+name: Deploy test environment to provider (Railway)
+
+on:
+  pull_request:
+
+jobs: 
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Create PR environment on Railway
+        if: github.event.action == 'opened'
+        uses: Faolain/railway-pr-deploy@v2.0.4
+        with:
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+          SRC_ENVIRONMENT_NAME: production
+          DEST_ENV_NAME: pr-${{ github.event.pull_request.number }}
+          PROVIDER: node
+          branch_name: ${{ github.head_ref }}
