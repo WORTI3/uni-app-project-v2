@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs: 
-  deploy:
+  deploy-test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,6 +26,9 @@ jobs:
 
       - name: Run tests
         run: npm run test
+      
+      - name: Install Railway
+        run: npm i -g @railway/cli
 
       - name: Create PR environment on Railway
         if: github.event.action == 'opened'
