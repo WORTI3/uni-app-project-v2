@@ -9,7 +9,7 @@
  * @property {Object} PASSWORD - An object containing error messages related to password validation.
  * @property {string} PASSWORD.DEFAULT - The default error message for an invalid
  */
-const ERROR_MESSAGES = {
+export const ERROR_MESSAGES = {
   DEFAULT: "Incorrect username or password.",
   USERNAME: { 
     DEFAULT: "Invalid username",
@@ -38,10 +38,11 @@ const ERROR_MESSAGES = {
  * @property {string} CLOSED - The success message for closing a ticket.
  * @property {string} DELETED - The success message for permanently deleting a ticket.
  */
-const SUCCESS_MESSAGES = {
+export const SUCCESS_MESSAGES = {
   DEFAULT: "You have updated this ticket",
   CLOSED: "You have closed this ticket",
-  DELETED: "You have permanently deleted a ticket"
+  DELETED: "You have permanently deleted a ticket",
+  CREATED: "You have opened and raised a support ticket"
 };
 
 /**
@@ -49,7 +50,7 @@ const SUCCESS_MESSAGES = {
  * @property {string} OPEN - The status of an open asset.
  * @property {string} CLOSED - The status of a closed asset.
  */
-const ASSET_STATUS = {
+export const ASSET_STATUS = {
   OPEN: "open",
   CLOSED: "closed",
 };
@@ -60,7 +61,7 @@ const ASSET_STATUS = {
  * @property {string} CLOSE - Indicates that an item has been closed.
  * @property {string} DELETE - Indicates that an item has been deleted.
  */
-const EDIT_UPDATES = {
+export const EDIT_UPDATES = {
   UPDATE: "update",
   CLOSE: "close",
   DELETE: "delete",
@@ -70,12 +71,4 @@ const EDIT_UPDATES = {
  * A regular expression that matches a password that contains at least one uppercase letter,
  * one lowercase letter, one number, and one special character.
  */
-const PASSWORD_REGEX = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])');
-
-module.exports = {
-  ERROR_MESSAGES,
-  SUCCESS_MESSAGES,
-  ASSET_STATUS,
-  EDIT_UPDATES,
-  PASSWORD_REGEX,
-};
+export const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?[#?!@$%^&*-])/;

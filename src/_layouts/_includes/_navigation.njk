@@ -13,6 +13,7 @@
                 </div>
             </div>
         </a>
+        {% if user.id === 1 %}<p class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white">ADMIN ACCOUNT</p>{% endif %}
         <form action="/logout" method="post">
             {% include "./_csrf.njk" %}
             <button class="text-sm font-semibold px-4 py-2 leading-none border rounded text-gray-600 border-gray hover:border-transparent hover:bg-gray-700 hover:text-white" type="submit">Sign out</button>

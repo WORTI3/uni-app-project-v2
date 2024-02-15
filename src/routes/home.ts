@@ -1,9 +1,9 @@
-const express = require("express");
+import { Request, Response, Router } from 'express';
 /**
  * Creates a new instance of an Express router.
  * @returns {Router} - An instance of an Express router.
  */
-const router = express.Router();
+export const homeRouter = Router();
 
 /**
  * Handles GET requests to the root route.
@@ -13,11 +13,10 @@ const router = express.Router();
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-router.get("/", function (req, res, next) {
-  if (!req.user) {
-    return res.render("home");
-  }
-  res.render("index", { user: req.user });
-});
+homeRouter.get('/', (req: Request, res: Response) => {
+	if (!req.user) {
+		return res.render('home');
+	}
 
-module.exports = router;
+	res.redirect('/dashboard');
+});

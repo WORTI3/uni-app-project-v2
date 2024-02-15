@@ -1,30 +1,17 @@
-const express = require("express");
-const {
-  ASSET_STATUS,
-  ERROR_MESSAGES,
-  SUCCESS_MESSAGES,
-} = require("../assets/constants");
+import { Router } from 'express';
+import { ASSET_STATUS, ERROR_MESSAGES, SUCCESS_MESSAGES } from '../assets/constants';
 /**
  * A middleware function that ensures that a user is logged in before allowing access to a route.
  * @param {Object} require - The require object from Node.js.
  * @returns The ensureLoggedIn middleware function.
  */
 const ensureLogIn = require("connect-ensure-login").ensureLoggedIn;
-const db = require("../db"); // imports the database module and assigns it to the variable db.
-const {
-  fetchAssets,
-  fetchAssetById,
-  updateAssetById,
-  updateLocalAsset,
-} = require("../middleware/asset");
-const { isAdmin, checkValidationResult } = require("../middleware/auth");
-const {
-  checkEditUpdate,
-  checkAll,
-  checkAdd,
-  checkEditAdmin,
-} = require("../middleware/routing");
-const { check } = require("express-validator");
+import { check } from 'express-validator';
+import { checkValidationResult, isAdmin } from '../middleware/auth';
+import { checkAdd, checkAll, checkEditAdmin, checkEditUpdate } from '../middleware/routing';
+import { fetchAssets, updateLocalAsset, fetchAssetById, updateAssetById } from '../middleware/asset';
+import db from '../db';
+import { User } from '../types';
 
 /**
  * Calls the `ensureLogIn` function to ensure that the user is logged in.
@@ -36,7 +23,7 @@ const ensureLoggedIn = ensureLogIn();
  * Creates a new instance of an Express router.
  * @returns {Router} - An instance of an Express router.
  */
-const router = express.Router();
+const router = Router();
 
 /**
  * GET request handler for the "/all/closed" route. 
@@ -50,11 +37,11 @@ const router = express.Router();
  */
 router.get(
   "/all/closed",
-  ensureLoggedIn,
   isAdmin, // checking admin here in case a user navigates via URL
+  ensureLoggedIn,
   fetchAssets,
   function (req, res, next) {
-    res.locals.assets = res.locals.assets.filter(function (asset) {
+    res.locals.assets = res.locals.assets.filter(function (asset: { closed: any; }) {
       return asset.closed;
     });
     res.render("index", { user: req.user, showAllClosed: true });
@@ -69,11 +56,15 @@ router.get(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get("/all", ensureLoggedIn, fetchAssets, function (req, res, next) {
-  res.locals.assets = res.locals.assets.filter(function (asset) {
+router.get("/all", ensureLoggedIn, fetchAssets, function (req, res) {
+  res.locals.assets = res.locals.assets.filter(function (asset: { closed: any; }) {
     return !asset.closed;
   });
   res.render("index", { user: req.user, showAll: true });
+});
+
+router.get("/dashboard", ensureLoggedIn, fetchAssets, function (req, res, next) {
+  res.render("index", { user: req.user });
 });
 
 /**
@@ -83,7 +74,7 @@ router.get("/all", ensureLoggedIn, fetchAssets, function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get("/add", ensureLoggedIn, updateLocalAsset, function (req, res, next) {
+router.get("/add", ensureLoggedIn, updateLocalAsset, function (req, res) {
   res.render("index", { user: req.user, addNew: true });
 });
 
@@ -96,22 +87,26 @@ router.get("/add", ensureLoggedIn, updateLocalAsset, function (req, res, next) {
  * @throws {Error} - If there is an error inserting the asset into the database.
  */
 router.post(
-  "/add",
+  '/add',
   ensureLoggedIn,
-  check("name", ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
-  check("code", ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
-  check("note", ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
+  // [
+  check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
+  check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
+  check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
   checkValidationResult,
+  // ],
+  function (req, res, next) {
+    const user = req.user as User;
+    
   /**
    * Inserts a new asset into the database with the given information.
    */
-  function (req, res, next) {
     const today = new Date().toISOString();
     db.run(
       "INSERT INTO assets (owner_id, owner_name, created, updated, name, code, type, status, note, closed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
-        req.user.id,
-        req.user.username,
+        user.id,
+        user.username,
         today,
         today,
         req.body.name,
@@ -119,7 +114,7 @@ router.post(
         req.body.type,
         ASSET_STATUS.OPEN,
         req.body.note ?? null,
-        req.body.closed == true ? 1 : null,
+        req.body.closed ? 1 : null,
       ],
       function (err) {
         if (err) {
@@ -127,7 +122,9 @@ router.post(
         }
       }
     );
-    return res.redirect("/all");
+    (req.session as any).messages = [SUCCESS_MESSAGES.CREATED];
+    (req.session as any).msgTone = 'positive';
+    res.redirect("/all");
   }
 );
 
@@ -214,19 +211,20 @@ router.post(
    * Deletes an asset from the database with the given ID and owner ID.
    */
   function (req, res, next) {
+    const session = req.session as any;
     db.run(
       "DELETE FROM assets WHERE id = ? AND owner_id = ?",
-      [req.params.id, req.user.id],
+      [req.params.id, (req.user as User).id],
       function (err) {
         if (err) {
           return next(err);
         }
-        req.session.messages = [SUCCESS_MESSAGES.DELETED];
-        req.session.msgTone = "positive";
+        session.messages = [SUCCESS_MESSAGES.DELETED];
+        session.msgTone = "positive";
         // Redirects the user to the "/all/closed" page with success message.
-        return res.redirect("/all/closed");
       }
     );
+    res.redirect("/all/closed");
   }
 );
 
@@ -254,17 +252,18 @@ router.post(
    * Deletes an asset from the database for the authenticated user.
    */
   function (req, res, next) {
+    const session = req.session as any;
     db.run(
       "DELETE FROM assets WHERE id = ? AND owner_id = ?",
-      [req.params.id, req.user.id],
+      [req.params.id, (req.user as User).id],
       function (err) {
         if (err) {
           return next(err);
         }
-        req.session.messages = [SUCCESS_MESSAGES.DELETED];
-        req.session.msgTone = "positive";
+        session.messages = [SUCCESS_MESSAGES.DELETED];
+        session.msgTone = "positive";
         // Redirects the user to the "/all" page with success message.
-        return res.redirect("/all");
+        res.redirect("/all");
       }
     );
   }
@@ -282,4 +281,4 @@ router.get("/settings", ensureLoggedIn, function (req, res, next) {
   res.render("settings", { user: req.user });
 });
 
-module.exports = router;
+export default router;

@@ -6,10 +6,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens: {
-        // => @media (max-width: 639px) { ... }
-        'smm': {'max': '639px'},
-      },
       colors: {
         "picton-blue": {
           '50': '#f1f9fe',

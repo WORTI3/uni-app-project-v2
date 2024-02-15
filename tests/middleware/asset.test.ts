@@ -1,41 +1,56 @@
-const {
-  fetchAssets,
-  fetchAssetById,
-  updateLocalAsset,
-} = require("../../src/middleware/asset");
 const { ASSET_STATUS } = require("../../src/assets/constants");
-const db = require("../../src/db");
+import { Request, Response } from "express";
+import db from "../../src/db";
+import { fetchAssets, fetchAssetById, updateLocalAsset } from "../../src/middleware/asset";
 
 const isAuthenticated = jest.fn().mockReturnValue(true);
+
+let dbAllMockCallback: jest.Mock;
+
+jest.mock('../../src/db', () => ({
+  __esModule: true,
+  default: {
+    all: jest.fn((query, params, callback) => {
+      dbAllMockCallback(query, params, callback); // Call the mock callback
+    })
+  }
+}));
+
+beforeEach(() => {
+  dbAllMockCallback = jest.fn(); // Reset the mock callback before each test
+});
 
 afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("fetchAssets() unit tests", () => {
+describe("fetchAssets()", () => {
   test("should call next(err) if there is an error while fetching assets from the database", () => {
+    // given
     const req = {
       isAuthenticated,
       user: { id: 1 },
-    };
-    const res = {};
+    } as unknown as Request;
+    const res = {} as Response;
     const next = jest.fn();
-    db.all = jest.fn((query, params, callback) => {
+    dbAllMockCallback.mockImplementationOnce((_query, _params, callback) => {
       callback(new Error("database error"));
     });
 
+    // when
     fetchAssets(req, res, next);
 
+    // then
     expect(next).toHaveBeenCalledWith(new Error("database error"));
   });
 
   test("should set correct res.locals.assets for admin user", () => {
-    // admin request
+    // given / admin request
     const req = {
       isAuthenticated,
       user: { id: 1, role: 1 },
-    };
-    const res = { locals: {} };
+    } as unknown as Request;
+    const res = { locals: {} } as Response;
     const next = jest.fn();
     const rowsFixture = [
       {
@@ -63,12 +78,14 @@ describe("fetchAssets() unit tests", () => {
         closed: null,
       },
     ];
-
-    db.all = jest.fn((query, params, callback) => {
+    dbAllMockCallback.mockImplementationOnce((_query, _params, callback) => {
       callback(null, rowsFixture);
     });
+
+    // when
     fetchAssets(req, res, next);
 
+    // then
     expect(res.locals.assets).toEqual([
       {
         id: 1,
@@ -98,11 +115,12 @@ describe("fetchAssets() unit tests", () => {
   });
 
   test("should set correct res.locals.assets when user is not an admin", () => {
+    // given
     const req = {
       isAuthenticated,
       user: { id: 2, role: null },
-    };
-    const res = { locals: {} };
+    } as unknown as Request;
+    const res = { locals: {} } as Response;
     const next = jest.fn();
 
     const rowsFixture = [
@@ -120,11 +138,13 @@ describe("fetchAssets() unit tests", () => {
       }
     ];
 
-    db.all = jest.fn((query, params, callback) => {
+    // when
+    dbAllMockCallback.mockImplementationOnce((_query, _params, callback) => {
       callback(null, rowsFixture);
     });
     fetchAssets(req, res, next);
 
+    // then
     expect(res.locals.assets).toEqual([
       {
         id: 2,
@@ -145,12 +165,12 @@ describe("fetchAssets() unit tests", () => {
     const req = {
       isAuthenticated,
       user: { id: 1 },
-    };
+    } as unknown as Request;
     const res = {
       locals: {},
-    };
+    } as Response;
     const next = jest.fn();
-    const rows = [
+    const rowsFixture = [
       {
         id: 1,
         created: "2022-01-01T00:00:00.000Z",
@@ -185,27 +205,29 @@ describe("fetchAssets() unit tests", () => {
         closed: 1,
       },
     ];
-
-    db.all = jest.fn((query, params, callback) => {
-      callback(null, rows);
+    
+    // when
+    dbAllMockCallback.mockImplementationOnce((_query, _params, callback) => {
+      callback(null, rowsFixture);
     });
     fetchAssets(req, res, next);
 
     expect(res.locals.openCount).toEqual(1);
     expect(res.locals.closedCount).toEqual(2);
-    expect(next).toBeCalledTimes(1);
+    expect(next).toHaveBeenCalledTimes(1);
   });
 });
 
-describe("fetchAssetById() unit tests", () => {
+describe("fetchAssetById()", () => {
   it("should return the asset with the given ID", () => {
+    // given
     const req = {
       params: { id: 1 },
       session: { asset: undefined },
-    };
-    const res = { locals: {} };
+    } as unknown as Request;
+    const res = { locals: {} } as Response;
     const next = jest.fn();
-    const rows = [
+    const rowsFixture = [
       {
         id: 1,
         created: "2022-01-01T00:00:00.000Z",
@@ -220,12 +242,13 @@ describe("fetchAssetById() unit tests", () => {
       },
     ];
 
-    db.all.mockImplementation((query, params, callback) => {
-      callback(null, rows);
+    // when
+    dbAllMockCallback.mockImplementationOnce((_query, _params, callback) => {
+      callback(null, rowsFixture);
     });
-
     fetchAssetById(req, res, next);
 
+    // then
     expect(db.all).toHaveBeenCalledWith(
       "SELECT * FROM assets WHERE id = ?",
       [1],
@@ -248,18 +271,22 @@ describe("fetchAssetById() unit tests", () => {
   });
 
   it("should call next with an error if there was an error fetching the asset from the database", () => {
+    // given
     const req = {
       params: { id: 1 },
-    };
-    const res = { locals: {} };
+    } as unknown as Request;
+    const res = { locals: {} } as Response;
     const next = jest.fn();
     const error = new Error("database error");
-    db.all = jest.fn((query, params, callback) => {
+    
+    // when
+    dbAllMockCallback.mockImplementationOnce((_query, _params, callback) => {
       callback(error);
     });
 
     fetchAssetById(req, res, next);
 
+    // then
     expect(db.all).toHaveBeenCalledWith(
       "SELECT * FROM assets WHERE id = ?",
       [1],
@@ -269,40 +296,49 @@ describe("fetchAssetById() unit tests", () => {
   });
 });
 
-describe("updateLocalAsset() unit tests", () => {
+describe("updateLocalAsset()", () => {
   test("should call next() if req.session.asset is undefined", () => {
-    const req = { session: {} };
-    const res = { locals: {} };
+    // given
+    const req = { session: {} } as Request;
+    const res = { locals: {} } as Response;
     const next = jest.fn();
 
+    // when
     updateLocalAsset(req, res, next);
 
+    // then
     expect(res.locals.asset).toBeUndefined();
-    expect(next).toBeCalledTimes(1);
+    expect(next).toHaveBeenCalledTimes(1);
   });
 
   test("should set locals.asset correctly when session.asset present", () => {
+    // given
     const asset = { name: "asset 1", code: "NHS001" };
-    const req = { session: { asset: asset } };
-    const res = { locals: {} };
+    const req = { session: { asset: asset } } as unknown as Request;
+    const res = { locals: {} } as Response;
     const next = jest.fn();
 
+    // when
     updateLocalAsset(req, res, next);
 
+    // then
     expect(req.session.asset).toBeUndefined();
     expect(res.locals.asset).toEqual(asset);
-    expect(next).toBeCalledTimes(1);
+    expect(next).toHaveBeenCalledTimes(1);
   });
 
   test("should override values if present in locals.asset", () => {
+    // given
     const localAsset = { name: "asset 1", code: "NHS001", note: "Test note" };
     const asset = { name: "asset 2", code: "NHS002" };
-    const req = { session: { asset: asset } };
-    const res = { locals: { asset: localAsset } };
+    const req = { session: { asset: asset } } as unknown as Request;
+    const res = { locals: { asset: localAsset } } as unknown as Response;
     const next = jest.fn();
 
+    // when
     updateLocalAsset(req, res, next);
 
+    // then
     expect(req.session.asset).toBeUndefined();
     expect(res.locals.asset).toEqual(asset);
     expect(next).toBeCalledTimes(1);

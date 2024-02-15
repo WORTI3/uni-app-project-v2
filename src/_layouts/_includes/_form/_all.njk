@@ -1,80 +1,74 @@
 {% if showAll %}
-    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
-        <div class="mb-5">
-            <h1 class="font-semibold text-2xl text-gray-800">{% if user.role === 1 %}All{% else %}Your{% endif %} open tickets ({{ openCount }})</h1>
-        </div>
+<a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
+<div class="mb-5">
+    <h1 class="font-semibold text-2xl text-gray-800">{% if user.role === 1 %}All{% else %}Your{% endif %} open tickets ({{ openCount }})</h1>
+</div>
 
-        {% include "../_messages.njk" %}
+{% include "../_messages.njk" %}
         
-        <table class="table-auto text-left w-full">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Logged</th>
-                </tr>
-            </thead>
-            <tbody> 
-                {% for asset in assets %}
-                <tr>
-                    <td>{{ asset.id }}</td>
-                    <td>{{ asset.name }}</td>
-                    <td>{{ asset.code }}</td>
-                    <td>{{ asset.created }}</td>
-                    <td>
-                        <form action="{{ asset.url }}/edit" method="get">
-                            {% include "../_csrf.njk" %}
-                            <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
-                                Edit
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-    </div>
+<table class="table-auto text-left w-full">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Logged</th>
+        </tr>
+    </thead>
+    <tbody> 
+        {% for asset in assets %}
+        <tr>
+            <td>{{ asset.id }}</td>
+            <td>{{ asset.name }}</td>
+            <td>{{ asset.code }}</td>
+            <td>{{ asset.created }}</td>
+            <td>
+                <form action="{{ asset.url }}/edit" method="get">
+                    {% include "../_csrf.njk" %}
+                    <button type="submit" name="edit" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                        Edit
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endif %}
 {% if showAllClosed %}
-    <div class="px-12 py-8 bg-white mx-auto rounded-3xl max-w-3xl mt-6">
-        <a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
-        <div class="mb-5">
-            <h1 class="font-semibold text-2xl text-gray-800">Closed Tickets ({{ closedCount }})</h1>
-        </div>
+<a href="/" class="float-left text-sm font-bold text-picton-blue-600 hover:text-picton-blue-700">Go back</a><br>
+<div class="mb-5">
+    <h1 class="font-semibold text-2xl text-gray-800">Closed Tickets ({{ closedCount }})</h1>
+</div>
 
-        {% include "../_messages.njk" %}
-        
-        <table class="table-auto text-left w-full">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Logged</th>
-                </tr>
-            </thead>
-            <tbody> 
-                {% for asset in assets %}
-                <tr>
-                    <td>{{ asset.id }}</td>
-                    <td>{{ asset.name }}</td>
-                    <td>{{ asset.code }}</td>
-                    <td>{{ asset.created }}</td>
-                    <td>
-                        <form action="{{ asset.url }}/view" method="get">
-                            {% include "../_csrf.njk" %}
-                            <button type="submit" name="view" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
-                                View
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-    </div>
+{% include "../_messages.njk" %}
+
+<table class="table-auto text-left w-full">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Logged</th>
+        </tr>
+    </thead>
+    <tbody> 
+        {% for asset in assets %}
+        <tr>
+            <td>{{ asset.id }}</td>
+            <td>{{ asset.name }}</td>
+            <td>{{ asset.code }}</td>
+            <td>{{ asset.created }}</td>
+            <td>
+                <form action="{{ asset.url }}/view" method="get">
+                    {% include "../_csrf.njk" %}
+                    <button type="submit" name="view" value="true" class="w-full h-1/2 p-1 flex justify-center bg-picton-blue-800 hover:bg-picton-blue-700 text-gray-100 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                        View
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endif %}

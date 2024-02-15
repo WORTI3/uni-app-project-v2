@@ -10,7 +10,7 @@ exports[`GET / should show the portal home page when no user present 1`] = `
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Faultifier - a ticket handling admin service.">
         <meta name="theme-color" content="blue">
-		<title>Home • Faultifier</title>
+		<title>Home - Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
@@ -23,7 +23,7 @@ exports[`GET / should show the portal home page when no user present 1`] = `
     
 </nav>
 
-        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+        <body class="bg-gradient-to-tr from-picton-blue-600 to-yellow-500 overflow-hidden">
             <main>
 <div class="text-center text-white py-20 px-6">
     <h1 class="text-5xl font-bold mt-0 mb-6">Welcome to the Faultifier ticket portal</h1>

@@ -1,8 +1,8 @@
-# uni-app-project <img style="float: right; padding: 10px;" src="https://page-views.glitch.me/badge?page_id=WORTI3.uni-app-project">
+# uni-app-project <img style="float: right; padding: 10px;" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWORTI31212%2Funi-app-project-v2&count_bg=%23005CB8&title_bg=%23555555&icon=&icon_color=%23EB0000&title=VIEWS&edge_flat=false">
 
-"Faultifier" - a simple [Express][express] App written for Software Engineering and Agile university module.
+"Faultifier" - a simple [Express][express] App written for Software Engineering and Devops university module.
 
-Site is no longer hosted.
+Deployed site can be found in the right side nav -->
 
 <details>
 <summary>In-Depth Description:</summary>
@@ -14,14 +14,14 @@ Site is no longer hosted.
 1) Clone this repository with:
 
     ```terminal
-    git clone https://github.com/WORTI3/uni-app-project.git
+    git clone https://github.com/WORTI3/uni-app-project-v2.git
     ```
 
-2) Navigate to the `/uni-app-project` directory
+2) Navigate to the `/uni-app-project-v2` directory
 3) Install the projects dependencies:
 
     ```terminal
-    npm install
+    npm i
     ```
 
 4) Run the application:
@@ -32,7 +32,7 @@ Site is no longer hosted.
 
 ## Using the application
 
-To make sure the app meets requirements outlined in the assignment / report. Two example users as well as some example data has been populated into the database.
+To make sure the app meets requirements outlined in the assignment / report. Two example users as well as some example data has been populated into the database. You can also register an account but it's recommended **not** to use any personal information.
 To view the app as an admin login with the below credentials:
 
 ```yaml
@@ -70,6 +70,7 @@ npm run test -- -u
 - [TailwindCSS][tailwindcss]
 - [Passport][passport]
 - [SQLite3][sqlite]
+- Typescript
 
 ### NPM dependencies:
 
@@ -80,7 +81,6 @@ npm run test -- -u
 - [express-session][express-session]
 - [csurf][csurf]
 - [autoprefixer][autoprefixer]
-- [pluralize][pluralize]
 - [express-validator][express-validator]
 - [cheerio][cheerio]
 - [supertest][supertest]
@@ -108,10 +108,9 @@ Released under the [unlicensed license][license]. As stated by the license, anyo
 [express-session]: <https://www.npmjs.com/package/express-session>
 [csurf]: <https://www.npmjs.com/package/csurf>
 [autoprefixer]: <https://www.npmjs.com/package/autoprefixer>
-[pluralize]: <https://www.npmjs.com/package/pluralize>
 [express-validator]: <https://www.npmjs.com/package/express-validator>
 [cheerio]: <https://www.npmjs.com/package/cheerio>
 [supertest]: <https://www.npmjs.com/package/supertest>
 
-[license]: <https://github.com/WORTI3/uni-app-project/blob/main/LICENSE>
+[license]: <https://github.com/WORTI3/uni-app-project-v2/blob/main/LICENSE>
 [wortie-profile]: <https://github.com/WORTI3>
