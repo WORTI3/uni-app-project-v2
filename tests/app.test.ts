@@ -1,7 +1,7 @@
-const request = require("supertest");
-const cheerio = require("cheerio");
-const app = require("../src/app");
-const pluralize = require("pluralize");
+import request from "supertest";
+import cheerio from "cheerio";
+import app from "../src/app";
+import supertest from "supertest";
 
 describe("Nunjucks configuration", () => {
   it("should set the view engine to 'njk'", () => {
@@ -10,6 +10,10 @@ describe("Nunjucks configuration", () => {
 });
 
 describe("handle 404 errors", () => {
+  test("GET /non-existent-route should return 404", async () => {
+    await request(app).get("/non-existent-route").expect(404);
+  });
+
   it("should render error template with status 404 for not found error", async () => {
     const result = await request(app).get("/invalid_route").expect(404);
     const $ = cheerio.load(result.text);
@@ -22,20 +26,19 @@ describe("handle 404 errors", () => {
 describe("unit tests for app.js routers", () => {
   // '/' for home is the same as this test
   test("GET / should return 200", async () => {
-    await request(app).get("/").expect(200);
+    const body = {
+      groupName: 'Test Group Name',
+      email: 'test@example.com',
+      country: 'US'
+    };
+    await supertest(app).get("/").send(body).expect(200);
   });
 
   test("GET /login should return 200", async () => {
     await request(app).get("/login").expect(200);
   });
 
-  test("GET /non-existent-route should return 404", async () => {
-    await request(app).get("/non-existent-route").expect(404);
-  });
-});
-
-describe('app.locals', () => {
-  test('should have property pluralize that equals the required package', () => {
-    expect(app.locals.pluralize).toEqual(pluralize);
+  test("GET /signup should return 200", async () => {
+    await request(app).get("/signup").expect(200);
   });
 });

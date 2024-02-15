@@ -1,15 +1,35 @@
-const { ERROR_MESSAGES } = require("../../src/assets/constants");
-const { isAdmin, checkValidationResult } = require("../../src/middleware/auth");
-const { validationResult } = require("express-validator");
+import { Request, Response } from "express";
+import { ERROR_MESSAGES } from "../../src/assets/constants";
+import { checkValidationResult, isAdmin } from "../../src/middleware/auth";
+import { User } from "../../src/types";
+import { validationResult } from "express-validator";
+
+type Session = {
+  messages?: [];
+  asset?: {};
+};
+
+type Id = {
+  id?: number;
+}
+
+type AuthenticatedRequest = Request & { 
+  isAuthenticated: jest.Mock,
+  session: any | Session,
+  params: any | Id,
+  user: User
+};
+
+jest.mock("express-validator");
 
 describe("isAdmin() unit tests", () => {
   const req = {
     isAuthenticated: jest.fn(),
     session: { messages: [] },
     params: { id: 1 },
-    user: {},
-  };
-  const res = { redirect: jest.fn() };
+    user: {} as User,
+  } as unknown as AuthenticatedRequest;
+  const res = { redirect: jest.fn() } as unknown as Response;
   const next = jest.fn();
 
   afterEach(() => {
@@ -17,10 +37,15 @@ describe("isAdmin() unit tests", () => {
   });
 
   it("should call next if the user is authenticated and has role 1", () => {
+    // given
     req.isAuthenticated.mockReturnValue(true);
     req.user.role = 1;
+
+    // when
     isAdmin(req, res, next);
-    expect(next).toBeCalledTimes(1);
+
+    // then
+    expect(next).toHaveBeenCalledTimes(1);
     expect(res.redirect).not.toHaveBeenCalled();
     expect(req.session.messages).toEqual([]);
   });
@@ -29,17 +54,17 @@ describe("isAdmin() unit tests", () => {
     req.isAuthenticated.mockReturnValue(false);
     isAdmin(req, res, next);
     expect(next).not.toHaveBeenCalled();
-    expect(res.redirect).toBeCalledTimes(1);
+    expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith("/");
     expect(req.session.messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
   });
 
   it("should redirect to the edit page with an error message if the user is authenticated but does not have role 1", () => {
     req.isAuthenticated.mockReturnValue(true);
-    req.user.role = null;
+    req.user.role = undefined;
     isAdmin(req, res, next);
     expect(next).not.toHaveBeenCalled();
-    expect(res.redirect).toBeCalledTimes(1);
+    expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith("/");
     expect(req.session.messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
   });
@@ -52,16 +77,16 @@ describe("checkValidationResult() unit tests", () => {
     session: {},
     body: {},
     originalUrl: "/example",
-  };
+  } as unknown as Request;
   const res = {
     redirect: jest.fn(),
-  };
+  } as unknown as Response;
   const next = jest.fn();
   const error = { msg: ERROR_MESSAGES.DEFAULT };
 
   beforeEach(() => {
     // mock error result
-    validationResult.mockReturnValue({
+    (validationResult as unknown as jest.Mock).mockReturnValue({
       array: jest.fn(() => [error]),
     });
   });
@@ -72,7 +97,7 @@ describe("checkValidationResult() unit tests", () => {
 
   it("should call next when no validation errors present", () => {
     // mock no errors
-    validationResult.mockReturnValue({
+    (validationResult as unknown as jest.Mock).mockReturnValue({
       array: jest.fn(() => []),
     });
     checkValidationResult(req, res, next);
@@ -83,13 +108,13 @@ describe("checkValidationResult() unit tests", () => {
 
   it("should redirect when validation errors exist", () => {
     const error = { msg: ERROR_MESSAGES.DEFAULT };
-    validationResult.mockReturnValue({
+    (validationResult as unknown as jest.Mock).mockReturnValue({
       array: jest.fn(() => [error]),
     });
     checkValidationResult(req, res, next);
     expect(validationResult).toHaveBeenCalledWith(req);
     expect(res.redirect).toHaveBeenCalledWith("/example");
-    expect(req.session.messages).toEqual([ERROR_MESSAGES.DEFAULT]);
+    expect((req.session as Session).messages).toEqual([ERROR_MESSAGES.DEFAULT]);
   });
 
   it('should add asset into session if url ends in /edit', () => {
@@ -104,7 +129,7 @@ describe("checkValidationResult() unit tests", () => {
 
     checkValidationResult(req, res, next);
 
-    expect(req.session.asset).toEqual(asset);
+    expect((req.session as Session).asset).toEqual(asset);
     expect(res.redirect).toHaveBeenCalledWith("/example/edit");
   });
 });

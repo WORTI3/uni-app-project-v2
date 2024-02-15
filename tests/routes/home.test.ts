@@ -1,7 +1,6 @@
-const request = require('supertest');
-const cheerio = require('cheerio');
-
-const app = require('../../src/app');
+import app from '../../src/app';
+import request from 'supertest';
+import cheerio from 'cheerio';
 
 const url = '/';
 
@@ -11,9 +10,9 @@ describe('GET ' + url, () => {
       .get(url)
       .expect(200);
 
-    expect(result.get('Content-Type')).toContain('text/html');
+    expect(result.header['content-type']).toContain('text/html');
     expect(result.text).toMatchSnapshot();
-    expect(result.body.user).toBeUndefined();
+    expect(result.body).toStrictEqual({});
   });
 
   it('should render the home page when user is not authenticated', async () => {

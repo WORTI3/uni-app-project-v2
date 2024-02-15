@@ -6,6 +6,14 @@ import db from "../db";
 import { ERROR_MESSAGES } from "../assets/constants";
 import { IUser } from "../types";
 
+interface UserRow {
+  id: number;
+  username: string;
+  hashed_password: NodeJS.ArrayBufferView; // Add any other properties as needed
+  salt: string;
+  // Add any other properties as needed
+}
+
 /**
  * Configures a new LocalStrategy for Passport.js authentication using a username and password.
  * Credit to https://www.passportjs.org/tutorials/password/verify/ for local passport setup.
@@ -19,12 +27,14 @@ export function initPassport(app: Express | Application) {
    * Middleware function that authenticates a user's session using Passport.
    * @param {string} "session" - the name of the Passport strategy to use for authentication.
    */
-  app.use(passport.authenticate('session'));
+  app.use((req, res, next) => {
+    passport.authenticate('session')(req, res, next);
+  });
 
   passport.use(new passportStrategy.Strategy( { usernameField: "username" }, async (username, password, callback) => {
     try {
       db.get("SELECT * FROM users WHERE username = ?", [username],
-        function (err, row) {
+        function (err: any, row: UserRow) {
           if (err) {
             return callback(err);
           }

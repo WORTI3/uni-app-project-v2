@@ -104,14 +104,10 @@ app.use((req, res, next) => {
  * @returns None
  */
 app.use((req, res, next) => {
-	if (process.env.NODE_ENV === 'test') {
-		res.locals.csrfToken = '123456';
-		next();
-	}
-
 	res.locals.csrfToken = req.csrfToken();
 	next();
 });
+
 // App routes
 app.use('/', homeRouter);
 app.use('/', indexRouter);
