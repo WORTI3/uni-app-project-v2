@@ -23,7 +23,7 @@ const ensureLoggedIn = ensureLogIn();
  * Creates a new instance of an Express router.
  * @returns {Router} - An instance of an Express router.
  */
-const router = Router();
+export const indexRouter = Router();
 
 /**
  * GET request handler for the "/all/closed" route. 
@@ -35,7 +35,7 @@ const router = Router();
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get(
+indexRouter.get(
   "/all/closed",
   isAdmin, // checking admin here in case a user navigates via URL
   ensureLoggedIn,
@@ -56,14 +56,14 @@ router.get(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get("/all", ensureLoggedIn, fetchAssets, function (req, res) {
+indexRouter.get("/all", ensureLoggedIn, fetchAssets, function (req, res) {
   res.locals.assets = res.locals.assets.filter(function (asset: { closed: any; }) {
     return !asset.closed;
   });
   res.render("index", { user: req.user, showAll: true });
 });
 
-router.get("/dashboard", ensureLoggedIn, fetchAssets, function (req, res, next) {
+indexRouter.get("/dashboard", ensureLoggedIn, fetchAssets, function (req, res, next) {
   res.render("index", { user: req.user });
 });
 
@@ -74,7 +74,7 @@ router.get("/dashboard", ensureLoggedIn, fetchAssets, function (req, res, next) 
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get("/add", ensureLoggedIn, updateLocalAsset, function (req, res) {
+indexRouter.get("/add", ensureLoggedIn, updateLocalAsset, function (req, res) {
   res.render("index", { user: req.user, addNew: true });
 });
 
@@ -86,7 +86,7 @@ router.get("/add", ensureLoggedIn, updateLocalAsset, function (req, res) {
  * @returns {Object} - A redirect to the "/all" page.
  * @throws {Error} - If there is an error inserting the asset into the database.
  */
-router.post(
+indexRouter.post(
   '/add',
   ensureLoggedIn,
   // [
@@ -135,7 +135,7 @@ router.post(
  * @param {Object} res - The response object.
  * @returns None
  */
-router.post("/", ensureLoggedIn, checkAll, checkAdd);
+indexRouter.post("/", ensureLoggedIn, checkAll, checkAdd);
 
 /**
  * GET request handler for editing an asset with the given ID.
@@ -145,7 +145,7 @@ router.post("/", ensureLoggedIn, checkAll, checkAdd);
  * @returns {Object} - Renders the index page with the user object and edit flag.
  * @throws {Error} - If the user is not logged in or the asset cannot be found.
  */
-router.get(
+indexRouter.get(
   "/:id(\\d+)/edit",
   ensureLoggedIn,
   fetchAssetById,
@@ -169,7 +169,7 @@ router.get(
  * @returns Renders the index page with the user object and readOnly flag set to true.
  * @throws {Error} If the user is not logged in or if there is an error updating or fetching the asset.
  */
-router.get(
+indexRouter.get(
   "/:id(\\d+)/view",
   ensureLoggedIn,
   updateAssetById,
@@ -186,7 +186,7 @@ router.get(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.post(
+indexRouter.post(
   "/:id(\\d+)/view",
   ensureLoggedIn,
   fetchAssetById,
@@ -203,7 +203,7 @@ router.post(
  * @returns {Object} - The response object with a redirect to the closed assets page.
  * @throws {Error} - If there is an error deleting the asset from the database.
  */
-router.post(
+indexRouter.post(
   "/:id(\\d+)/delete",
   ensureLoggedIn,
   isAdmin,
@@ -238,7 +238,7 @@ router.post(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.post(
+indexRouter.post(
   "/:id(\\d+)/edit",
   ensureLoggedIn,
   check("name", ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
@@ -277,8 +277,6 @@ router.post(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get("/settings", ensureLoggedIn, function (req, res, next) {
+indexRouter.get("/settings", ensureLoggedIn, function (req, res, next) {
   res.render("settings", { user: req.user });
 });
-
-export default router;

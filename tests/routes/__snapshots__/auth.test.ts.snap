@@ -10,7 +10,7 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Faultifier - a ticket handling admin service.">
         <meta name="theme-color" content="blue">
-		<title>Login • Faultifier</title>
+		<title>Login - Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
@@ -23,9 +23,9 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
     
 </nav>
 
-        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+        <body class="bg-gradient-to-tr from-picton-blue-600 to-yellow-500 overflow-hidden">
             <main>
-<div class="p-12 bg-white mx-auto rounded-3xl w-96">
+<div class="p-12 bg-white sm:mx-auto rounded-md w-1/2 max-sm:w-full max-sm:p-6">
 	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
 	
 	
@@ -36,20 +36,44 @@ exports[`GET /login should return 200 status code match snapshot 1`] = `
 
 	
 	
+
+  
+
+  
+
 	
 	<form action="/login/password" method="post" novalidate>
 			
-    	<input type="hidden" name="_csrf" value="123456">
+    	
 			
 			
-<div class="relative">
-  <label for="username" class="text-gray-500">Username or Email</label>
-  <input id="username" name="username" type="text" value="" placeholder="" autocomplete="username" required autofocus class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
-</div>
-<div class="relative">
-  <label for="current-password" class="text-gray-500">Password</label>
-  <input id="current-password" type="password" name="password" placeholder="Password" autocomplete="current-password" required class="text-sm px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-picton-blue-500 mb-6">
-</div>
+
+  
+  
+  
+  
+  
+  <div class="relative">
+    <div class="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto py-2 sm:pb-0">
+      
+      <label for='username' class="text-gray-500 ">Username or Email</label>
+    </div>
+    <input id="username" name="username" type="text" value="" placeholder="username" autocomplete="username" required  class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">  
+  </div>
+
+  
+  
+  
+  
+  
+  <div class="relative">
+    <div class="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto py-2 sm:pb-0">
+      
+      <label for='password' class="text-gray-500 ">Password</label>
+    </div>
+    <input id="password" name="password" type="password" value="" placeholder="password" autocomplete="password" required  class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">  
+  </div>
+
 
 			
     <button type="submit" class="w-full flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
@@ -82,7 +106,7 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Faultifier - a ticket handling admin service.">
         <meta name="theme-color" content="blue">
-		<title>Sign up • Faultifier</title>
+		<title>Sign up - Faultifier</title>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 
@@ -95,9 +119,9 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
     
 </nav>
 
-        <body class="bg-gradient-to-tr from-picton-blue-400 to-picton-blue-700 overflow-hidden">
+        <body class="bg-gradient-to-tr from-picton-blue-600 to-yellow-500 overflow-hidden">
             <main>
-<div class="p-12 bg-white mx-auto rounded-3xl w-96 ">
+<div class="p-12 bg-white sm:mx-auto rounded-md w-1/2 max-sm:w-full max-sm:p-6">
 	<a href="/" class="float-left text-sm font-bold text-sky-600 hover:text-sky-600">Go back</a><br>
 	
     <div class="mb-5">
@@ -107,20 +131,45 @@ exports[`GET /signup should return 200 status code match snapshot 1`] = `
 
 	
 	
+
+  
+
+  
+
 	<form action="/signup" method="post" novalidate>
     	
-    	<input type="hidden" name="_csrf" value="123456">
+    	
 			
 			
-<div class="relative">
-  <label for="username" class="text-gray-500">Username or Email</label>
-  <input id="username" name="username" type="text" value="" placeholder="" autocomplete="username" required autofocus class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">
-</div>
-<div class="relative">
-  <label for="current-password" class="text-gray-500">Password</label>
-  <input id="current-password" type="password" name="password" placeholder="Password" autocomplete="current-password" required class="text-sm px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-picton-blue-500 mb-6">
-</div>
 
+  
+  
+  
+  
+  
+  <div class="relative">
+    <div class="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto py-2 sm:pb-0">
+      
+      <label for='username' class="text-gray-500 ">Username or Email</label>
+    </div>
+    <input id="username" name="username" type="text" value="" placeholder="username" autocomplete="username" required  class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">  
+  </div>
+
+  
+  
+  
+  
+  
+  <div class="relative">
+    <div class="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto py-2 sm:pb-0">
+      
+      <label for='password' class="text-gray-500 ">Password</label>
+    </div>
+    <input id="password" name="password" type="password" value="" placeholder="password" autocomplete="password" required  class="w-full text-sm px-4 py-3 bg-gray-200 focus:bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-picton-blue-500 mb-6">  
+  </div>
+
+
+			<p class="-mt-6 mb-4 font-semibold text-xs mx-2 text-gray-500">Password must be at least 5 characters containing 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character</p>
 			
     <button type="submit" class="w-full flex justify-center bg-picton-blue-500 hover:bg-picton-blue-700 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
         Sign up
