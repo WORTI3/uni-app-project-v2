@@ -1,10 +1,4 @@
-const {
-  PASSWORD_REGEX,
-  EDIT_UPDATES,
-  ASSET_STATUS,
-  SUCCESS_MESSAGES,
-  ERROR_MESSAGES,
-} = require("../../src/assets/constants");
+import { ASSET_STATUS, EDIT_UPDATES, ERROR_MESSAGES, PASSWORD_REGEX, SUCCESS_MESSAGES } from "../../src/assets/constants";
 
 describe("Regex string password tests", () => {
   // Length is handled by express validator.
@@ -105,6 +99,12 @@ describe("SUCCESS_MESSAGES", () => {
   test("has a DELETED success message", () => {
     expect(SUCCESS_MESSAGES.DELETED).toBe(
       "You have permanently deleted a ticket"
+    );
+  });
+
+  test("has a CREATED success message", () => {
+    expect(SUCCESS_MESSAGES.CREATED).toBe(
+      "You have opened and raised a support ticket"
     );
   });
 });

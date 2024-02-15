@@ -1,5 +1,5 @@
 // Dependencies
-import express, { ErrorRequestHandler } from 'express';
+import express, { ErrorRequestHandler, RequestHandler } from 'express';
 import nunjucks from 'nunjucks';
 import createError from 'http-errors';
 import path from 'path';
@@ -8,6 +8,11 @@ import session from 'express-session';
 import csrf from 'csurf';
 import sqlite3 from 'sqlite3';
 import sqliteStoreFactory from 'express-session-sqlite';
+// App routers
+import { initPassport } from './middleware/passport';
+import { homeRouter } from './routes/home';
+import authRouter from './routes/auth';
+import indexRouter from './routes/index';
 
 const app = express();
 // Db
@@ -19,12 +24,6 @@ const store = new SqliteStore({
   cleanupInterval:  300000, // Cleanup interval in milliseconds for deleting expired sessions
 });
 
-// App routers
-import homeRouter from './routes/home';
-import { initPassport } from './middleware/passport';
-import indexRouter from './routes/index';
-import authRouter from './routes/auth';
-
 // Nunjucks configuration
 nunjucks.configure(['./src/views', './src/_layouts'], {
 	autoescape: true,
@@ -32,11 +31,6 @@ nunjucks.configure(['./src/views', './src/_layouts'], {
 });
 // View engine setup
 app.set('view engine', 'njk');
-/**
- * A middleware function that adds the pluralize library to the app's local variables.
- * This allows the pluralize library to be used in any view rendered by the app.
- */
-// app.locals.pluralize = require('pluralize');
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -129,14 +123,13 @@ app.use((_req, _res, next) => {
 });
 
 // Error handler
-const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 	// Set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-	res.status(err.status || 500);
-	res.render('error');
+	res.status(err.status || 500).render('error');
 }
+
 app.use(errorHandler);
 
 export default app;

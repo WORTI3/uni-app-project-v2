@@ -1,4 +1,4 @@
-const db = require("../src/db");
+import db from "../src/db";
 
 describe("Database tests", () => {
   test("Database should be an object", () => {
