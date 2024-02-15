@@ -314,7 +314,7 @@ describe("updateLocalAsset()", () => {
   test("should set locals.asset correctly when session.asset present", () => {
     // given
     const asset = { name: "asset 1", code: "NHS001" };
-    const req = { session: { asset: asset } } as Request;
+    const req = { session: { asset: asset } } as unknown as Request;
     const res = { locals: {} } as Response;
     const next = jest.fn();
 
@@ -331,7 +331,7 @@ describe("updateLocalAsset()", () => {
     // given
     const localAsset = { name: "asset 1", code: "NHS001", note: "Test note" };
     const asset = { name: "asset 2", code: "NHS002" };
-    const req = { session: { asset: asset } } as Request;
+    const req = { session: { asset: asset } } as unknown as Request;
     const res = { locals: { asset: localAsset } } as unknown as Response;
     const next = jest.fn();
 
