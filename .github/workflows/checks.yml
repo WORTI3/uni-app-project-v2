@@ -1,8 +1,10 @@
-name: Deploy test environment to provider (Railway)
+name: Branch checks, coverage and test deployment
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches:
+      - develop
+      - main
 
 jobs: 
   deploy-test:
@@ -41,3 +43,16 @@ jobs:
           DEST_ENV_NAME: pr-${{ github.event.pull_request.number }}
           PROVIDER: node
           branch_name: ${{ github.head_ref }}
+  
+  coverage:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
