@@ -1,6 +1,8 @@
 import app from './app';
 
-const port: number | string | boolean = normalisePort(process.env.PORT ?? '4000');
+const port: number | string | boolean = normalisePort(
+  process.env.PORT ?? '4000',
+);
 
 export const initServer = () => {
   const server = app.listen(port, () => {
@@ -24,16 +26,16 @@ export const server = initServer();
  * Normalize a port into a number, string, or false.
  */
 export function normalisePort(val: string): number | string | boolean {
-	const port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
-	if (isNaN(port)) {
-		return val;
-	}
+  if (isNaN(port)) {
+    return val;
+  }
 
-	// Number
-	if (port >= 0) {
-		return port;
-	}
+  // Number
+  if (port >= 0) {
+    return port;
+  }
 
-	return false;
+  return false;
 }

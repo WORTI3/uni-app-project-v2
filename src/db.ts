@@ -1,4 +1,4 @@
-import sqlite3, {type Database} from 'sqlite3';
+import sqlite3, { type Database } from 'sqlite3';
 const mkdrip = require('mkdirp');
 import crypto from 'crypto';
 
@@ -28,15 +28,18 @@ const db: Database = new sqlite3.Database(DATABASE_PATH);
  * @returns None
  */
 db.serialize(() => {
-	db.run('CREATE TABLE IF NOT EXISTS users ( \
+  db.run(
+    'CREATE TABLE IF NOT EXISTS users ( \
     id INTEGER PRIMARY KEY, \
     username TEXT UNIQUE, \
     role INTEGER NULL, \
     hashed_password BLOB, \
     salt BLOB \
-  )');
+  )',
+  );
 
-	db.run('CREATE TABLE IF NOT EXISTS assets ( \
+  db.run(
+    'CREATE TABLE IF NOT EXISTS assets ( \
     id INTEGER PRIMARY KEY, \
     owner_id INTEGER NOT NULL, \
     owner_name VARCHAR(32) NOT NULL, \
@@ -48,7 +51,8 @@ db.serialize(() => {
     status TEXT NOT NULL, \
     note TEXT, \
     closed INTEGER \
-  )');
+  )',
+  );
 });
 
 /**
@@ -58,17 +62,14 @@ db.serialize(() => {
  * @returns None
  */
 const salt = crypto.randomBytes(16);
-db.run('INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)', [
-	'admin',
-	1,
-	crypto.pbkdf2Sync('admin', salt, 310000, 32, 'sha256'),
-	salt,
-]);
+db.run(
+  'INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)',
+  ['admin', 1, crypto.pbkdf2Sync('admin', salt, 310000, 32, 'sha256'), salt],
+);
 
-db.run('INSERT OR IGNORE INTO users (username, hashed_password, salt) VALUES (?, ?, ?)', [
-	'user',
-	crypto.pbkdf2Sync('user', salt, 310000, 32, 'sha256'),
-	salt,
-]);
+db.run(
+  'INSERT OR IGNORE INTO users (username, hashed_password, salt) VALUES (?, ?, ?)',
+  ['user', crypto.pbkdf2Sync('user', salt, 310000, 32, 'sha256'), salt],
+);
 
 export default db;

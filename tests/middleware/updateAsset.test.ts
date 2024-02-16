@@ -20,8 +20,8 @@ jest.mock('../../src/db', () => {
   return {
     __esModule: true,
     default: {
-      run: jest.fn() // Mocking the run method
-    } as unknown as Database // Providing explicit typings for the default export
+      run: jest.fn(), // Mocking the run method
+    } as unknown as Database, // Providing explicit typings for the default export
   };
 });
 
@@ -43,11 +43,11 @@ describe('updateAssetById()', () => {
           type: 'new type',
           note: 'new note',
           status: ASSET_STATUS.CLOSED,
-          closed: true
-        }
+          closed: true,
+        },
       },
       params: { id: 1 },
-      user: { id: 1 }
+      user: { id: 1 },
     } as unknown as Request;
     const next = jest.fn();
 
@@ -68,9 +68,9 @@ describe('updateAssetById()', () => {
         1,
         expect.any(String),
         req.params.id,
-        user.id
+        user.id,
       ],
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -82,11 +82,11 @@ describe('updateAssetById()', () => {
           name: 'new name',
           code: 'new code',
           type: 'new type',
-          note: 'new note'
-        }
+          note: 'new note',
+        },
       },
       params: { id: 1 },
-      user: { id: 1 }
+      user: { id: 1 },
     } as unknown as Request;
     const next = jest.fn();
 
@@ -107,9 +107,9 @@ describe('updateAssetById()', () => {
         null,
         expect.any(String),
         req.params.id,
-        user.id
+        user.id,
       ],
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -121,18 +121,20 @@ describe('updateAssetById()', () => {
           name: 'new name',
           code: 'new code',
           type: 'new type',
-          note: 'new note'
-        }
+          note: 'new note',
+        },
       },
       params: { id: 1 },
-      user: { id: 1 }
+      user: { id: 1 },
     } as unknown as Request;
     const next = jest.fn();
-    const error = new Error("database error");
+    const error = new Error('database error');
 
-    (db.run as jest.Mock).mockImplementationOnce((_query, _params, callback) => {
-      callback(error);
-    });
+    (db.run as jest.Mock).mockImplementationOnce(
+      (_query, _params, callback) => {
+        callback(error);
+      },
+    );
 
     // when
     updateAssetById(req, res, next);
@@ -148,14 +150,16 @@ describe('updateAssetById()', () => {
     const req = {
       session: {},
       params: { id: 1 },
-      user: { id: 1 }
+      user: { id: 1 },
     } as unknown as Request;
     const next = jest.fn();
-    const error = new Error("database error");
+    const error = new Error('database error');
 
-    (db.run as jest.Mock).mockImplementationOnce((_query, _params, callback) => {
-      callback(error);
-    });
+    (db.run as jest.Mock).mockImplementationOnce(
+      (_query, _params, callback) => {
+        callback(error);
+      },
+    );
 
     // when
     updateAssetById(req, res, next);
@@ -165,4 +169,3 @@ describe('updateAssetById()', () => {
     expect(next).toHaveBeenCalledWith();
   });
 });
-

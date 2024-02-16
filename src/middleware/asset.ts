@@ -1,8 +1,8 @@
-import { RequestHandler } from "express";
+import { RequestHandler } from 'express';
 import { DateTime } from 'luxon';
 import db from '../db';
-import { ASSET_STATUS } from "../assets/constants";
-import { User } from "../types";
+import { ASSET_STATUS } from '../assets/constants';
+import { User } from '../types';
 
 /**
  * Fetches assets from the database based on the user's role and owner_id.
@@ -12,13 +12,13 @@ import { User } from "../types";
  * @returns None
  */
 export const fetchAssets: RequestHandler = (req, res, next) => {
-  if(!req.user) return next();
+  if (!req.user) return next();
   const user = req.user as User;
-  let query = "SELECT * FROM assets WHERE owner_id = ?";
+  let query = 'SELECT * FROM assets WHERE owner_id = ?';
   let param = [user.id];
   // Admin check to change SQL query & param
   if (req.isAuthenticated() && user.role === 1) {
-    query = "SELECT * FROM assets";
+    query = 'SELECT * FROM assets';
     param = [];
   }
 
@@ -27,19 +27,18 @@ export const fetchAssets: RequestHandler = (req, res, next) => {
       return next(err);
     }
 
-    let assets = rows.map(function (row) {
-      
+    const assets = rows.map(function (row) {
       return {
         id: row.id,
-        created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
-        updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
+        created: DateTime.fromISO(row.created).toFormat('MMMM dd, yyyy'),
+        updated: DateTime.fromISO(row.updated).toFormat('MMMM dd, yyyy'),
         name: row.name,
         code: row.code,
         type: row.type,
         status: row.status,
         note: row.note,
         closed: row.closed == 1,
-        url: "/" + row.id,
+        url: '/' + row.id,
         owner: row.owner_name,
       };
     });
@@ -50,7 +49,7 @@ export const fetchAssets: RequestHandler = (req, res, next) => {
     res.locals.closedCount = assets.length - res.locals.openCount;
     next();
   });
-}
+};
 
 /**
  * Fetches an asset from the database by its ID and formats the data into an object. Password@24
@@ -60,17 +59,19 @@ export const fetchAssets: RequestHandler = (req, res, next) => {
  * @returns None
  */
 export const fetchAssetById: RequestHandler = (req, res, next) => {
-  db.all("SELECT * FROM assets WHERE id = ?", [req.params.id],
+  db.all(
+    'SELECT * FROM assets WHERE id = ?',
+    [req.params.id],
     function (err, rows) {
       if (err) {
         return next(err);
       }
 
-      let asset = rows.map(function (row) {
+      const asset = rows.map(function (row) {
         return {
           id: row.id,
-          created: DateTime.fromISO(row.created).toFormat("MMMM dd, yyyy"),
-          updated: DateTime.fromISO(row.updated).toFormat("MMMM dd, yyyy"),
+          created: DateTime.fromISO(row.created).toFormat('MMMM dd, yyyy'),
+          updated: DateTime.fromISO(row.updated).toFormat('MMMM dd, yyyy'),
           name: row.name,
           ownerName: row.owner_name,
           code: row.code,
@@ -78,15 +79,15 @@ export const fetchAssetById: RequestHandler = (req, res, next) => {
           status: row.status,
           note: row.note,
           closed: row.closed == 1,
-          url: "/" + row.id,
+          url: '/' + row.id,
         };
       });
 
       res.locals.asset = asset[0];
       next();
-    }
+    },
   );
-}
+};
 
 /**
  * Updates an asset in the database with the given ID and owner ID.
@@ -100,23 +101,27 @@ export const updateAssetById: RequestHandler = (req, _res, next) => {
   const session = req.session as any;
   const user = req.user as User;
   if (!session.update) return next();
-  db.run('UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?', [
-    session.update.name,
-    session.update.code,
-    session.update.type,
-    session.update.note,
-    session.update.status ?? ASSET_STATUS.OPEN,
-    session.update.closed ? 1 : null,
-    new Date().toISOString(),
-    req.params.id,
-    user.id,
-  ],
+  db.run(
+    'UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?',
+    [
+      session.update.name,
+      session.update.code,
+      session.update.type,
+      session.update.note,
+      session.update.status ?? ASSET_STATUS.OPEN,
+      session.update.closed ? 1 : null,
+      new Date().toISOString(),
+      req.params.id,
+      user.id,
+    ],
     function (err) {
-      if (err) { return next(err); }
-    }
+      if (err) {
+        return next(err);
+      }
+    },
   );
   next();
-}
+};
 
 /**
  * Updates the local asset with the values stored in the session asset.
@@ -128,7 +133,7 @@ export const updateAssetById: RequestHandler = (req, _res, next) => {
 export const updateLocalAsset: RequestHandler = (req, res, next) => {
   const session = req.session as any;
   if (session?.asset) {
-    let asset = res.locals.asset ?? {};
+    const asset = res.locals.asset ?? {};
     asset.name = session.asset.name;
     asset.code = session.asset.code;
     asset.type = session.asset.type;
@@ -137,4 +142,4 @@ export const updateLocalAsset: RequestHandler = (req, res, next) => {
     res.locals.asset = asset;
   }
   next();
-}
+};

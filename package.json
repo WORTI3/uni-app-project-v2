@@ -15,7 +15,8 @@
     "start:test": "npx tailwindcss -i ./src/assets/styles/main.css -o public/main.css --watch",
     "test": "NODE_ENV=test jest",
     "test:coverage": "NODE_ENV=test jest --coverage",
-    "lint": "eslint --ext .js,.ts"
+    "lint": "npx eslint '**/*.ts'",
+    "lint:fix": "npx eslint '**/*.ts' --fix"
   },
   "dependencies": {
     "autoprefixer": "^10.4.14",
@@ -64,6 +65,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-xo": "^0.44.0",
     "eslint-config-xo-typescript": "^2.0.0",
+    "eslint-plugin-jest": "^27.8.0",
     "eslint-plugin-prettier": "^5.1.3",
     "express": "^4.18.2",
     "express-validator": "^6.15.0",
