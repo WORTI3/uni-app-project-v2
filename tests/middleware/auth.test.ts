@@ -27,7 +27,7 @@ describe('isAdmin() unit tests', () => {
     isAuthenticated: jest.fn(),
     session: { messages: [] },
     params: { id: 1 },
-    user: {} as User,
+    user: {},
   } as unknown as AuthenticatedRequest;
   const res = { redirect: jest.fn() } as unknown as Response;
   const next = jest.fn();
@@ -47,7 +47,7 @@ describe('isAdmin() unit tests', () => {
     // then
     expect(next).toHaveBeenCalledTimes(1);
     expect(res.redirect).not.toHaveBeenCalled();
-    expect(req.session.messages).toEqual([]);
+    expect((req.session as Session).messages).toEqual([]);
   });
 
   it('should redirect to the edit page with an error message if the user is not authenticated', () => {
@@ -56,7 +56,7 @@ describe('isAdmin() unit tests', () => {
     expect(next).not.toHaveBeenCalled();
     expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith('/');
-    expect(req.session.messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
+    expect((req.session as Session).messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
   });
 
   it('should redirect to the edit page with an error message if the user is authenticated but does not have role 1', () => {
@@ -66,7 +66,7 @@ describe('isAdmin() unit tests', () => {
     expect(next).not.toHaveBeenCalled();
     expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith('/');
-    expect(req.session.messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
+    expect((req.session as Session).messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
   });
 });
 
