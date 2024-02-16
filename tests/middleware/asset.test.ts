@@ -322,7 +322,7 @@ describe("updateLocalAsset()", () => {
     updateLocalAsset(req, res, next);
 
     // then
-    expect(req.session.asset).toBeUndefined();
+    expect((req.session as any).asset).toBeUndefined();
     expect(res.locals.asset).toEqual(asset);
     expect(next).toHaveBeenCalledTimes(1);
   });
@@ -339,8 +339,8 @@ describe("updateLocalAsset()", () => {
     updateLocalAsset(req, res, next);
 
     // then
-    expect(req.session.asset).toBeUndefined();
+    expect((req.session as any).asset).toBeUndefined();
     expect(res.locals.asset).toEqual(asset);
-    expect(next).toBeCalledTimes(1);
+    expect(next).toHaveBeenCalledTimes(1);
   });
 });

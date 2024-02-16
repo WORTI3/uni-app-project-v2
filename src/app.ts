@@ -12,7 +12,7 @@ import sqliteStoreFactory from 'express-session-sqlite';
 import { initPassport } from './middleware/passport';
 import { homeRouter } from './routes/home';
 import authRouter from './routes/auth';
-import indexRouter from './routes/index';
+import { indexRouter } from './routes/index';
 
 const app = express();
 // Db
