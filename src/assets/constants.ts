@@ -51,10 +51,10 @@ export const SUCCESS_MESSAGES = {
  * @property {string} OPEN - The status of an open asset.
  * @property {string} CLOSED - The status of a closed asset.
  */
-export const ASSET_STATUS = {
-  OPEN: 'open',
-  CLOSED: 'closed',
-};
+export enum ASSET_STATUS {
+  OPEN = 'open',
+  CLOSED = 'closed',
+}
 
 /**
  * An object containing constants for different types of edit updates.

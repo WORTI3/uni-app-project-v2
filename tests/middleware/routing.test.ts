@@ -10,12 +10,7 @@ import {
   checkEditAdmin,
   checkEditUpdate,
 } from '../../src/middleware/routing';
-
-type Session = {
-  update?: string;
-  messages?: Array<string>;
-  msgTone?: string;
-};
+import { Session } from '../../src/types';
 
 afterEach(() => {
   jest.clearAllMocks();

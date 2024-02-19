@@ -1,22 +1,17 @@
 import { Request, Response } from 'express';
 import { ERROR_MESSAGES } from '../../src/assets/constants';
 import { checkValidationResult, isAdmin } from '../../src/middleware/auth';
-import { User } from '../../src/types';
+import { Session, User } from '../../src/types';
 import { validationResult } from 'express-validator';
 
-type Session = {
-  messages?: [];
-  asset?: object;
-};
-
 type Id = {
-  id?: number;
+  id?: unknown | number;
 };
 
 type AuthenticatedRequest = Request & {
   isAuthenticated: jest.Mock;
   session: unknown | Session;
-  params: unknown | Id;
+  params: Id;
   user: User;
 };
 

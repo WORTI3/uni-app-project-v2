@@ -3,17 +3,7 @@ import { ASSET_STATUS } from '../../src/assets/constants';
 import db from '../../src/db';
 import { updateAssetById } from '../../src/middleware/asset';
 import { Database } from 'sqlite3';
-import { User } from '../../src/types';
-
-type Session = {
-  update: {
-    name: string;
-    code: string;
-    type: string;
-    note: string;
-    status: string;
-  };
-};
+import { Session, User } from '../../src/types';
 
 // Mock implementation of the db module
 jest.mock('../../src/db', () => {
@@ -60,11 +50,11 @@ describe('updateAssetById()', () => {
     expect(db.run).toHaveBeenCalledWith(
       'UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?',
       [
-        session.update.name,
-        session.update.code,
-        session.update.type,
-        session.update.note,
-        session.update.status,
+        session.update?.name,
+        session.update?.code,
+        session.update?.type,
+        session.update?.note,
+        session.update?.status,
         1,
         expect.any(String),
         req.params.id,
@@ -99,10 +89,10 @@ describe('updateAssetById()', () => {
     expect(db.run).toHaveBeenCalledWith(
       'UPDATE assets SET name = ?, code = ?, type = ?, note = ?, status = ?, closed = ?, updated = ? WHERE id = ? AND owner_id = ?',
       [
-        session.update.name,
-        session.update.code,
-        session.update.type,
-        session.update.note,
+        session.update?.name,
+        session.update?.code,
+        session.update?.type,
+        session.update?.note,
         ASSET_STATUS.OPEN,
         null,
         expect.any(String),
