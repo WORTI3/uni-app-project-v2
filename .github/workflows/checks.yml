@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Coverage
         uses: ArtiomTr/jest-coverage-report-action@v2
 
@@ -59,16 +59,16 @@ jobs:
 
     steps: 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Use Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies
-        run: |
-          npm ci
+      # - name: Install dependencies
+      #   run: |
+      #     npm ci
 
       - name: Run tests
         run: npm run test
