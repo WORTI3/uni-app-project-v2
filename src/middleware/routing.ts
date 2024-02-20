@@ -1,5 +1,10 @@
 import { RequestHandler } from 'express';
-import { ASSET_STATUS, EDIT_UPDATES, SUCCESS_MESSAGES } from '../assets/constants';
+import {
+  ASSET_STATUS,
+  EDIT_UPDATES,
+  SUCCESS_MESSAGES,
+} from '../assets/constants';
+import { Session } from '../types';
 
 /**
  * Middleware function that checks if the 'all' property is present in the request body.
@@ -11,7 +16,7 @@ import { ASSET_STATUS, EDIT_UPDATES, SUCCESS_MESSAGES } from '../assets/constant
  */
 export const checkAll: RequestHandler = (req, res, next) => {
   let all = req.body.all;
-  if (all){
+  if (all) {
     if (all === ASSET_STATUS.CLOSED) {
       all = 'all/' + all;
     }
@@ -29,7 +34,7 @@ export const checkAll: RequestHandler = (req, res, next) => {
  * @returns None
  */
 export const checkAdd: RequestHandler = (req, res, next) => {
-  if (req.body.add){
+  if (req.body.add) {
     return res.redirect('/' + req.body.add);
   }
   next();
@@ -46,17 +51,17 @@ export const checkAdd: RequestHandler = (req, res, next) => {
  */
 export const checkEditUpdate: RequestHandler = (req, res, next) => {
   if (req.body.update && req.body.update === EDIT_UPDATES.UPDATE) {
-    const session = req.session as any;
+    const session = req.session as Session;
     session.update = {
       name: req.body.name,
       code: req.body.code,
       type: req.body.type,
       note: req.body.note,
-      updated: true
+      updated: true,
     };
 
-    session.messages = [ SUCCESS_MESSAGES.DEFAULT ];
-    session.msgTone = "positive";
+    session.messages = [SUCCESS_MESSAGES.DEFAULT];
+    session.msgTone = 'positive';
     return res.redirect('/' + req.params.id + '/view');
   }
   next();
@@ -70,9 +75,9 @@ export const checkEditUpdate: RequestHandler = (req, res, next) => {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-export const checkEditAdmin: RequestHandler = (req, res, next) => { 
+export const checkEditAdmin: RequestHandler = (req, res, next) => {
   if (req.body.update && req.body.update === EDIT_UPDATES.CLOSE) {
-    const session = req.session as any;
+    const session = req.session as Session;
     // update here as well incase fields were updated before close
     session.update = {
       name: req.body.name,
@@ -80,11 +85,11 @@ export const checkEditAdmin: RequestHandler = (req, res, next) => {
       type: req.body.type,
       note: req.body.note,
       status: ASSET_STATUS.CLOSED,
-      closed: true
+      closed: true,
     };
     // close actions
-    session.messages = [ SUCCESS_MESSAGES.CLOSED ];
-    session.msgTone = "positive";
+    session.messages = [SUCCESS_MESSAGES.CLOSED];
+    session.msgTone = 'positive';
     return res.redirect('/' + req.params.id + '/view');
   }
 

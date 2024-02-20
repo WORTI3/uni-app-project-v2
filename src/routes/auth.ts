@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
-import crypto from "crypto";
-import db from "../db";
+import crypto from 'crypto';
+import db from '../db';
 import { ERROR_MESSAGES, PASSWORD_REGEX } from '../assets/constants';
 import { checkValidationResult } from '../middleware/auth';
 import { check } from 'express-validator';
@@ -15,8 +15,8 @@ const router = Router();
  * @param {Function} next - The next middleware function (unused).
  * @returns None
  */
-router.get("/login", function (_req, res) {
-  res.render("login");
+router.get('/login', function (_req, res) {
+  res.render('login');
 });
 
 /**
@@ -30,12 +30,12 @@ router.get("/login", function (_req, res) {
  * @returns None
  */
 router.post(
-  "/login/password",
-  passport.authenticate("local", {
-    successReturnToOrRedirect: "/",
-    failureRedirect: "/login",
+  '/login/password',
+  passport.authenticate('local', {
+    successReturnToOrRedirect: '/',
+    failureRedirect: '/login',
     failureMessage: true,
-  })
+  }),
 );
 
 /**
@@ -45,12 +45,12 @@ router.post(
  * @param {function} next - The next middleware function.
  * @returns None
  */
-router.post("/logout", function (req, res, next) {
+router.post('/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) {
       return next(err);
     }
-    res.redirect("/");
+    res.redirect('/');
   });
 });
 
@@ -61,8 +61,8 @@ router.post("/logout", function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get("/signup", function (req, res, next) {
-  res.render("signup");
+router.get('/signup', function (_req, res, _next) {
+  res.render('signup');
 });
 
 /**
@@ -76,7 +76,7 @@ router.get("/signup", function (req, res, next) {
  * @returns None
  */
 router.post(
-  "/signup",
+  '/signup',
   check('username', ERROR_MESSAGES.USERNAME.DEFAULT)
     .isLength({ min: 3 })
     .withMessage(ERROR_MESSAGES.USERNAME.MIN_LENGTH)
@@ -92,32 +92,41 @@ router.post(
     .bail()
     .matches(PASSWORD_REGEX)
     .withMessage(ERROR_MESSAGES.PASSWORD.NO_CHARS),
-  checkValidationResult, function (req, res, next) {
-  const salt = crypto.randomBytes(16);
-  crypto.pbkdf2(req.body.password, salt, 310000, 32, "sha256",
-    function (err, hashedPassword) {
-      if (err) {
-        return next(err); // return with db error
-      }
-      db.run("INSERT INTO users (username, hashed_password, salt) VALUES (?, ?, ?)", [req.body.username, hashedPassword, salt],
-        function (err) {
-          if (err) {
-            return next(err);
-          }
-          let user = {
-            id: this.lastID,
-            username: req.body.username,
-          };
-          req.login(user, function (err) {
+  checkValidationResult,
+  function (req, res, next) {
+    const salt = crypto.randomBytes(16);
+    crypto.pbkdf2(
+      req.body.password,
+      salt,
+      310000,
+      32,
+      'sha256',
+      function (err, hashedPassword) {
+        if (err) {
+          return next(err); // return with db error
+        }
+        db.run(
+          'INSERT INTO users (username, hashed_password, salt) VALUES (?, ?, ?)',
+          [req.body.username, hashedPassword, salt],
+          function (err) {
             if (err) {
               return next(err);
             }
-            res.redirect("/");
-          });
-        }
-      );
-    }
-  );
-});
+            const user = {
+              id: this.lastID,
+              username: req.body.username,
+            };
+            req.login(user, function (err) {
+              if (err) {
+                return next(err);
+              }
+              res.redirect('/');
+            });
+          },
+        );
+      },
+    );
+  },
+);
 
 export default router;

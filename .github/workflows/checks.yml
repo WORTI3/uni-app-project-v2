@@ -1,13 +1,50 @@
 name: Branch checks, coverage and test deployment
 
-on:
-  pull_request:
-    branches:
-      - develop
-      - main
+on: [push]
 
-jobs: 
+jobs:
+  install_and_test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Run lints
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+  coverage:
+    # Only continue if all tests passed.
+    needs: [install_and_test]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Coverage
+        uses: 'ArtiomTr/jest-coverage-report-action@v2.2.6'
+
   deploy-test:
+    # Only deploy if all tests passed.
+    needs: [install_and_test, coverage]
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -16,12 +53,7 @@ jobs:
 
     steps: 
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Use Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
@@ -33,26 +65,13 @@ jobs:
       - name: Install Railway
         run: npm i -g @railway/cli
 
-      - name: Create PR environment on Railway
-        if: github.event.action == 'opened'
-        uses: Faolain/railway-pr-deploy@v2.0.4
-        with:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          SRC_ENVIRONMENT_NAME: staging
-          DEST_ENV_NAME: pr-${{ github.event.pull_request.number }}
-          PROVIDER: node
-          branch_name: ${{ github.head_ref }}
-  
-  coverage:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Coverage
-        uses: ArtiomTr/jest-coverage-report-action@v2
+      # - name: Create PR environment on Railway
+      #   if: github.event.action == 'opened'
+      #   uses: Faolain/railway-pr-deploy@v2.0.4
+      #   with:
+      #     RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      #     PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+      #     SRC_ENVIRONMENT_NAME: staging
+      #     DEST_ENV_NAME: pr-${{ github.event.pull_request.number }}
+      #     PROVIDER: node
+      #     branch_name: ${{ github.head_ref }}

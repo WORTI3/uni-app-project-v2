@@ -10,24 +10,25 @@
  * @property {string} PASSWORD.DEFAULT - The default error message for an invalid
  */
 export const ERROR_MESSAGES = {
-  DEFAULT: "Incorrect username or password.",
-  USERNAME: { 
-    DEFAULT: "Invalid username",
-    MIN_LENGTH: "Username must be more than 3 characters in length",
-    MAX_LENGTH: "Username must be less than 20 characters in length"
+  DEFAULT: 'Incorrect username or password.',
+  USERNAME: {
+    DEFAULT: 'Invalid username',
+    MIN_LENGTH: 'Username must be more than 3 characters in length',
+    MAX_LENGTH: 'Username must be less than 20 characters in length',
   },
-  PASSWORD: { 
-    DEFAULT: "Invalid password",
-    MIN_LENGTH: "Password must be more than 5 characters in length",
-    MAX_LENGTH: "Password must be less than 20 characters in length",
-    NO_CHARS: "Password must contain a special character, number and upper & lower case letter",
+  PASSWORD: {
+    DEFAULT: 'Invalid password',
+    MIN_LENGTH: 'Password must be more than 5 characters in length',
+    MAX_LENGTH: 'Password must be less than 20 characters in length',
+    NO_CHARS:
+      'Password must contain a special character, number and upper & lower case letter',
   },
   ADD_ISSUE: {
-    NAME: "Please enter a valid item name",
-    CODE: "The asset code must be 6 characters in length",
-    NOTE: "A note must be more than 3 and 200 characters"
+    NAME: 'Please enter a valid item name',
+    CODE: 'The asset code must be 6 characters in length',
+    NOTE: 'A note must be more than 3 and 200 characters',
   },
-  NO_PERMISSION: "You must be an admin to do this",
+  NO_PERMISSION: 'You must be an admin to do this',
 };
 
 /**
@@ -39,10 +40,10 @@ export const ERROR_MESSAGES = {
  * @property {string} DELETED - The success message for permanently deleting a ticket.
  */
 export const SUCCESS_MESSAGES = {
-  DEFAULT: "You have updated this ticket",
-  CLOSED: "You have closed this ticket",
-  DELETED: "You have permanently deleted a ticket",
-  CREATED: "You have opened and raised a support ticket"
+  DEFAULT: 'You have updated this ticket',
+  CLOSED: 'You have closed this ticket',
+  DELETED: 'You have permanently deleted a ticket',
+  CREATED: 'You have opened and raised a support ticket',
 };
 
 /**
@@ -50,10 +51,11 @@ export const SUCCESS_MESSAGES = {
  * @property {string} OPEN - The status of an open asset.
  * @property {string} CLOSED - The status of a closed asset.
  */
-export const ASSET_STATUS = {
-  OPEN: "open",
-  CLOSED: "closed",
-};
+
+export enum ASSET_STATUS {
+  OPEN = 'open',
+  CLOSED = 'closed',
+}
 
 /**
  * An object containing constants for different types of edit updates.
@@ -62,13 +64,14 @@ export const ASSET_STATUS = {
  * @property {string} DELETE - Indicates that an item has been deleted.
  */
 export const EDIT_UPDATES = {
-  UPDATE: "update",
-  CLOSE: "close",
-  DELETE: "delete",
+  UPDATE: 'update',
+  CLOSE: 'close',
+  DELETE: 'delete',
 };
 
 /**
  * A regular expression that matches a password that contains at least one uppercase letter,
  * one lowercase letter, one number, and one special character.
  */
-export const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?[#?!@$%^&*-])/;
+export const PASSWORD_REGEX =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?[#?!@$%^&*-])/;

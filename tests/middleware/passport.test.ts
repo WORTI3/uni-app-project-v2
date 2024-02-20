@@ -1,9 +1,14 @@
-import express, { Express } from 'express';
-import { configureLocalStrategy, initPassport, isAuthenticated } from '../../src/middleware/passport';
+import express, { Express, NextFunction, Request, Response } from 'express';
+import {
+  configureLocalStrategy,
+  initPassport,
+  isAuthenticated,
+} from '../../src/middleware/passport';
 import { ERROR_MESSAGES } from '../../src/assets/constants';
 import db from '../../src/db';
 import passport from 'passport';
-const LocalStrategy = require("passport-local").Strategy;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const LocalStrategy = require('passport-local').Strategy;
 
 jest.mock('../../src/db', () => ({
   get: jest.fn(),
@@ -18,12 +23,12 @@ describe('Passport Local Strategy Configuration', () => {
     // given
     const useSpy = jest.spyOn(passport, 'use');
     const expectedStrategy = {
-      "_passReqToCallback": undefined,
-      "_passwordField": "password",
-      "_usernameField": "username",
-      "_verify": expect.any(Function),
-      "authenticate": expect.any(Function),
-      "name": "local",
+      _passReqToCallback: undefined,
+      _passwordField: 'password',
+      _usernameField: 'username',
+      _verify: expect.any(Function),
+      authenticate: expect.any(Function),
+      name: 'local',
     };
 
     // when
@@ -38,10 +43,10 @@ describe('Passport Local Strategy Configuration', () => {
     const verifyFn = jest.fn((_username, _password, cb) => {
       cb(null, { id: 1 });
     });
-    const strategy = new LocalStrategy( { usernameField: "username" }, verifyFn);
+    const strategy = new LocalStrategy({ usernameField: 'username' }, verifyFn);
 
     // when
-    await strategy._verify("valid", "password", () => {});
+    await strategy._verify('valid', 'password', () => {});
 
     // then
     expect(verifyFn).toHaveBeenCalled();
@@ -52,10 +57,10 @@ describe('Passport Local Strategy Configuration', () => {
     const verifyFn = jest.fn((_username, _password, cb) => {
       cb(null, false);
     });
-    const strategy = new LocalStrategy( { usernameField: "username" }, verifyFn);
+    const strategy = new LocalStrategy({ usernameField: 'username' }, verifyFn);
 
     // when
-    await strategy._verify("invalid", "password", () => {});
+    await strategy._verify('invalid', 'password', () => {});
 
     // then
     expect(verifyFn).toHaveBeenCalled();
@@ -66,10 +71,10 @@ describe('Passport Local Strategy Configuration', () => {
     const verifyFn = jest.fn((_username, _password, cb) => {
       cb(null, false);
     });
-    const strategy = new LocalStrategy( { usernameField: "username" }, verifyFn);
+    const strategy = new LocalStrategy({ usernameField: 'username' }, verifyFn);
 
     // when
-    await strategy._verify("valid", "invalid", () => {});
+    await strategy._verify('valid', 'invalid', () => {});
 
     // then
     expect(verifyFn).toHaveBeenCalled();
@@ -82,7 +87,7 @@ describe('Passport Local Strategy Configuration', () => {
         message: ERROR_MESSAGES.USERNAME.DEFAULT,
       });
     });
-    const strategy = new LocalStrategy( { usernameField: "username" }, verifyFn);
+    const strategy = new LocalStrategy({ usernameField: 'username' }, verifyFn);
 
     // when
     const done = jest.fn();
@@ -101,7 +106,7 @@ describe('Passport Local Strategy Configuration', () => {
         message: ERROR_MESSAGES.DEFAULT,
       });
     });
-    const strategy = new LocalStrategy( { usernameField: "username" }, verifyFn);
+    const strategy = new LocalStrategy({ usernameField: 'username' }, verifyFn);
 
     // when
     const done = jest.fn();
@@ -125,11 +130,11 @@ describe('Passport Middleware', () => {
   describe('Authentication Middleware', () => {
     it('should call next() if user is authenticated', () => {
       // given
-      const req: any = { user: { id: 1 } };
+      const req = { user: { id: 1 } } as unknown as Request;
       const next = jest.fn();
 
       // when
-      isAuthenticated(req, {} as any, next);
+      isAuthenticated(req, {} as Response, next);
 
       // then
       expect(next).toHaveBeenCalled();
@@ -137,12 +142,12 @@ describe('Passport Middleware', () => {
 
     it('should redirect to "/" if user is not authenticated', () => {
       // given
-      const req: any = {};
-      const res: any = { redirect: jest.fn() };
-      
+      const req = {} as Request;
+      const res = { redirect: jest.fn() } as unknown as Response;
+
       // when
-      isAuthenticated(req, res, {} as any);
-      
+      isAuthenticated(req, res, {} as NextFunction);
+
       // then
       expect(res.redirect).toHaveBeenCalledWith('/');
     });
@@ -150,7 +155,7 @@ describe('Passport Middleware', () => {
 
   // Update passport happy paths
   // No validation is run here as it is processed a layer higher in express validator and middleware with password regex.
-  describe("passport local strategy", () => {
+  describe('passport local strategy', () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
@@ -164,7 +169,7 @@ describe('Passport Middleware', () => {
       passport.use(strategy);
 
       // when
-      strategy._verify("valid", "password", () => {});
+      strategy._verify('valid', 'password', () => {});
 
       // then
       expect(verifyFn).toHaveBeenCalled();
@@ -172,60 +177,71 @@ describe('Passport Middleware', () => {
 
     it('should authenticate user with valid credentials', () => {
       // given
-      const req: any = {};
-      req.body = { username: "invalid", password: "password" };
+      const req = {} as Request;
+      req.body = { username: 'invalid', password: 'password' };
       const doneFn = jest.fn();
 
       // when / then
-      passport.authenticate('local', (err: any, user: any, info: { message: any; }) => {
-        expect(err).toBeNull();
-        expect(user).toBe(false);
-        expect(info).toBeDefined();
-        expect(info.message).toEqual(ERROR_MESSAGES.USERNAME.DEFAULT);
-      })(req, {} as any, doneFn);
+      passport.authenticate(
+        'local',
+        (err: string | unknown, user: string, info: { message: string }) => {
+          expect(err).toBeNull();
+          expect(user).toBe(false);
+          expect(info).toBeDefined();
+          expect(info.message).toEqual(ERROR_MESSAGES.USERNAME.DEFAULT);
+        },
+      )(req, {} as Response, doneFn);
     });
 
     it('should not authenticate user with invalid username', () => {
       // given
-      const req: any = {};
-      req.body = { username: "invalid", password: "password" };
+      const req = {} as Request;
+      req.body = { username: 'invalid', password: 'password' };
       const doneFn = jest.fn();
 
       // when / then
-      passport.authenticate('local', (err: any, user: any, info: { message: any; }) => {
-        expect(err).toBeNull();
-        expect(user).toBe(false);
-        expect(info.message).toEqual(ERROR_MESSAGES.DEFAULT);
-      })(req, {} as any, doneFn);
+      passport.authenticate(
+        'local',
+        (err: string | unknown, user: string, info: { message: string }) => {
+          expect(err).toBeNull();
+          expect(user).toBe(false);
+          expect(info.message).toEqual(ERROR_MESSAGES.DEFAULT);
+        },
+      )(req, {} as Response, doneFn);
     });
 
     it('should not authenticate user with invalid password', () => {
       // given
-      const req: any = {};
-      req.body = { username: "valid", password: "invalid" };
+      const req = {} as Request;
+      req.body = { username: 'valid', password: 'invalid' };
       const doneFn = jest.fn();
 
       // when / then
-      passport.authenticate('local', (err: any, user: any, info: { message: any; }) => {
-        expect(err).toBeNull();
-        expect(user).toBe(false);
-        expect(info.message).toEqual(ERROR_MESSAGES.DEFAULT);
-      })(req, {} as any, doneFn);
+      passport.authenticate(
+        'local',
+        (err: string | unknown, user: string, info: { message: string }) => {
+          expect(err).toBeNull();
+          expect(user).toBe(false);
+          expect(info.message).toEqual(ERROR_MESSAGES.DEFAULT);
+        },
+      )(req, {} as Response, doneFn);
     });
 
     it('should return an error message if the username is invalid', () => {
       // given / when
-      const verifyFn = jest.fn((_username: string, _password: string, cb: Function) => {
+      const verifyFn = jest.fn((_username: string, _password: string, cb) => {
         cb(null, false, {
           message: ERROR_MESSAGES.USERNAME.DEFAULT,
         });
       });
-      jest.spyOn(db, 'get').mockImplementationOnce((_query, _params, callback) => {
-        return callback(null, null);
-      });
+      jest
+        .spyOn(db, 'get')
+        .mockImplementationOnce((_query, _params, callback) => {
+          return callback(null, null);
+        });
       const strategy = new LocalStrategy(verifyFn);
       passport.use(strategy);
-      const req: any = {};
+      const req = {} as Request;
       req.body = { username: 'invalid', password: 'password' };
       const doneFn = jest.fn();
 
@@ -237,20 +253,22 @@ describe('Passport Middleware', () => {
         message: ERROR_MESSAGES.USERNAME.DEFAULT,
       });
     });
-    it("should return an error message if the username is invalid", () => {
+    it('should return an error message if the username is invalid', () => {
       // given / when
       const verifyFn = jest.fn((_username, _password, cb) => {
         cb(null, false, {
           message: ERROR_MESSAGES.USERNAME.DEFAULT,
         });
       });
-      jest.spyOn(db, 'get').mockImplementationOnce((_query, _params, callback) => {
-        return callback(null, null);
-      });
+      jest
+        .spyOn(db, 'get')
+        .mockImplementationOnce((_query, _params, callback) => {
+          return callback(null, null);
+        });
       const strategy = new LocalStrategy(verifyFn);
       passport.use(strategy);
-      const req: any = {};
-      req.body = { username: "invalid", password: "password" };
+      const req = {} as Request;
+      req.body = { username: 'invalid', password: 'password' };
       const doneFn = jest.fn();
 
       // then
@@ -262,20 +280,22 @@ describe('Passport Middleware', () => {
       });
     });
 
-    it("should return an error message if the password is invalid", () => {
+    it('should return an error message if the password is invalid', () => {
       // given / when
       const verifyFn = jest.fn((_username, _password, cb) => {
         cb(null, false, {
           message: ERROR_MESSAGES.DEFAULT,
         });
       });
-      jest.spyOn(db, 'get').mockImplementationOnce((_query, _params, callback) => {
-        return callback(null, {});
-      });
+      jest
+        .spyOn(db, 'get')
+        .mockImplementationOnce((_query, _params, callback) => {
+          return callback(null, {});
+        });
       const strategy = new LocalStrategy(verifyFn);
       passport.use(strategy);
-      const req: any = {};
-      req.body = { username: "valid", password: "invalid" };
+      const req = {} as Request;
+      req.body = { username: 'valid', password: 'invalid' };
       const doneFn = jest.fn();
 
       // then
@@ -287,22 +307,24 @@ describe('Passport Middleware', () => {
       });
     });
 
-    it("should return the user if the username and password are valid", () => {
+    it('should return the user if the username and password are valid', () => {
       // given / when
       const verifyFn = jest.fn((_username, _password, cb) => {
         const row = {
-          salt: "someSalt",
-          hashed_password: Buffer.from("correctPassword"),
+          salt: 'someSalt',
+          hashed_password: Buffer.from('correctPassword'),
         };
         cb(null, row);
       });
-      jest.spyOn(db, 'get').mockImplementationOnce((_query, _params, callback) => {
-        return callback(null, {});
-      });
+      jest
+        .spyOn(db, 'get')
+        .mockImplementationOnce((_query, _params, callback) => {
+          return callback(null, {});
+        });
       const strategy = new LocalStrategy(verifyFn);
       passport.use(strategy);
-      const req: any = {};
-      req.body = { username: "valid", password: "password" };
+      const req = {} as Request;
+      req.body = { username: 'valid', password: 'password' };
       const doneFn = jest.fn();
 
       // then
@@ -313,9 +335,9 @@ describe('Passport Middleware', () => {
     });
   });
 
-  describe("passport serialisation", () => {
-    let user = { id: 1, username: "test", role: "user" };
-    let cb: jest.Mock<any, any, any>;
+  describe('passport serialisation', () => {
+    const user = { id: 1, username: 'test', role: 'user' };
+    let cb: jest.Mock<unknown, unknown[], unknown>;
 
     beforeEach(() => {
       cb = jest.fn();
@@ -326,7 +348,7 @@ describe('Passport Middleware', () => {
       jest.useRealTimers();
     });
 
-    it("should serialize user correctly serializeUser()", () => {
+    it('should serialize user correctly serializeUser()', () => {
       // given / when
       passport.serializeUser(user, cb);
       jest.runAllTicks();
@@ -334,12 +356,12 @@ describe('Passport Middleware', () => {
       // then
       expect(cb).toHaveBeenCalledWith(null, {
         id: 1,
-        username: "test",
-        role: "user",
+        username: 'test',
+        role: 'user',
       });
     });
 
-    it("should deserialize user correctly deserializeUser()", () => {
+    it('should deserialize user correctly deserializeUser()', () => {
       // given / when
       passport.deserializeUser(user, cb);
       jest.runAllTicks();
@@ -347,8 +369,8 @@ describe('Passport Middleware', () => {
       // then
       expect(cb).toHaveBeenCalledWith(null, {
         id: 1,
-        username: "test",
-        role: "user",
+        username: 'test',
+        role: 'user',
       });
     });
   });
@@ -368,12 +390,12 @@ describe('Passport Local Strategy Configuration with errors', () => {
       // Simulating an error during authentication
       cb(expectedError, null);
     });
-    const strategy = new LocalStrategy({ usernameField: "username" }, verifyFn);
-  
+    const strategy = new LocalStrategy({ usernameField: 'username' }, verifyFn);
+
     // when
     const doneFn = jest.fn();
-    await strategy._verify("valid", "password", doneFn);
-  
+    await strategy._verify('valid', 'password', doneFn);
+
     // then
     expect(verifyFn).toHaveBeenCalled();
     expect(doneFn).toHaveBeenCalledWith(expectedError, null);

@@ -14,9 +14,9 @@ export const homeRouter = Router();
  * @param {Function} next - The next middleware function.
  */
 homeRouter.get('/', (req: Request, res: Response) => {
-	if (!req.user) {
-		return res.render('home');
-	}
+  if (!req.user) {
+    return res.render('home');
+  }
 
-	res.redirect('/dashboard');
+  res.redirect('/dashboard');
 });
