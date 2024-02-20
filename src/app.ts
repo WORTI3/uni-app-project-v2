@@ -11,7 +11,7 @@ import sqliteStoreFactory from 'express-session-sqlite';
 // App routers
 import { initPassport } from './middleware/passport';
 import { homeRouter } from './routes/home';
-import authRouter from './routes/auth';
+import { authRouter } from './routes/auth';
 import { indexRouter } from './routes/index';
 import { Session } from './types';
 

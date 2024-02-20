@@ -6,7 +6,7 @@ import { ERROR_MESSAGES, PASSWORD_REGEX } from '../assets/constants';
 import { checkValidationResult } from '../middleware/auth';
 import { check } from 'express-validator';
 
-const router = Router();
+export const authRouter = Router();
 
 /**
  * GET request handler for the login page.
@@ -15,7 +15,7 @@ const router = Router();
  * @param {Function} next - The next middleware function (unused).
  * @returns None
  */
-router.get('/login', function (_req, res) {
+authRouter.get('/login', function (_req, res) {
   res.render('login');
 });
 
@@ -29,7 +29,7 @@ router.get('/login', function (_req, res) {
  * @param {boolean} options.failureMessage - whether or not to display a failure message
  * @returns None
  */
-router.post(
+authRouter.post(
   '/login/password',
   passport.authenticate('local', {
     successReturnToOrRedirect: '/',
@@ -45,7 +45,7 @@ router.post(
  * @param {function} next - The next middleware function.
  * @returns None
  */
-router.post('/logout', function (req, res, next) {
+authRouter.post('/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) {
       return next(err);
@@ -61,7 +61,7 @@ router.post('/logout', function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get('/signup', function (_req, res, _next) {
+authRouter.get('/signup', function (_req, res, _next) {
   res.render('signup');
 });
 
@@ -75,7 +75,7 @@ router.get('/signup', function (_req, res, _next) {
  * @param {function} next - The next middleware function.
  * @returns None
  */
-router.post(
+authRouter.post(
   '/signup',
   check('username', ERROR_MESSAGES.USERNAME.DEFAULT)
     .isLength({ min: 3 })
@@ -128,5 +128,3 @@ router.post(
     );
   },
 );
-
-export default router;

@@ -42,30 +42,33 @@ describe('isAdmin() unit tests', () => {
     // then
     expect(next).toHaveBeenCalledTimes(1);
     expect(res.redirect).not.toHaveBeenCalled();
-    expect((req.session as Session).messages).toEqual([]);
   });
 
   it('should redirect to the edit page with an error message if the user is not authenticated', () => {
+    // given
     req.isAuthenticated.mockReturnValue(false);
+
+    // when
     isAdmin(req, res, next);
-    expect(next).not.toHaveBeenCalled();
+
+    // then
+    expect(next).toHaveBeenCalledTimes(0);
     expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith('/');
-    expect((req.session as Session).messages).toEqual([
-      ERROR_MESSAGES.NO_PERMISSION,
-    ]);
   });
 
   it('should redirect to the edit page with an error message if the user is authenticated but does not have role 1', () => {
+    // given
     req.isAuthenticated.mockReturnValue(true);
     req.user.role = undefined;
+
+    // when
     isAdmin(req, res, next);
-    expect(next).not.toHaveBeenCalled();
+
+    // then
+    expect(next).toHaveBeenCalledTimes(0);
     expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith('/');
-    expect((req.session as Session).messages).toEqual([
-      ERROR_MESSAGES.NO_PERMISSION,
-    ]);
   });
 });
 

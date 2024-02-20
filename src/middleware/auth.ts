@@ -1,4 +1,3 @@
-import { ERROR_MESSAGES } from '../assets/constants';
 import { validationResult } from 'express-validator';
 import { type RequestHandler } from 'express';
 import { Session, User } from '../types';
@@ -74,11 +73,15 @@ export const checkValidationResult: RequestHandler = (req, res, next) => {
  */
 export const isAdmin: RequestHandler = (req, res, next) => {
   const user = req.user as User;
-  if (req.isAuthenticated() && user.role === 1) {
-    return next();
+  if (!req.isAuthenticated() || user?.role !== 1) {
+    return res.redirect('/');
   }
+  next();
+};
 
-  const session = req.session as Session;
-  session.messages = [ERROR_MESSAGES.NO_PERMISSION];
-  res.redirect('/');
+export const ensureAuth: RequestHandler = (req, res, next) => {
+  if (!req.isAuthenticated() && !req.user) {
+    return res.redirect('/');
+  }
+  next();
 };
