@@ -1,5 +1,5 @@
 // Dependencies
-import express, { ErrorRequestHandler, RequestHandler } from 'express';
+import express, { ErrorRequestHandler } from 'express';
 import nunjucks from 'nunjucks';
 import createError from 'http-errors';
 import path from 'path';
@@ -13,6 +13,7 @@ import { initPassport } from './middleware/passport';
 import { homeRouter } from './routes/home';
 import authRouter from './routes/auth';
 import { indexRouter } from './routes/index';
+import { Session } from './types';
 
 const app = express();
 // Db
@@ -60,7 +61,7 @@ initPassport(app);
  * @param {Function} next - The next middleware function.
  */
 app.use((req, res, next) => {
-  const session = req.session as any;
+  const session = req.session as Session;
 
   if (!session.errorFields) {
     // when no session is present
@@ -88,11 +89,11 @@ app.use((req, res, next) => {
     res.locals.messages = msgs;
     res.locals.msgTone = tone;
     res.locals.hasMessages =
-      Boolean(msgs.length) || Boolean(session.errorFields.length);
+      Boolean(msgs.length) || Boolean(session.errorFields);
     res.locals.errorFields = session.errorFields;
     session.messages = [];
     // session.errorFields = [];
-    session.msgTone = null;
+    session.msgTone = undefined;
   }
   next();
 });
@@ -121,7 +122,7 @@ app.use((_req, _res, next) => {
 });
 
 // Error handler
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   // Set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -61,7 +61,7 @@ router.post('/logout', function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get('/signup', function (req, res, next) {
+router.get('/signup', function (_req, res, _next) {
   res.render('signup');
 });
 

@@ -31,7 +31,7 @@ export function configureLocalStrategy() {
           db.get(
             'SELECT * FROM users WHERE username = ?',
             [username],
-            (err: any, row: UserRow) => {
+            (err: Error, row: UserRow) => {
               if (err) {
                 return callback(err);
               }

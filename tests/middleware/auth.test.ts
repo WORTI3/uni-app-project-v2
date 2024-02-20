@@ -51,7 +51,9 @@ describe('isAdmin() unit tests', () => {
     expect(next).not.toHaveBeenCalled();
     expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith('/');
-    expect((req.session as Session).messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
+    expect((req.session as Session).messages).toEqual([
+      ERROR_MESSAGES.NO_PERMISSION,
+    ]);
   });
 
   it('should redirect to the edit page with an error message if the user is authenticated but does not have role 1', () => {
@@ -61,7 +63,9 @@ describe('isAdmin() unit tests', () => {
     expect(next).not.toHaveBeenCalled();
     expect(res.redirect).toHaveBeenCalledTimes(1);
     expect(res.redirect).toHaveBeenCalledWith('/');
-    expect((req.session as Session).messages).toEqual([ERROR_MESSAGES.NO_PERMISSION]);
+    expect((req.session as Session).messages).toEqual([
+      ERROR_MESSAGES.NO_PERMISSION,
+    ]);
   });
 });
 

@@ -1,5 +1,6 @@
 import sqlite3, { type Database } from 'sqlite3';
-const mkdrip = require('mkdirp');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mkdrip = require('mkdirp'); // todo: convert to import
 import crypto from 'crypto';
 
 const DATABASE_DIR = './src/database'; // Databases dir

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { DateTime } from 'luxon';
 import db from '../db';
 import { ASSET_STATUS } from '../assets/constants';
-import { User } from '../types';
+import { Session, User } from '../types';
 
 /**
  * Fetches assets from the database based on the user's role and owner_id.
@@ -98,7 +98,7 @@ export const fetchAssetById: RequestHandler = (req, res, next) => {
  * @throws {Error} If there is an error updating the asset in the database.
  */
 export const updateAssetById: RequestHandler = (req, _res, next) => {
-  const session = req.session as any;
+  const session = req.session as Session;
   const user = req.user as User;
   if (!session.update) return next();
   db.run(
@@ -131,7 +131,7 @@ export const updateAssetById: RequestHandler = (req, _res, next) => {
  * @returns None
  */
 export const updateLocalAsset: RequestHandler = (req, res, next) => {
-  const session = req.session as any;
+  const session = req.session as Session;
   if (session?.asset) {
     const asset = res.locals.asset ?? {};
     asset.name = session.asset.name;

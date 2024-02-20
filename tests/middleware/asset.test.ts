@@ -1,4 +1,3 @@
-const { ASSET_STATUS } = require('../../src/assets/constants');
 import { Request, Response } from 'express';
 import db from '../../src/db';
 import {
@@ -6,6 +5,8 @@ import {
   fetchAssetById,
   updateLocalAsset,
 } from '../../src/middleware/asset';
+import { ASSET_STATUS } from '../../src/assets/constants';
+import { Session } from '../../src/types';
 
 const isAuthenticated = jest.fn().mockReturnValue(true);
 
@@ -240,7 +241,7 @@ describe('fetchAssetById()', () => {
         owner_name: 'John Doe',
         code: '123456',
         type: 'computer',
-        status: ASSET_STATUS.IN_USE,
+        status: ASSET_STATUS.OPEN,
         note: 'Test note',
         closed: 0,
       },
@@ -266,7 +267,7 @@ describe('fetchAssetById()', () => {
       ownerName: 'John Doe',
       code: '123456',
       type: 'computer',
-      status: ASSET_STATUS.IN_USE,
+      status: ASSET_STATUS.OPEN,
       note: 'Test note',
       closed: false,
       url: '/1',
@@ -326,7 +327,7 @@ describe('updateLocalAsset()', () => {
     updateLocalAsset(req, res, next);
 
     // then
-    expect((req.session as any).asset).toBeUndefined();
+    expect((req.session as Session).asset).toBeUndefined();
     expect(res.locals.asset).toEqual(asset);
     expect(next).toHaveBeenCalledTimes(1);
   });
@@ -343,7 +344,7 @@ describe('updateLocalAsset()', () => {
     updateLocalAsset(req, res, next);
 
     // then
-    expect((req.session as any).asset).toBeUndefined();
+    expect((req.session as Session).asset).toBeUndefined();
     expect(res.locals.asset).toEqual(asset);
     expect(next).toHaveBeenCalledTimes(1);
   });

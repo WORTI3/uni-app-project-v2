@@ -9,6 +9,7 @@ import {
  * @param {Object} require - The require object from Node.js.
  * @returns The ensureLoggedIn middleware function.
  */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ensureLogIn = require('connect-ensure-login').ensureLoggedIn;
 import { check } from 'express-validator';
 import { checkValidationResult, isAdmin } from '../middleware/auth';
@@ -25,7 +26,7 @@ import {
   updateAssetById,
 } from '../middleware/asset';
 import db from '../db';
-import { User } from '../types';
+import { Session, User } from '../types';
 
 /**
  * Calls the `ensureLogIn` function to ensure that the user is logged in.
@@ -54,9 +55,9 @@ indexRouter.get(
   isAdmin, // checking admin here in case a user navigates via URL
   ensureLoggedIn,
   fetchAssets,
-  function (req, res, next) {
+  function (req, res, _next) {
     res.locals.assets = res.locals.assets.filter(function (asset: {
-      closed: any;
+      closed: boolean;
     }) {
       return asset.closed;
     });
@@ -74,7 +75,7 @@ indexRouter.get(
  */
 indexRouter.get('/all', ensureLoggedIn, fetchAssets, function (req, res) {
   res.locals.assets = res.locals.assets.filter(function (asset: {
-    closed: any;
+    closed: boolean;
   }) {
     return !asset.closed;
   });
@@ -85,7 +86,7 @@ indexRouter.get(
   '/dashboard',
   ensureLoggedIn,
   fetchAssets,
-  function (req, res, next) {
+  function (req, res, _next) {
     res.render('index', { user: req.user });
   },
 );
@@ -112,12 +113,10 @@ indexRouter.get('/add', ensureLoggedIn, updateLocalAsset, function (req, res) {
 indexRouter.post(
   '/add',
   ensureLoggedIn,
-  // [
   check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
   check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
   check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
   checkValidationResult,
-  // ],
   function (req, res, next) {
     const user = req.user as User;
 
@@ -145,8 +144,9 @@ indexRouter.post(
         }
       },
     );
-    (req.session as any).messages = [SUCCESS_MESSAGES.CREATED];
-    (req.session as any).msgTone = 'positive';
+    const session = req.session as Session;
+    session.messages = [SUCCESS_MESSAGES.CREATED];
+    session.msgTone = 'positive';
     res.redirect('/all');
   },
 );
@@ -173,7 +173,7 @@ indexRouter.get(
   ensureLoggedIn,
   fetchAssetById,
   updateLocalAsset,
-  function (req, res, next) {
+  function (req, res, _next) {
     /**
      * Renders the "index" view with the user and edit parameters.
      * @param {Object} req - The request object.
@@ -197,7 +197,7 @@ indexRouter.get(
   ensureLoggedIn,
   updateAssetById,
   fetchAssetById,
-  function (req, res, next) {
+  function (req, res, _next) {
     return res.render('index', { user: req.user, readOnly: true });
   },
 );
@@ -213,7 +213,7 @@ indexRouter.post(
   '/:id(\\d+)/view',
   ensureLoggedIn,
   fetchAssetById,
-  function (req, res, next) {
+  function (req, res, _next) {
     res.render('index', { user: req.user, readOnly: true });
   },
 );
@@ -234,7 +234,7 @@ indexRouter.post(
    * Deletes an asset from the database with the given ID and owner ID.
    */
   function (req, res, next) {
-    const session = req.session as any;
+    const session = req.session as Session;
     db.run(
       'DELETE FROM assets WHERE id = ? AND owner_id = ?',
       [req.params.id, (req.user as User).id],
@@ -275,7 +275,7 @@ indexRouter.post(
    * Deletes an asset from the database for the authenticated user.
    */
   function (req, res, next) {
-    const session = req.session as any;
+    const session = req.session as Session;
     db.run(
       'DELETE FROM assets WHERE id = ? AND owner_id = ?',
       [req.params.id, (req.user as User).id],
@@ -300,6 +300,6 @@ indexRouter.post(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-indexRouter.get('/settings', ensureLoggedIn, function (req, res, next) {
+indexRouter.get('/settings', ensureLoggedIn, function (req, res, _next) {
   res.render('settings', { user: req.user });
 });

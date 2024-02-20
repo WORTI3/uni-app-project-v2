@@ -1,7 +1,7 @@
 import { ERROR_MESSAGES } from '../assets/constants';
 import { validationResult } from 'express-validator';
 import { type RequestHandler } from 'express';
-import { User } from '../types';
+import { Session, User } from '../types';
 
 interface baseInputValues {
   username: string;
@@ -30,7 +30,7 @@ export const checkValidationResult: RequestHandler = (req, res, next) => {
   };
   // Conditionally add additional input values based on the URL
   const url = req.originalUrl;
-  const session = req.session as any;
+  const session = req.session as Session;
   if (url.endsWith('/edit') || url.endsWith('/add')) {
     inputValues.name = req.body.name;
     inputValues.code = req.body.code;
@@ -78,7 +78,7 @@ export const isAdmin: RequestHandler = (req, res, next) => {
     return next();
   }
 
-  const session = req.session as any;
+  const session = req.session as Session;
   session.messages = [ERROR_MESSAGES.NO_PERMISSION];
   res.redirect('/');
 };

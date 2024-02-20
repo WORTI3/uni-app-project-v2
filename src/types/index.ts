@@ -21,7 +21,8 @@ export type Session = {
     closed?: boolean;
     updated?: boolean;
   };
-  messages?: object;
+  errorFields?: object; // todo: type
+  messages?: string[];
   msgTone?: 'positive' | string;
   asset?: AssetPayload;
 };
