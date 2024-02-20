@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GET / should show the portal home page when no user present 1`] = `
+exports[`Home Router GET / should show the portal home page when no user present 1`] = `
 "
 <!DOCTYPE html>
 <html lang="en">

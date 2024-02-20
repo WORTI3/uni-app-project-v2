@@ -1,10 +1,6 @@
 name: Branch checks, coverage and test deployment
 
 on: [push]
-  # pull_request:
-  #   branches:
-  #     - develop
-  #     - main
 
 jobs:
   install_and_test:
@@ -16,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -58,16 +54,6 @@ jobs:
     steps: 
       - name: Checkout
         uses: actions/checkout@v4
-
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '20'
-      #     cache: 'npm'
-
-      # - name: Use Node ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: |
