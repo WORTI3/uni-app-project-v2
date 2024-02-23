@@ -32,7 +32,6 @@ exports[`handle 404 errors should render error template with status 404 for not 
   <h2>Error: Not Found</h2>
   <p>Looks like the application has thrown an error</p>
   <p>Please try again later</p>
-  
 </div>
 </main>
         </body>
