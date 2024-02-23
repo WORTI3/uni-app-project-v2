@@ -15,11 +15,19 @@ describe('handle 404 errors', () => {
   });
 
   it('should render error template with status 404 for not found error', async () => {
+    // given / when
     const result = await request(app).get('/invalid_route').expect(404);
     const $ = cheerio.load(result.text);
-    const heading = $('h1').text();
 
-    expect(heading).toBe('Not Found');
+    // then
+    expect(result.status).toBe(404);
+    expect($('h1').text()).toBeDefined();
+    expect($('h2').text()).toBe('Error: Not Found');
+    expect($('p')).toHaveLength(2);
+    expect($('p').text()).toBe(
+      'Looks like the application has thrown an errorPlease try again later',
+    );
+    expect(result.text).toMatchSnapshot();
   });
 });
 

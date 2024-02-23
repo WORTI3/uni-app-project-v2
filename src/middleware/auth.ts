@@ -42,7 +42,6 @@ export const checkValidationResult: RequestHandler = (req, res, next) => {
       note: req.body.note,
     };
   }
-  console.log(inputValues);
 
   for (const [key, value] of Object.entries(inputValues)) {
     fieldErrors.push({
@@ -51,10 +50,12 @@ export const checkValidationResult: RequestHandler = (req, res, next) => {
       error: result.find((e) => e.param === key)?.msg || null,
     });
   }
+  // We still map the session errors here for passport functionality
   session.messages = result.map((error) => error.msg);
 
   if (session.messages.length === 0) {
     session.errorFields = [];
+    session.asset = {};
     return next();
   }
 

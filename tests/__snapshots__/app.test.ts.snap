@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handle 404 errors should render error template with status 404 for not found error 1`] = `
+"
+<!DOCTYPE html>
+<html lang="en">
+    
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Faultifier - a ticket handling admin service.">
+        <meta name="theme-color" content="blue">
+		<title> - Faultifier</title>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+
+    <div class="flex flex-col h-screen justify-between overflow-hidden">
+        <nav class="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+    <div class="flex items-center flex-shrink-0 text-picton-blue-600 mr-6">
+        <a href="/"><span class="font-bold text-xl tracking-tight font-sans">FAULTIFIER</span></a>
+    </div>
+    
+    
+</nav>
+
+        <body class="bg-gradient-to-tr from-picton-blue-600 to-yellow-500 overflow-hidden">
+            <main>
+
+<div class="p-12 bg-white sm:mx-auto rounded-md w-1/2 max-sm:w-full max-sm:p-6">
+  
+  <h1 class="text-center"></h1>
+  <h2>Error: Not Found</h2>
+  <p>Looks like the application has thrown an error</p>
+  <p>Please try again later</p>
+  
+</div>
+</main>
+        </body>
+
+        
+        <footer class="lg:text-left bg-gray-100 text-gray-600">
+            <div class="text-center p-6">
+                <span>© 2023 </span>
+                <a class="text-gray-600 font-semibold" href="https://github.com/WORTI3">Wortie</a>
+            </div>
+        </footer>
+    </div>
+</html>"
+`;

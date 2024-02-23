@@ -1,6 +1,72 @@
 import request from 'supertest';
 import cheerio from 'cheerio';
 import app from '../../src/app';
+import * as passport from 'passport';
+import express, { Request } from 'express';
+import { authRouter } from '../../src/routes/auth';
+import { Session } from '../../src/types';
+import session from 'express-session';
+
+// Mock passport.authenticate
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(passport as any).authenticate = jest.fn();
+
+describe('POST /login/password', () => {
+  const tempApp = express();
+  tempApp.use(express.json());
+
+  let mockReq: Partial<Request> = {};
+  beforeEach(async () => {
+    jest.resetAllMocks();
+    mockReq = {
+      body: { username: 'testuser', password: 'wrongpassword' },
+      session: { messages: [], msgTone: '', errorFields: [] } as Session,
+    } as unknown as Request;
+
+    tempApp.use(async (req, _res, next) => {
+      // Assigning seperately for safety and to mimic previous middlewares
+      req.body = mockReq.body;
+      req.session = mockReq.session as session.Session;
+      next();
+    });
+  });
+
+  it('should handle authentication failure and redirect user', async () => {
+    // given
+    // Mock passport.authenticate behavior for failure
+    (passport.authenticate as jest.Mock).mockImplementation(
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      (strategy: string, callback: Function) => {
+        callback(null, false, { message: 'Authentication failed' });
+      },
+    );
+
+    // when / then
+    await request(tempApp.use('/', authRouter))
+      .post('/login/password')
+      .send(mockReq.body)
+      .expect(302) // Expecting redirect
+      .expect('Location', '/login');
+  });
+
+  it('should handle authentication when error', async () => {
+    // given
+    // Mock passport.authenticate behavior for success
+    (passport.authenticate as jest.Mock).mockImplementation(
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      (strategy: string, callback: Function) => {
+        callback(new Error('broke'));
+      },
+    );
+
+    // when / then
+    await request(tempApp.use('/', authRouter))
+      .post('/login/password')
+      .send(mockReq.body)
+      .expect(302) // Expecting redirect
+      .expect('Location', '/login');
+  });
+});
 
 describe('GET /signup', () => {
   it('should return 200 status code match snapshot', async () => {

@@ -236,6 +236,7 @@ indexRouter.post(
       [req.params.id, (req.user as User).id],
       function (err) {
         if (err) {
+          console.error('Database errored whilst deleting asset: ', err);
           return next(err);
         }
         session.messages = [SUCCESS_MESSAGES.DELETED];
@@ -276,6 +277,7 @@ indexRouter.post(
       [req.params.id, (req.user as User).id],
       function (err) {
         if (err) {
+          console.error('Database errored whilst ammending an asset: ', err);
           return next(err);
         }
         session.messages = [SUCCESS_MESSAGES.DELETED];

@@ -72,8 +72,6 @@ describe('isAdmin() unit tests', () => {
   });
 });
 
-jest.mock('express-validator');
-
 describe('checkValidationResult() unit tests', () => {
   const req = {
     session: {},

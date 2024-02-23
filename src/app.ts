@@ -13,7 +13,7 @@ import { initPassport } from './middleware/passport';
 import { homeRouter } from './routes/home';
 import { authRouter } from './routes/auth';
 import { indexRouter } from './routes/index';
-import { Session } from './types';
+import { ErrorField, Session } from './types';
 
 const app = express();
 // Db
@@ -63,36 +63,33 @@ initPassport(app);
 app.use((req, res, next) => {
   const session = req.session as Session;
 
+  // const fields = [];
   if (!session.errorFields) {
     // when no session is present
     const inputValues = {
       username: req.body.username ?? '',
       password: '', // dont want to pass password value through here
     };
-    const fields = [];
+
+    const fields: ErrorField[] = [];
     for (const [key, value] of Object.entries(inputValues)) {
       fields.push({
         field: key,
         value: value,
+        error: null,
       });
     }
+
     session.errorFields = fields;
   }
 
-  // todo remove messages and use errorFields.error
-
   if (session.messages || session.errorFields) {
-    console.log('error fields:', session.errorFields);
-
     const msgs = session?.messages ?? [];
     const tone = session.msgTone ?? null;
     res.locals.messages = msgs;
     res.locals.msgTone = tone;
-    res.locals.hasMessages =
-      Boolean(msgs.length) || Boolean(session.errorFields);
     res.locals.errorFields = session.errorFields;
     session.messages = [];
-    // session.errorFields = [];
     session.msgTone = undefined;
   }
   next();
@@ -125,7 +122,7 @@ app.use((_req, _res, next) => {
 const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   // Set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {}; // dont show in production
   res.status(err.status || 500).render('error');
 };
 
