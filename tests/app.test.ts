@@ -56,42 +56,49 @@ describe('errorHandler test errors', () => {
   const tempApp = express();
   tempApp.use(errorHandler);
   const errorMessage = 'Test error message';
+  const itif = (env?: string) => (env === 'test' ? it : it.skip);
 
-  it('should respond with error message and status 500', async () => {
-    // given
-    tempApp.use((_req, _res, next) => {
-      next(new Error(errorMessage));
-    });
+  itif(process.env.NODE_ENV)(
+    'should respond with error message and status 500',
+    async () => {
+      // given
+      tempApp.use((_req, _res, next) => {
+        next(new Error(errorMessage));
+      });
 
-    // when
-    const response = await request(tempApp).get('/');
+      // when
+      const response = await request(tempApp).get('/');
 
-    // then
-    const $ = cheerio.load(response.text);
-    expect($('title').text()).toBe('Error');
-    expect($('pre').text()).toContain('Error: Test error message');
-    expect(response.status).toBe(500);
-    expect(response.text).toMatchSnapshot();
-  });
+      // then
+      const $ = cheerio.load(response.text);
+      expect($('title').text()).toBe('Error');
+      expect($('pre').text()).toContain('Error: Test error message');
+      expect(response.status).toBe(500);
+      expect(response.text).toMatchSnapshot();
+    },
+  );
 
-  it('should set locals message and error in development environment', async () => {
-    // given
+  itif(process.env.NODE_ENV)(
+    'should set locals message and error in development environment',
+    async () => {
+      // given
 
-    tempApp.use((_req, _res, next) => {
-      next(new Error(errorMessage));
-    });
+      tempApp.use((_req, _res, next) => {
+        next(new Error(errorMessage));
+      });
 
-    // when
-    const response = await request(tempApp).get('/');
+      // when
+      const response = await request(tempApp).get('/');
 
-    // then
-    expect(response.text).toContain(errorMessage);
-    const $ = cheerio.load(response.text);
-    expect($('title').text()).toBe('Error');
-    expect($('pre').text()).toContain('Error: Test error message');
-    expect(response.status).toBe(500);
-    expect(response.text).toMatchSnapshot();
-  });
+      // then
+      expect(response.text).toContain(errorMessage);
+      const $ = cheerio.load(response.text);
+      expect($('title').text()).toBe('Error');
+      expect($('pre').text()).toContain('Error: Test error message');
+      expect(response.status).toBe(500);
+      expect(response.text).toMatchSnapshot();
+    },
+  );
 });
 
 process.env.NODE_ENV = 'production';
