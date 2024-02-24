@@ -5,7 +5,14 @@ on:
     branches: [main]
 
 jobs: 
+  run-checks:
+    uses: ./.github/workflows/checks.yml
+    with:
+      job: install_and_test
+
   deploy:
+    needs: [run-checks]
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
+      
+      - name: Run lint check
+        run: npm run lint
 
       - name: Run tests
         run: npm run test
