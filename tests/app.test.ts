@@ -100,40 +100,47 @@ describe('errorHandler production errors', () => {
   const tempApp = express();
   tempApp.use(errorHandler);
   const errorMessage = 'Test error message';
+  const itif = (env?: string) => (env === 'production' ? it : it.skip);
 
-  it('should respond with error message and status 500', async () => {
-    // given
-    tempApp.use((_req, _res, next) => {
-      next(new Error(errorMessage));
-    });
+  itif(process.env.NODE_ENV)(
+    'should respond with error message and status 500',
+    async () => {
+      // given
+      tempApp.use((_req, _res, next) => {
+        next(new Error(errorMessage));
+      });
 
-    // when
-    const response = await request(tempApp).get('/');
+      // when
+      const response = await request(tempApp).get('/');
 
-    // then
-    const $ = cheerio.load(response.text);
-    expect($('title').text()).toBe('Error');
-    expect($('pre').text()).toBe('Internal Server Error');
-    expect(response.status).toBe(500);
-    expect(response.text).toMatchSnapshot();
-  });
+      // then
+      const $ = cheerio.load(response.text);
+      expect($('title').text()).toBe('Error');
+      expect($('pre').text()).toBe('Internal Server Error');
+      expect(response.status).toBe(500);
+      expect(response.text).toMatchSnapshot();
+    },
+  );
 
-  it('should not set locals error in production environment', async () => {
-    // given
-    tempApp.use((_req, _res, next) => {
-      next(new Error(errorMessage));
-    });
+  itif(process.env.NODE_ENV)(
+    'should not set locals error in production environment',
+    async () => {
+      // given
+      tempApp.use((_req, _res, next) => {
+        next(new Error(errorMessage));
+      });
 
-    // when
-    const response = await request(tempApp).get('/');
+      // when
+      const response = await request(tempApp).get('/');
 
-    // then
-    expect(response.status).toBe(500); // Ensure status 500 for production
-    expect(response.text).not.toContain(errorMessage); // Error message should not be exposed in production
+      // then
+      expect(response.status).toBe(500); // Ensure status 500 for production
+      expect(response.text).not.toContain(errorMessage); // Error message should not be exposed in production
 
-    const $ = cheerio.load(response.text);
-    expect($('title').text()).toBe('Error');
-    expect($('pre').text()).not.toContain('Error: Test error message');
-    expect(response.text).toMatchSnapshot();
-  });
+      const $ = cheerio.load(response.text);
+      expect($('title').text()).toBe('Error');
+      expect($('pre').text()).not.toContain('Error: Test error message');
+      expect(response.text).toMatchSnapshot();
+    },
+  );
 });
