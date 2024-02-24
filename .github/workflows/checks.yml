@@ -1,6 +1,6 @@
-name: Branch checks, coverage and test deployment
+name: Branch checks, coverage and deployments
 
-on: [pull_request, push]
+on: [push]
 
 jobs:
   install_and_test:
@@ -58,9 +58,6 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-
-      - name: Run tests
-        run: npm run test
       
       - name: Install Railway
         run: npm i -g @railway/cli
