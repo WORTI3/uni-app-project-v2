@@ -76,7 +76,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [install_and_test, coverage, deploy-test]
-    if: success() && github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Deploy
         run: railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }}
