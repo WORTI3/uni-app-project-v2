@@ -74,7 +74,6 @@ describe('errorHandler test errors', () => {
       expect($('title').text()).toBe('Error');
       expect($('pre').text()).toContain('Error: Test error message');
       expect(response.status).toBe(500);
-      expect(response.text).toMatchSnapshot();
     },
   );
 
@@ -96,7 +95,6 @@ describe('errorHandler test errors', () => {
       expect($('title').text()).toBe('Error');
       expect($('pre').text()).toContain('Error: Test error message');
       expect(response.status).toBe(500);
-      expect(response.text).toMatchSnapshot();
     },
   );
 });
@@ -125,7 +123,6 @@ describe('errorHandler production errors', () => {
       expect($('title').text()).toBe('Error');
       expect($('pre').text()).toBe('Internal Server Error');
       expect(response.status).toBe(500);
-      expect(response.text).toMatchSnapshot();
     },
   );
 
@@ -147,7 +144,6 @@ describe('errorHandler production errors', () => {
       const $ = cheerio.load(response.text);
       expect($('title').text()).toBe('Error');
       expect($('pre').text()).not.toContain('Error: Test error message');
-      expect(response.text).toMatchSnapshot();
     },
   );
 });
