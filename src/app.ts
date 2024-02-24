@@ -119,11 +119,17 @@ app.use((_req, _res, next) => {
 });
 
 // Error handler
-const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
-  // Set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {}; // dont show in production
-  res.status(err.status || 500).render('error');
+export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
+  // Set locals, only providing detailed error in development
+  if (req.app.get('env') === ('development' || 'test')) {
+    res.locals.message = err.message;
+    res.locals.error = err;
+  } else {
+    res.locals.message =
+      err.status === 404 ? 'Not Found' : 'Internal Server Error';
+    res.locals.error = {};
+  }
+  res.status(err.status).render('error');
 };
 
 app.use(errorHandler);

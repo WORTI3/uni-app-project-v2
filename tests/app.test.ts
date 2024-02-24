@@ -1,7 +1,8 @@
 import request from 'supertest';
 import cheerio from 'cheerio';
-import app from '../src/app';
+import app, { errorHandler } from '../src/app';
 import supertest from 'supertest';
+import express from 'express';
 
 describe('Nunjucks configuration', () => {
   it("should set the view engine to 'njk'", () => {
@@ -48,5 +49,91 @@ describe('unit tests for app.js routers', () => {
 
   test('GET /signup should return 200', async () => {
     await request(app).get('/signup').expect(200);
+  });
+});
+
+describe('errorHandler test errors', () => {
+  const tempApp = express();
+  tempApp.use(errorHandler);
+  const errorMessage = 'Test error message';
+
+  it('should respond with error message and status 500', async () => {
+    // given
+    tempApp.use((_req, _res, next) => {
+      next(new Error(errorMessage));
+    });
+
+    // when
+    const response = await request(tempApp).get('/');
+
+    // then
+    const $ = cheerio.load(response.text);
+    expect($('title').text()).toBe('Error');
+    expect($('pre').text()).toContain('Error: Test error message');
+    expect(response.status).toBe(500);
+    expect(response.text).toMatchSnapshot();
+  });
+
+  it('should set locals message and error in development environment', async () => {
+    // given
+
+    tempApp.use((_req, _res, next) => {
+      next(new Error(errorMessage));
+    });
+
+    // when
+    const response = await request(tempApp).get('/');
+
+    // then
+    expect(response.text).toContain(errorMessage);
+    const $ = cheerio.load(response.text);
+    expect($('title').text()).toBe('Error');
+    expect($('pre').text()).toContain('Error: Test error message');
+    expect(response.status).toBe(500);
+    expect(response.text).toMatchSnapshot();
+  });
+});
+
+process.env.NODE_ENV = 'production';
+
+describe('errorHandler production errors', () => {
+  const tempApp = express();
+  tempApp.use(errorHandler);
+  const errorMessage = 'Test error message';
+
+  it('should respond with error message and status 500', async () => {
+    // given
+    tempApp.use((_req, _res, next) => {
+      next(new Error(errorMessage));
+    });
+
+    // when
+    const response = await request(tempApp).get('/');
+
+    // then
+    const $ = cheerio.load(response.text);
+    expect($('title').text()).toBe('Error');
+    expect($('pre').text()).toBe('Internal Server Error');
+    expect(response.status).toBe(500);
+    expect(response.text).toMatchSnapshot();
+  });
+
+  it('should not set locals error in production environment', async () => {
+    // given
+    tempApp.use((_req, _res, next) => {
+      next(new Error(errorMessage));
+    });
+
+    // when
+    const response = await request(tempApp).get('/');
+
+    // then
+    expect(response.status).toBe(500); // Ensure status 500 for production
+    expect(response.text).not.toContain(errorMessage); // Error message should not be exposed in production
+
+    const $ = cheerio.load(response.text);
+    expect($('title').text()).toBe('Error');
+    expect($('pre').text()).not.toContain('Error: Test error message');
+    expect(response.text).toMatchSnapshot();
   });
 });

@@ -10,8 +10,8 @@
   "homepage": "https://github.com/WORTI3/uni-app-project",
   "license": "Unlicense",
   "scripts": {
-    "start": "nodemon -e ts,css,njk, ./src/server",
-    "start:dev": "postcss ./src/assets/styles/main.css -o public/main.css & npm run start",
+    "start": "NODE_ENV=production nodemon -e ts,css,njk, ./src/server",
+    "start:dev": "postcss ./src/assets/styles/main.css -o public/main.css & nodemon -e ts,css,njk, ./src/server",
     "start:test": "npx tailwindcss -i ./src/assets/styles/main.css -o public/main.css --watch",
     "test": "NODE_ENV=test jest",
     "test:coverage": "NODE_ENV=test jest --coverage",

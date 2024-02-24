@@ -68,6 +68,37 @@ describe('POST /login/password', () => {
   });
 });
 
+describe('POST /signup', () => {
+  const tempApp = express();
+  tempApp.use(express.json());
+
+  let mockReq: Partial<Request> = {};
+  beforeEach(async () => {
+    jest.resetAllMocks();
+    mockReq = {
+      body: { username: 'testuser', password: 'wrongpassword' },
+      session: { messages: [], msgTone: '', errorFields: [] } as Session,
+    } as unknown as Request;
+
+    tempApp.use(async (req, _res, next) => {
+      // Assigning seperately for safety and to mimic previous middlewares
+      req.body = mockReq.body;
+      req.session = mockReq.session as session.Session;
+      next();
+    });
+  });
+
+  it('should handle user input then fail and redirect user', async () => {
+    // given
+    // when / then
+    await request(tempApp.use('/', authRouter))
+      .post('/signup')
+      .send(mockReq.body)
+      .expect(302) // Expecting redirect
+      .expect('Location', '/signup');
+  });
+});
+
 describe('GET /signup', () => {
   it('should return 200 status code match snapshot', async () => {
     // given / when
@@ -83,7 +114,7 @@ describe('GET /signup', () => {
     expect(resultTextNoCSRF).toMatchSnapshot();
   });
 
-  it('should render add content', async () => {
+  it('should render content', async () => {
     // given / when
     const result = await request(app).get('/signup').expect(200);
 
@@ -111,7 +142,7 @@ describe('GET /login', () => {
     expect(resultTextNoCSRF).toMatchSnapshot();
   });
 
-  it('should render add content', async () => {
+  it('should render content', async () => {
     // given / when
     const result = await request(app).get('/login').expect(200);
 
