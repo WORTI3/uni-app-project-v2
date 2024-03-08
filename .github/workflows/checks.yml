@@ -1,6 +1,8 @@
 name: Branch checks, coverage and test deployment
 
-on: [pull_request]
+on: 
+  workflow_call:
+  pull_request:
 
 jobs:
   install_and_test:
