@@ -7,8 +7,8 @@ on:
 jobs: 
   run-checks:
     uses: ./.github/workflows/checks.yml
-    with:
-      job: install_and_test
+    # with:
+      # job: install_and_test
 
   deploy:
     needs: [run-checks]
