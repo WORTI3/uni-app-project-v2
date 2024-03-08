@@ -24,6 +24,7 @@ export const fetchAssets: RequestHandler = (req, res, next) => {
 
   db.all(query, param, function (err, rows) {
     if (err) {
+      console.error('Database error when selecting assets ', err);
       return next(err);
     }
 
@@ -64,6 +65,7 @@ export const fetchAssetById: RequestHandler = (req, res, next) => {
     [req.params.id],
     function (err, rows) {
       if (err) {
+        console.error('Database error when selecting assets ', err);
         return next(err);
       }
 
@@ -116,6 +118,7 @@ export const updateAssetById: RequestHandler = (req, _res, next) => {
     ],
     function (err) {
       if (err) {
+        console.error('Database error when updating assets ', err);
         return next(err);
       }
     },

@@ -11,17 +11,25 @@ export interface IUser {
   password: string;
 }
 
+export type ErrorField = {
+  field: string;
+  value: string;
+  error: string | null;
+};
+
+type AssetType = 'Hardware fault' | 'Software fault' | 'Other';
+
 export type Session = {
   update?: {
     name?: string;
     code?: string;
-    type?: string;
+    type?: AssetType;
     note?: string;
     status?: ASSET_STATUS;
     closed?: boolean;
     updated?: boolean;
   };
-  errorFields?: object; // todo: type
+  errorFields?: ErrorField[];
   messages?: string[];
   msgTone?: 'positive' | string;
   asset?: AssetPayload;
@@ -30,6 +38,6 @@ export type Session = {
 export type AssetPayload = {
   name?: string;
   code?: string;
-  type?: string;
+  type?: AssetType;
   note?: string;
 };

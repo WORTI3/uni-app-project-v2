@@ -1,16 +1,21 @@
-import * as passportStrategy from 'passport-local';
+// import * as passportStrategy from 'passport-local';
 import passport from 'passport';
 import crypto from 'crypto';
 import { Express, Request, Response, NextFunction, Application } from 'express';
 import db from '../db';
 import { ERROR_MESSAGES } from '../assets/constants';
 import { IUser } from '../types';
+import { IVerifyOptions, Strategy as LocalStrategy } from 'passport-local';
 
 interface UserRow {
   id: number;
   username: string;
   hashed_password: NodeJS.ArrayBufferView;
   salt: string;
+}
+
+export interface CustomVerifyOptions extends IVerifyOptions {
+  field?: string;
 }
 
 /**
@@ -24,15 +29,16 @@ interface UserRow {
  */
 export function configureLocalStrategy() {
   passport.use(
-    new passportStrategy.Strategy(
-      { usernameField: 'username' },
-      async (username, password, callback) => {
+    new LocalStrategy(
+      { usernameField: 'username', passwordField: 'password' },
+      (username: string, password: string, callback) => {
         try {
           db.get(
             'SELECT * FROM users WHERE username = ?',
             [username],
             (err: Error, row: UserRow) => {
               if (err) {
+                console.error('Database error in passport configuration', err);
                 return callback(err);
               }
               if (!row) {
@@ -86,7 +92,7 @@ function configureSerialisation() {
   });
 
   passport.deserializeUser((user: IUser, callback) => {
-    return callback(null, user);
+    callback(null, user);
   });
 }
 
@@ -99,9 +105,8 @@ function configureSerialisation() {
  */
 export function initPassport(app: Express | Application) {
   app.use(passport.initialize());
-  app.use((req, res, next) => {
-    passport.authenticate('session')(req, res, next);
-  });
+  app.use(passport.session());
+  app.use(passport.authenticate('session'));
 
   configureLocalStrategy();
   configureSerialisation();

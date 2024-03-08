@@ -1,18 +1,11 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import {
   ASSET_STATUS,
   ERROR_MESSAGES,
   SUCCESS_MESSAGES,
 } from '../assets/constants';
-/**
- * A middleware function that ensures that a user is logged in before allowing access to a route.
- * @param {Object} require - The require object from Node.js.
- * @returns The ensureLoggedIn middleware function.
- */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const ensureLogIn = require('connect-ensure-login').ensureLoggedIn;
 import { check } from 'express-validator';
-import { checkValidationResult, isAdmin } from '../middleware/auth';
+import { checkValidationResult, ensureAuth, isAdmin } from '../middleware/auth';
 import {
   checkAdd,
   checkAll,
@@ -27,12 +20,6 @@ import {
 } from '../middleware/asset';
 import db from '../db';
 import { Session, User } from '../types';
-
-/**
- * Calls the `ensureLogIn` function to ensure that the user is logged in.
- * @returns None
- */
-const ensureLoggedIn = ensureLogIn();
 
 /**
  * Creates a new instance of an Express router.
@@ -53,9 +40,8 @@ export const indexRouter = Router();
 indexRouter.get(
   '/all/closed',
   isAdmin, // checking admin here in case a user navigates via URL
-  ensureLoggedIn,
   fetchAssets,
-  function (req, res, _next) {
+  function (req: Request, res: Response, _next: NextFunction) {
     res.locals.assets = res.locals.assets.filter(function (asset: {
       closed: boolean;
     }) {
@@ -73,20 +59,25 @@ indexRouter.get(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-indexRouter.get('/all', ensureLoggedIn, fetchAssets, function (req, res) {
-  res.locals.assets = res.locals.assets.filter(function (asset: {
-    closed: boolean;
-  }) {
-    return !asset.closed;
-  });
-  res.render('index', { user: req.user, showAll: true });
-});
+indexRouter.get(
+  '/all',
+  isAdmin,
+  fetchAssets,
+  (req: Request, res: Response, _next: NextFunction) => {
+    res.locals.assets = res.locals.assets.filter(function (asset: {
+      closed: boolean;
+    }) {
+      return !asset.closed;
+    });
+    res.render('index', { user: req.user, showAll: true });
+  },
+);
 
 indexRouter.get(
   '/dashboard',
-  ensureLoggedIn,
+  ensureAuth,
   fetchAssets,
-  function (req, res, _next) {
+  function (req: Request, res: Response, _next: NextFunction) {
     res.render('index', { user: req.user });
   },
 );
@@ -98,9 +89,14 @@ indexRouter.get(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-indexRouter.get('/add', ensureLoggedIn, updateLocalAsset, function (req, res) {
-  res.render('index', { user: req.user, addNew: true });
-});
+indexRouter.get(
+  '/add',
+  ensureAuth,
+  updateLocalAsset,
+  (req: Request, res: Response, _next: NextFunction) => {
+    return res.render('index', { user: req.user, addNew: true });
+  },
+);
 
 /**
  * Adds a new asset to the database with the given information.
@@ -112,12 +108,12 @@ indexRouter.get('/add', ensureLoggedIn, updateLocalAsset, function (req, res) {
  */
 indexRouter.post(
   '/add',
-  ensureLoggedIn,
+  ensureAuth,
   check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
   check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
   check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
   checkValidationResult,
-  function (req, res, next) {
+  (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as User;
 
     /**
@@ -140,6 +136,7 @@ indexRouter.post(
       ],
       function (err) {
         if (err) {
+          console.error('Database errored whilst adding an asset: ', err);
           return next(err);
         }
       },
@@ -158,7 +155,7 @@ indexRouter.post(
  * @param {Object} res - The response object.
  * @returns None
  */
-indexRouter.post('/', ensureLoggedIn, checkAll, checkAdd);
+indexRouter.post('/', ensureAuth, checkAll, checkAdd);
 
 /**
  * GET request handler for editing an asset with the given ID.
@@ -170,10 +167,10 @@ indexRouter.post('/', ensureLoggedIn, checkAll, checkAdd);
  */
 indexRouter.get(
   '/:id(\\d+)/edit',
-  ensureLoggedIn,
+  ensureAuth,
   fetchAssetById,
   updateLocalAsset,
-  function (req, res, _next) {
+  (req: Request, res: Response, _next: NextFunction) => {
     /**
      * Renders the "index" view with the user and edit parameters.
      * @param {Object} req - The request object.
@@ -194,10 +191,10 @@ indexRouter.get(
  */
 indexRouter.get(
   '/:id(\\d+)/view',
-  ensureLoggedIn,
+  ensureAuth,
   updateAssetById,
   fetchAssetById,
-  function (req, res, _next) {
+  function (req: Request, res: Response, _next: NextFunction) {
     return res.render('index', { user: req.user, readOnly: true });
   },
 );
@@ -211,9 +208,9 @@ indexRouter.get(
  */
 indexRouter.post(
   '/:id(\\d+)/view',
-  ensureLoggedIn,
+  ensureAuth,
   fetchAssetById,
-  function (req, res, _next) {
+  function (req: Request, res: Response, _next: NextFunction) {
     res.render('index', { user: req.user, readOnly: true });
   },
 );
@@ -228,18 +225,18 @@ indexRouter.post(
  */
 indexRouter.post(
   '/:id(\\d+)/delete',
-  ensureLoggedIn,
   isAdmin,
   /**
    * Deletes an asset from the database with the given ID and owner ID.
    */
-  function (req, res, next) {
+  function (req: Request, res: Response, next: NextFunction) {
     const session = req.session as Session;
     db.run(
       'DELETE FROM assets WHERE id = ? AND owner_id = ?',
       [req.params.id, (req.user as User).id],
       function (err) {
         if (err) {
+          console.error('Database errored whilst deleting asset: ', err);
           return next(err);
         }
         session.messages = [SUCCESS_MESSAGES.DELETED];
@@ -263,24 +260,24 @@ indexRouter.post(
  */
 indexRouter.post(
   '/:id(\\d+)/edit',
-  ensureLoggedIn,
+  ensureAuth,
   check('name', ERROR_MESSAGES.ADD_ISSUE.NAME).isLength({ min: 1 }),
   check('code', ERROR_MESSAGES.ADD_ISSUE.CODE).isLength({ min: 6, max: 6 }),
   check('note', ERROR_MESSAGES.ADD_ISSUE.NOTE).isLength({ min: 3, max: 200 }),
   checkValidationResult,
   checkEditUpdate,
-  isAdmin,
   checkEditAdmin,
   /**
    * Deletes an asset from the database for the authenticated user.
    */
-  function (req, res, next) {
+  function (req: Request, res: Response, next: NextFunction) {
     const session = req.session as Session;
     db.run(
       'DELETE FROM assets WHERE id = ? AND owner_id = ?',
       [req.params.id, (req.user as User).id],
       function (err) {
         if (err) {
+          console.error('Database errored whilst ammending an asset: ', err);
           return next(err);
         }
         session.messages = [SUCCESS_MESSAGES.DELETED];
@@ -300,6 +297,10 @@ indexRouter.post(
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-indexRouter.get('/settings', ensureLoggedIn, function (req, res, _next) {
-  res.render('settings', { user: req.user });
-});
+indexRouter.get(
+  '/settings',
+  ensureAuth,
+  function (req: Request, res: Response, _next: NextFunction) {
+    res.render('settings', { user: req.user });
+  },
+);

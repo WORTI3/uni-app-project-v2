@@ -1,12 +1,14 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
 import crypto from 'crypto';
-import db from '../db';
-import { ERROR_MESSAGES, PASSWORD_REGEX } from '../assets/constants';
+import { ErrorField, Session } from '../types';
+import { CustomVerifyOptions } from '../middleware/passport';
 import { checkValidationResult } from '../middleware/auth';
 import { check } from 'express-validator';
+import { ERROR_MESSAGES, PASSWORD_REGEX } from '../assets/constants';
+import db from '../db';
 
-const router = Router();
+export const authRouter = Router();
 
 /**
  * GET request handler for the login page.
@@ -15,27 +17,54 @@ const router = Router();
  * @param {Function} next - The next middleware function (unused).
  * @returns None
  */
-router.get('/login', function (_req, res) {
+authRouter.get('/login', function (req, res) {
+  (req.session as Session).errorFields = undefined;
   res.render('login');
 });
 
 /**
  * Handles a POST request to log in a user with a password.
- * @param {string} "/login/password" - the endpoint for the login request
- * @param {function} passport.authenticate - the authentication middleware function
- * @param {object} options - the options object for passport.authenticate
- * @param {string} options.successReturnToOrRedirect - the URL to redirect to upon successful login
- * @param {string} options.failureRedirect - the URL to redirect to upon failed login
- * @param {boolean} options.failureMessage - whether or not to display a failure message
- * @returns None
+ * @name authRouter
+ * @type {Router}
  */
-router.post(
+authRouter.post(
   '/login/password',
-  passport.authenticate('local', {
-    successReturnToOrRedirect: '/',
-    failureRedirect: '/login',
-    failureMessage: true,
-  }),
+  (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate(
+      'local',
+      (err: Error, user: Express.User, info: CustomVerifyOptions) => {
+        if (err) {
+          console.error('Failed to authenticate on request ', err);
+          return next(err);
+        }
+
+        if (!user) {
+          // If authentication failed, add error message to session
+          const fieldErrors: ErrorField[] =
+            (req.session as Session).errorFields ?? [];
+          fieldErrors.forEach((errorField, index) => {
+            if (errorField.field === 'username') {
+              fieldErrors[index].value = req.body.username;
+              fieldErrors[index].error = `${info.message}`;
+            }
+            if (errorField.field === 'password') {
+              fieldErrors[index].value = req.body.password;
+              fieldErrors[index].error = 'duplicate_error';
+            }
+          });
+          return res.redirect('/login');
+        }
+
+        req.logIn(user, (err) => {
+          if (err) {
+            return next(err);
+          }
+          (req.session as Session).errorFields = [];
+          return res.redirect('/');
+        });
+      },
+    )(req, res, next);
+  },
 );
 
 /**
@@ -45,9 +74,10 @@ router.post(
  * @param {function} next - The next middleware function.
  * @returns None
  */
-router.post('/logout', function (req, res, next) {
+authRouter.post('/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) {
+      console.error('Failed to logout on request ', err);
       return next(err);
     }
     res.redirect('/');
@@ -61,7 +91,8 @@ router.post('/logout', function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns None
  */
-router.get('/signup', function (_req, res, _next) {
+authRouter.get('/signup', function (req, res, _next) {
+  (req.session as Session).errorFields = undefined;
   res.render('signup');
 });
 
@@ -75,7 +106,7 @@ router.get('/signup', function (_req, res, _next) {
  * @param {function} next - The next middleware function.
  * @returns None
  */
-router.post(
+authRouter.post(
   '/signup',
   check('username', ERROR_MESSAGES.USERNAME.DEFAULT)
     .isLength({ min: 3 })
@@ -93,30 +124,32 @@ router.post(
     .matches(PASSWORD_REGEX)
     .withMessage(ERROR_MESSAGES.PASSWORD.NO_CHARS),
   checkValidationResult,
-  function (req, res, next) {
+  (req: Request, res: Response, next: NextFunction) => {
     const salt = crypto.randomBytes(16);
+    const { username, password } = req.body;
     crypto.pbkdf2(
-      req.body.password,
+      password,
       salt,
       310000,
       32,
       'sha256',
       function (err, hashedPassword) {
         if (err) {
+          console.error('Database error thrown when signup attempt ', err);
           return next(err); // return with db error
         }
         db.run(
           'INSERT INTO users (username, hashed_password, salt) VALUES (?, ?, ?)',
-          [req.body.username, hashedPassword, salt],
+          [username, hashedPassword, salt],
           function (err) {
             if (err) {
               return next(err);
             }
             const user = {
               id: this.lastID,
-              username: req.body.username,
+              username: username,
             };
-            req.login(user, function (err) {
+            req.login(user, function (err: Error) {
               if (err) {
                 return next(err);
               }
@@ -128,5 +161,3 @@ router.post(
     );
   },
 );
-
-export default router;
