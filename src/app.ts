@@ -61,9 +61,10 @@ initPassport(app);
  * @param {Function} next - The next middleware function.
  */
 app.use((req, res, next) => {
+  // get session
   const session = req.session as Session;
 
-  // const fields = [];
+  // const fields = []; initialise errorFields if not present
   if (!session.errorFields) {
     // when no session is present
     const inputValues = {
@@ -71,6 +72,7 @@ app.use((req, res, next) => {
       password: '', // dont want to pass password value through here
     };
 
+    // initialise errorFields
     const fields: ErrorField[] = [];
     for (const [key, value] of Object.entries(inputValues)) {
       fields.push({
@@ -80,18 +82,24 @@ app.use((req, res, next) => {
       });
     }
 
+    // set session.errorFields
     session.errorFields = fields;
   }
 
+  // set messages and errorFields to res.locals
   if (session.messages || session.errorFields) {
     const msgs = session?.messages ?? [];
     const tone = session.msgTone ?? null;
     res.locals.messages = msgs;
     res.locals.msgTone = tone;
     res.locals.errorFields = session.errorFields;
+
+    // clear session.messages and session.msgTone
     session.messages = [];
     session.msgTone = undefined;
   }
+
+  // proceed to next middleware/route handler
   next();
 });
 

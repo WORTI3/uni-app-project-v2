@@ -14,9 +14,11 @@ export const homeRouter = Router();
  * @param {Function} next - The next middleware function.
  */
 homeRouter.get('/', (req: Request, res: Response) => {
+  // Route handler
   if (!req.user) {
-    return res.render('home');
+    // Check if user is authenticated
+    return res.render('home'); // Render home page
   }
 
-  res.redirect('/dashboard');
+  res.redirect('/dashboard'); // Redirect to dashboard
 });

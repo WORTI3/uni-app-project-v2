@@ -1,14 +1,7 @@
 import request from 'supertest';
 import app from '../../../src/app';
 
-const getUrls = [
-  // '/all',
-  '/all/closed',
-  // '/add',
-  // '/settings',
-  // '/1/edit',
-  // '/1/view',
-];
+const getUrls = ['/all/closed'];
 
 const postUrls = ['/', '/settings', '/1/edit', '/1/view', '/1/delete'];
 

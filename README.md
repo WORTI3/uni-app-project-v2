@@ -1,15 +1,25 @@
-# uni-app-project <img style="float: right; padding: 10px;" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWORTI31212%2Funi-app-project-v2&count_bg=%23005CB8&title_bg=%23555555&icon=&icon_color=%23EB0000&title=VIEWS&edge_flat=false">
+# uni-app-project <img style="float: right; padding: 10px;" alt="views counter" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWORTI31212%2Funi-app-project-v2&count_bg=%23005CB8&title_bg=%23555555&icon=&icon_color=%23EB0000&title=VIEWS&edge_flat=false">
 
-"Faultifier" - a simple [Express][express] App written for Software Engineering and Devops university module.
+"Faultifier" is a secure yet simple web application built with [Node.js][node], [Express][express], and [Typescript][typescript]. It provides a platform for company employees to log hardware or software faults, track their tickets, and manage the fault reporting process.
 
-Deployed site can be found in the right side nav -->
+Deployed Site: <https://uni-app-project-production.up.railway.app/>
 
-<details>
-<summary>In-Depth Description:</summary>
-"Faultifier" is an express application that provides a simple system for authenticating users (using passport) based on their roles as an admin or staff member. The system allows staff members to log hardware or software faults with company equipment by creating a ticket, updating the ticket, and viewing all their raised tickets. Admin users have additional functionality, such as closing and deleting tickets, as well as viewing all open tickets for every member of staff. This allows admin users to assess the raised tickets more efficiently. The system ensures that only authorised users can access the appropriate functionality based on their role, making "Faultifier" a secure and easy-to-use application for fault reporting and management.
-</details>
+Features
 
-## Running the application
+- **User Authentication:** Users can register, log in, and manage their accounts securely.
+- **Role-based Access Control:** The application supports two roles, admin and staff member, with different levels of access and functionality.
+- **Ticket Management:** Staff members can create, update, and view tickets they have raised for hardware or software faults.
+- **Admin Functionality:** Administrators can view all open tickets raised by staff members, close or delete tickets, and manage the overall fault reporting process.
+- **Secure Implementation:** The application follows best practices and defends against common web vulnerabilities, such as some listed in the OWASP Top 10.
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js][node] (v16 or later)
+- npm (Node Package Manager) - Other package managers such as Yarn or Pnpm can also be used.
+
+### Installation
 
 1) Clone this repository with:
 
@@ -30,9 +40,24 @@ Deployed site can be found in the right side nav -->
     npm run start:dev
     ```
 
-## Using the application
+### Testing
 
-To make sure the app meets requirements outlined in the assignment / report. Two example users as well as some example data has been populated into the database. You can also register an account but it's recommended **not** to use any personal information.
+To run the unit tests, use the following command:
+
+```terminal
+npm test:coverage
+```
+
+You can update the test snapshots by running:
+
+```terminal
+npm test -- -u
+```
+
+### Using the application
+
+To make sure the app meets requirements outlined in the assignment / report. Two sample users and data has been populated into the database. You can also register an account but it's recommended **not** to use any personal information.
+
 To view the app as an admin login with the below credentials:
 
 ```yaml
@@ -40,39 +65,25 @@ username: admin
 password: admin
 ```
 
-Alternatively, you can create an account as a normal user or login as a normal user, using the following credentials:
+Alternatively, you can create an account as a normal user or login with the pre-defined user credentials:
 
 ```yaml
 username: user
 password: user
 ```
 
-## Testing the application
+### Technologies used
 
-You can run all of the current unit tests through the following command:
+- [Express][express] Web application framework for Node.js
+- [Node][node] A JavaScript runtime environment
+- [Jest][jest] A testing framework
+- [Nunjucks][njk] Templating engine
+- [TailwindCSS][tailwindcss] Utility-first CSS framework
+- [Passport][passport] Authentication middleware for Node.js
+- [SQLite3][sqlite] Embedded SQL database engine
+- [Typescript][typescript] Superset of JavaScript with static typing
 
-```terminal
-npm run test
-```
-
-To update the test snapshots run the following:
-
-```terminal
-npm run test -- -u
-```
-
-### Softwares used
-
-- [Express][express]
-- [Node][node]
-- [Jest][jest]
-- [Nunjucks][njk]
-- [TailwindCSS][tailwindcss]
-- [Passport][passport]
-- [SQLite3][sqlite]
-- Typescript
-
-### NPM dependencies:
+### NPM dependencies
 
 - [nodemon][nodemon]
 - [postcss][postcss]
@@ -101,6 +112,7 @@ Released under the [unlicensed license][license]. As stated by the license, anyo
 [tailwindcss]: <https://tailwindcss.com>
 [passport]: <https://www.passportjs.org>
 [sqlite]: <https://www.sqlite.org/index.html>
+[typescript]: <https://www.typescriptlang.org/>
 
 [nodemon]: <https://www.npmjs.com/package/nodemon>
 [postcss]: <https://www.npmjs.com/package/postcss>

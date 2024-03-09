@@ -108,12 +108,14 @@ authRouter.get('/signup', function (req, res, _next) {
  */
 authRouter.post(
   '/signup',
+  // validate username
   check('username', ERROR_MESSAGES.USERNAME.DEFAULT)
     .isLength({ min: 3 })
     .withMessage(ERROR_MESSAGES.USERNAME.MIN_LENGTH)
     .bail()
     .isLength({ max: 20 })
     .withMessage(ERROR_MESSAGES.PASSWORD.MAX_LENGTH),
+  // validate password
   check('password', ERROR_MESSAGES.PASSWORD.DEFAULT)
     .isLength({ min: 5 })
     .withMessage(ERROR_MESSAGES.PASSWORD.MIN_LENGTH)
@@ -138,20 +140,23 @@ authRouter.post(
           console.error('Database error thrown when signup attempt ', err);
           return next(err); // return with db error
         }
+        // Insert user into database
         db.run(
           'INSERT INTO users (username, hashed_password, salt) VALUES (?, ?, ?)',
           [username, hashedPassword, salt],
           function (err) {
             if (err) {
-              return next(err);
+              return next(err); // return with db error
             }
             const user = {
               id: this.lastID,
               username: username,
             };
+            // log user in
             req.login(user, function (err: Error) {
               if (err) {
-                return next(err);
+                console.error('Failed to log in user', err.message);
+                return next(err); // return with login error
               }
               res.redirect('/');
             });
