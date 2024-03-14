@@ -14,6 +14,7 @@ import { homeRouter } from './routes/home';
 import { authRouter } from './routes/auth';
 import { indexRouter } from './routes/index';
 import { ErrorField, Session } from './types';
+import helmet from 'helmet';
 
 const app = express();
 // Db
@@ -30,6 +31,24 @@ nunjucks.configure(['./src/views', './src/_layouts'], {
   autoescape: true,
   express: app,
 });
+
+// Disable the X-Powered-By header
+// Leaks server information when set
+app.disable('x-powered-by');
+
+// helmet for security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+      },
+    },
+    frameguard: false, // Disable X-Frame-Options
+  }),
+);
+
 // View engine setup
 app.set('view engine', 'njk');
 app.use(express.json());
