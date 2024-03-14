@@ -32,23 +32,6 @@ nunjucks.configure(['./src/views', './src/_layouts'], {
   express: app,
 });
 
-// Disable the X-Powered-By header
-// Leaks server information when set
-app.disable('x-powered-by');
-
-// helmet for security headers
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-      },
-    },
-    frameguard: false, // Disable X-Frame-Options
-  }),
-);
-
 // View engine setup
 app.set('view engine', 'njk');
 app.use(express.json());
@@ -72,6 +55,20 @@ app.use(
 );
 // passport middleware
 initPassport(app);
+
+// Disable the X-Powered-By header
+// Leaks server information when set
+app.disable('x-powered-by');
+
+// helmet for security headers
+app.use(
+  helmet({
+    frameguard: {
+      action: 'deny', // deny x-frame options
+    },
+    noSniff: true, // disable mime type sniffing
+  }),
+);
 
 /**
  * Sets messages and tone to locals from the current session.
