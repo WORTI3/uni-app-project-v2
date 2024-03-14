@@ -20,8 +20,6 @@ export const initServer = () => {
   });
 };
 
-export const server = initServer();
-
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -39,3 +37,5 @@ export function normalisePort(val: string): number | string | boolean {
 
   return false;
 }
+
+initServer();

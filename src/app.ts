@@ -145,15 +145,15 @@ app.use((_req, _res, next) => {
 // Error handler
 export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   // Set locals, only providing detailed error in development
+  const status = err.status || 500;
   if (req.app.get('env') === ('development' || 'test')) {
     res.locals.message = err.message;
     res.locals.error = err;
   } else {
-    res.locals.message =
-      err.status === 404 ? 'Not Found' : 'Internal Server Error';
+    res.locals.message = status === 404 ? 'Not Found' : 'Internal Server Error';
     res.locals.error = {};
   }
-  res.status(err.status).render('error');
+  res.status(status).render('error');
 };
 
 app.use(errorHandler);
