@@ -40,6 +40,10 @@ Features
     npm run start:dev
     ```
 
+5) You can then navigate to the following url in your browser to access the locally hosted application:
+
+    <http://localhost:4000>
+
 ### Testing
 
 To run the unit tests, use the following command:
