@@ -8,6 +8,7 @@ import session from 'express-session';
 import csrf from 'csurf';
 import sqlite3 from 'sqlite3';
 import sqliteStoreFactory from 'express-session-sqlite';
+import * as dotEnv from 'dotenv';
 // App routers
 import { initPassport } from './middleware/passport';
 import { homeRouter } from './routes/home';
@@ -23,7 +24,7 @@ const store = new SqliteStore({
   driver: sqlite3.Database,
   path: './src/database/sessions.db', // Specify the path to the SQLite database file
   ttl: 86400, // Session Time To Live in seconds
-  cleanupInterval: 300000, // Cleanup interval in milliseconds for deleting expired sessions
+  cleanupInterval: 18000, // Cleanup interval in milliseconds for deleting expired sessions - 5 minutes
 });
 
 // Nunjucks configuration
@@ -44,10 +45,13 @@ app.use(express.static(path.join('./', 'public')));
 // Adds CSRF protection to the application.
 app.use(csrf({ cookie: true }));
 
+// Init dotenv and its configuration
+dotEnv.config();
+
 // Init session
 app.use(
   session({
-    secret: 'nobody knows',
+    secret: process.env.SESSION_SECRET as string, // Get a secure secret token for the user session configuration
     resave: false,
     saveUninitialized: false,
     store,
@@ -121,7 +125,7 @@ app.use((req, res, next) => {
 
 /**
  * Middleware function that adds a CSRF token to the response locals object.
- * If the environment is set to "test", a hardcoded token is used instead.
+ *
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.

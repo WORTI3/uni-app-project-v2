@@ -34,6 +34,12 @@ Features
     npm i
     ```
 
+    **Note:** To run locally you will need to create the file: `.env` and set the following secrets:
+
+    ```bash
+        SESSION_SECRET='YourSecretString'
+    ```
+
 4) Run the application:
 
     ```terminal
